@@ -1,7 +1,8 @@
 {
-  "name": "url-site",
-  "version": "1.0.0",
-  "description": "A web app that stores its entire state in the URL",
+  "name": "ephemer-al",
+  "private": true,
+  "version": "0.0.0",
+  "description": "ephemer.al - Your entire site lives in the URL",
   "type": "module",
   "scripts": {
     "dev": "vite",

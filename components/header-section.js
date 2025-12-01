@@ -163,7 +163,7 @@ export class HeaderSection extends LitElement {
   render() {
     return html`
       <div class="header">
-        <h1>URL-Based Web App</h1>
+        <h1>ephemer.al</h1>
         <p>Your entire site lives in the URL. Edit with markdown and share the link!</p>
         <div class="url-info">
           <div class="url-info-header">
