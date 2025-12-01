@@ -19,21 +19,13 @@ export class EditMode extends LitElement {
       background: var(--md-sys-color-surface);
       color: var(--md-sys-color-on-surface);
       padding: 24px;
-      border: 1px solid var(--md-sys-color-outline);
       box-shadow: none; /* Flat */
       min-height: 400px;
       position: relative;
     }
 
     .edit-container::before {
-      content: 'EDIT_MODE // WRITE_ACCESS';
-      position: absolute;
-      top: 5px;
-      right: 10px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 10px;
-      color: var(--md-sys-color-outline);
-      letter-spacing: 2px;
+      content: none;
     }
 
     .toolbar {
@@ -57,11 +49,10 @@ export class EditMode extends LitElement {
       font-size: 14px;
       font-weight: 600;
       transition: all 0.2s;
-      font-family: 'Chakra Petch', sans-serif;
+      font-family: inherit;
       text-transform: uppercase;
       letter-spacing: 1px;
       gap: 8px;
-      clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
     }
 
     .button:hover {
@@ -86,7 +77,8 @@ export class EditMode extends LitElement {
     .editor-area {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 24px;
+      display: flex;
+      gap: 16px;
       height: 600px;
       min-height: 600px; /* Ensure minimum height */
     }
@@ -95,18 +87,28 @@ export class EditMode extends LitElement {
     .preview-pane {
       display: flex;
       flex-direction: column;
-      height: 100%;
+      background: var(--md-sys-color-surface);
       min-width: 0; /* Prevent flex item overflow */
+      flex: 1;
+    }
+
+    .pane-header {
+      padding: 8px 16px;
+      background: var(--md-sys-color-surface-variant);
+      font-weight: bold;
+      font-size: 14px;
+      color: var(--md-sys-color-on-surface);
+      font-family: inherit;
     }
 
     .pane-label {
       font-size: 14px;
       font-weight: 600;
       margin-bottom: 8px;
-      color: var(--md-sys-color-secondary); /* Blue accent */
-      text-transform: uppercase;
-      font-family: 'Chakra Petch', sans-serif;
-      letter-spacing: 1px;
+      font-family: inherit;
+      text-transform: none;
+      letter-spacing: normal;
+      color: inherit;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -124,10 +126,10 @@ export class EditMode extends LitElement {
       flex: 1;
       width: 100%;
       padding: 16px;
-      border: 1px solid var(--md-sys-color-outline);
-      font-family: 'Share Tech Mono', monospace;
-      background-color: var(--md-sys-color-surface-variant);
-      color: var(--md-sys-color-on-surface-variant);
+      border: none;
+      font-family: monospace;
+      background-color: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
       resize: none;
       font-size: 14px;
       line-height: 1.5;
@@ -154,42 +156,44 @@ export class EditMode extends LitElement {
     .rendered-content {
       line-height: 1.6;
       color: var(--md-sys-color-on-surface);
-      font-family: 'Share Tech Mono', monospace;
+      font-family: inherit;
+      padding: 24px;
+      flex: 1;
     }
 
     .rendered-content h1 {
-      font-size: 32px;
-      margin: 24px 0 16px;
-      color: var(--md-sys-color-primary);
-      border-bottom: 2px solid var(--md-sys-color-secondary); /* Blue accent */
-      padding-bottom: 8px;
-      font-weight: 600;
-      font-family: 'Chakra Petch', sans-serif;
+      font-size: 2em;
+      margin: 0.67em 0;
+      color: var(--md-sys-color-on-surface);
+      border-bottom: 1px solid var(--md-sys-color-outline);
+      padding-bottom: 0.3em;
+      font-weight: bold;
+      font-family: inherit;
       text-transform: none;
     }
 
     .rendered-content h2 {
-      font-size: 26px;
-      margin: 20px 0 12px;
+      font-size: 1.5em;
+      margin: 0.75em 0;
       color: var(--md-sys-color-on-surface);
-      font-weight: 500;
-      font-family: 'Chakra Petch', sans-serif;
+      font-weight: bold;
+      font-family: inherit;
       text-transform: none;
-      border-left: 4px solid var(--md-sys-color-secondary); /* Blue accent */
-      padding-left: 12px;
+      border-bottom: 1px solid var(--md-sys-color-outline);
+      padding-bottom: 0.3em;
     }
 
     .rendered-content h3 {
-      font-size: 22px;
-      margin: 16px 0 10px;
+      font-size: 1.17em;
+      margin: 0.83em 0;
       color: var(--md-sys-color-on-surface);
-      font-weight: 500;
-      font-family: 'Chakra Petch', sans-serif;
+      font-weight: bold;
+      font-family: inherit;
       text-transform: none;
     }
 
     .rendered-content p {
-      margin: 16px 0;
+      margin-bottom: 16px;
     }
 
     .rendered-content code {
@@ -197,7 +201,7 @@ export class EditMode extends LitElement {
       color: var(--md-sys-color-secondary); /* Blue accent */
       padding: 2px 6px;
       border: 1px solid var(--md-sys-color-outline);
-      font-family: 'Share Tech Mono', monospace;
+      font-family: monospace;
     }
 
     .rendered-content pre {
@@ -217,7 +221,7 @@ export class EditMode extends LitElement {
     }
 
     .rendered-content blockquote {
-      border-left: 4px solid var(--md-sys-color-secondary); /* Blue accent */
+      border-left: 4px solid var(--md-sys-color-outline);
       padding-left: 16px;
       margin: 16px 0;
       color: var(--md-sys-color-on-surface-variant);
@@ -227,9 +231,12 @@ export class EditMode extends LitElement {
     }
 
     .rendered-content a {
-      color: var(--md-sys-color-secondary); /* Blue accent */
-      text-decoration: none;
-      border-bottom: 1px dashed var(--md-sys-color-secondary); /* Blue accent */
+      color: blue;
+      text-decoration: underline;
+    }
+
+    :host-context(html[data-theme='dark']) .rendered-content a {
+        color: #4da6ff;
     }
 
     .rendered-content img {
@@ -253,7 +260,6 @@ export class EditMode extends LitElement {
     .url-warning {
       font-weight: 500;
       padding: 4px 8px;
-      border-radius: 4px;
     }
 
     .warning-yellow {
@@ -309,12 +315,12 @@ export class EditMode extends LitElement {
       background: var(--md-sys-color-primary-container);
       color: var(--md-sys-color-on-primary-container);
       text-decoration: none;
-      border-radius: 16px;
       box-shadow: var(--md-sys-elevation-3);
       transition: all 0.2s;
       cursor: pointer;
-      border: none;
+      border: 1px solid var(--md-sys-color-outline);
       font-size: 24px;
+      font-family: inherit;
       box-sizing: border-box;
       z-index: 100;
     }

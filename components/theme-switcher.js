@@ -9,7 +9,7 @@ export class ThemeSwitcher extends LitElement {
     .theme-switcher {
       position: fixed;
       bottom: 32px;
-      right: 112px; /* Positioned next to the FAB */
+      right: 112px;
       z-index: 100;
       display: flex;
       gap: 8px;
@@ -22,22 +22,17 @@ export class ThemeSwitcher extends LitElement {
       width: 48px;
       height: 48px;
       border: 1px solid var(--md-sys-color-primary);
-      background: #000000;
+      background: var(--md-sys-color-surface);
       color: var(--md-sys-color-primary);
       cursor: pointer;
-      transition: all 0.2s;
       font-size: 20px;
-      clip-path: polygon(20% 0, 100% 0, 100% 80%, 80% 100%, 0 100%, 0 20%);
+      font-family: inherit;
+      border-radius: 0;
     }
 
     .button:hover {
       background: var(--md-sys-color-primary);
       color: var(--md-sys-color-on-primary);
-      box-shadow: 0 0 15px var(--md-sys-color-primary);
-    }
-
-    .button:active {
-      transform: scale(1);
     }
 
     .icon {

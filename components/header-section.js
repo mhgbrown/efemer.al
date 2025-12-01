@@ -10,36 +10,23 @@ export class HeaderSection extends LitElement {
       background: var(--md-sys-color-surface);
       color: var(--md-sys-color-on-surface);
       padding: 24px;
-      border: 1px solid var(--md-sys-color-outline);
       margin-bottom: 24px;
-      box-shadow: var(--md-sys-elevation-1);
-      transition: box-shadow 0.3s ease;
-      border-radius: 0; /* Force sharp corners */
-    }
-    .header:hover {
-        box-shadow: var(--md-sys-elevation-2);
+      border-radius: 0;
     }
     .header h1 {
-      font-size: 28px;
+      font-size: 32px;
       margin-bottom: 8px;
-      font-weight: 700;
-      color: var(--md-sys-color-on-surface);
-      font-family: 'Domine', serif;
-      font-size: 48px;
-      margin-bottom: 8px;
-      font-weight: 600;
+      font-weight: bold;
       color: var(--md-sys-color-primary);
-      font-family: 'Teko', sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      line-height: 0.9;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      text-transform: none;
+      letter-spacing: normal;
     }
     .header p {
-      color: var(--md-sys-color-on-surface-variant);
+      color: var(--md-sys-color-on-surface);
       margin-bottom: 16px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 14px;
-      letter-spacing: 1px;
+      font-family: inherit;
+      font-size: 16px;
     }
     .url-container {
       display: flex;
@@ -47,56 +34,53 @@ export class HeaderSection extends LitElement {
       gap: 8px;
       background: var(--md-sys-color-surface-variant);
       padding: 16px;
-      border: 1px solid var(--md-sys-color-outline);
     }
-    .url-label {
-      font-size: 12px;
-      font-weight: 500;
-      font-weight: 600;
-      color: var(--md-sys-color-secondary); /* Blue accent */
+    .url-info-header {
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--md-sys-color-on-surface);
       display: flex;
       justify-content: space-between;
-      text-transform: uppercase;
-      font-family: 'Chakra Petch', sans-serif;
+      font-family: inherit;
+      margin-bottom: 16px;
     }
     .url-stats {
       display: flex;
       gap: 10px;
       align-items: center;
-      font-size: 12px;
-      color: var(--md-sys-color-on-surface-variant);
+      font-size: 14px;
+      color: var(--md-sys-color-on-surface);
     }
     .byte-count {
-      font-weight: 500;
+      font-weight: bold;
     }
     .url-warning {
       color: var(--md-sys-color-error);
-      font-size: 12px;
-      margin-top: 0; /* Adjusted from 8px */
+      font-size: 14px;
+      margin-top: 0;
       display: flex;
       align-items: center;
       gap: 4px;
-      font-weight: 500;
-      text-transform: uppercase;
-      font-family: 'Chakra Petch', sans-serif;
+      font-weight: bold;
+      font-family: inherit;
     }
     .url-warning.warning-yellow {
       display: inline-block;
-      background: var(--md-sys-color-error-container);
-      color: var(--md-sys-color-on-error-container);
-      border: none;
+      background: yellow;
+      color: black;
+      border: 1px solid black;
     }
     .url-warning.warning-red {
       display: inline-block;
-      background: var(--md-sys-color-error);
-      color: var(--md-sys-color-on-error);
-      border: none;
+      background: red;
+      color: white;
+      border: 1px solid black;
     }
     .url-display {
       background: var(--md-sys-color-background);
-      color: var(--md-sys-color-on-surface);
-      padding: 12px;
-      font-family: 'Share Tech Mono', monospace;
+      color: var(--md-sys-color-on-background);
+      padding: 0;
+      font-family: monospace;
       font-size: 14px;
       word-break: break-all;
       overflow: hidden;
@@ -104,40 +88,39 @@ export class HeaderSection extends LitElement {
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       line-height: 1.4;
-      max-height: 4.2em;
       margin-bottom: 16px;
-      border: 1px solid var(--md-sys-color-outline);
-      min-height: 4.2em;
-      border-radius: 0; /* Ensure sharp corners */
+      border-radius: 0;
+    }
+    .url-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
     .copy-button {
       padding: 12px 24px;
-      background: var(--md-sys-color-primary);
-      color: var(--md-sys-color-on-primary);
-      border: 1px solid var(--md-sys-color-primary); /* Unified button style */
+      background: transparent;
+      color: var(--md-sys-color-primary);
+      border: 1px solid var(--md-sys-color-primary);
       cursor: pointer;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
-      font-family: 'Chakra Petch', sans-serif;
+      font-family: inherit;
       text-transform: uppercase;
       letter-spacing: 1px;
-      transition: all 0.2s;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      clip-path: none; /* Removed clip-path for hard borders */
-      border-radius: 0; /* Ensure sharp corners */
+      border-radius: 0;
+      transition: all 0.2s;
     }
     .copy-button:hover {
-      background: var(--md-sys-color-secondary); /* Blue hover */
-      color: var(--md-sys-color-on-secondary);
-      border-color: var(--md-sys-color-secondary);
-      box-shadow: 0 0 15px var(--md-sys-color-secondary);
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
     }
     .copy-button.copied {
-      background: var(--md-sys-color-secondary); /* Blue for copied state */
+      background: var(--md-sys-color-secondary);
       color: var(--md-sys-color-on-secondary);
-      border: 1px solid var(--md-sys-color-secondary); /* Unified button style */
+      border-color: var(--md-sys-color-on-secondary);
     }
   `;
 
@@ -148,7 +131,7 @@ export class HeaderSection extends LitElement {
     try {
       navigator.clipboard.writeText(this.url);
       const originalText = copyBtn.textContent;
-      copyBtn.textContent = '✓ Copied!';
+      copyBtn.textContent = '✓ COPIED!';
       copyBtn.classList.add('copied');
       setTimeout(() => {
         copyBtn.textContent = originalText;
@@ -168,15 +151,17 @@ export class HeaderSection extends LitElement {
         <div class="url-info">
           <div class="url-info-header">
             <strong>Current URL:</strong>
+          </div>
+          <div class="url-display" id="current-url">${this.url}</div>
+          <div class="url-actions">
+            <button class="copy-button" id="copy-url-btn" @click=${this._copyUrl}>
+              COPY URL
+            </button>
             <div class="url-stats">
               <span class="byte-count" id="url-bytes">0 bytes</span>
               <span class="url-warning" id="url-warning"></span>
             </div>
           </div>
-          <div class="url-display" id="current-url">${this.url}</div>
-          <button class="copy-button" id="copy-url-btn" @click=${this._copyUrl}>
-            📋 Copy URL
-          </button>
         </div>
       </div>
     `;
