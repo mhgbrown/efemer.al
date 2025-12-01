@@ -127,7 +127,7 @@ export class ViewMode extends LitElement {
       padding-bottom: 8px;
       font-weight: 600;
       font-family: 'Chakra Petch', sans-serif;
-      text-transform: uppercase;
+      text-transform: none;
       letter-spacing: 1px;
     }
 
@@ -137,7 +137,7 @@ export class ViewMode extends LitElement {
       color: var(--md-sys-color-on-surface);
       font-weight: 500;
       font-family: 'Chakra Petch', sans-serif;
-      text-transform: uppercase;
+      text-transform: none;
       border-left: 4px solid var(--md-sys-color-secondary); /* Blue accent */
       padding-left: 12px;
     }
@@ -148,7 +148,7 @@ export class ViewMode extends LitElement {
       color: var(--md-sys-color-on-surface);
       font-weight: 500;
       font-family: 'Chakra Petch', sans-serif;
-      text-transform: uppercase;
+      text-transform: none;
     }
 
     .rendered-content p {

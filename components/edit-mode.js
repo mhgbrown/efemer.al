@@ -165,7 +165,7 @@ export class EditMode extends LitElement {
       padding-bottom: 8px;
       font-weight: 600;
       font-family: 'Chakra Petch', sans-serif;
-      text-transform: uppercase;
+      text-transform: none;
     }
 
     .rendered-content h2 {
@@ -174,7 +174,7 @@ export class EditMode extends LitElement {
       color: var(--md-sys-color-on-surface);
       font-weight: 500;
       font-family: 'Chakra Petch', sans-serif;
-      text-transform: uppercase;
+      text-transform: none;
       border-left: 4px solid var(--md-sys-color-secondary); /* Blue accent */
       padding-left: 12px;
     }
@@ -185,7 +185,7 @@ export class EditMode extends LitElement {
       color: var(--md-sys-color-on-surface);
       font-weight: 500;
       font-family: 'Chakra Petch', sans-serif;
-      text-transform: uppercase;
+      text-transform: none;
     }
 
     .rendered-content p {
