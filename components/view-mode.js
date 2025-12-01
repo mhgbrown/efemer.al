@@ -59,20 +59,19 @@ export class ViewMode extends LitElement {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 12px 24px;
+      padding: 8px 16px;
       background: transparent;
       color: var(--md-sys-color-primary);
       text-decoration: none;
       border: 1px solid var(--md-sys-color-primary);
       font-weight: 600;
-      transition: transform 0.2s;
       cursor: pointer;
-      font-size: 24px;
+      font-size: 14px;
       font-family: inherit;
       text-transform: uppercase;
       letter-spacing: 1px;
-      clip-path: none;
       border-radius: 0;
+      transition: all 0.2s;
     }
 
     .button:hover {
@@ -99,6 +98,28 @@ export class ViewMode extends LitElement {
       box-sizing: border-box;
       z-index: 100;
       border-radius: 0 !important;
+    }
+
+    .rendered-content h1 {
+      font-size: 2em;
+      margin: 0.67em 0;
+      color: var(--md-sys-color-on-surface);
+      border-bottom: 1px solid var(--md-sys-color-outline);
+      padding-bottom: 0.3em;
+      font-weight: bold;
+      font-family: inherit;
+      text-transform: none;
+    }
+
+    .rendered-content h2 {
+      font-size: 1.5em;
+      margin: 0.75em 0;
+      color: var(--md-sys-color-on-surface);
+      font-weight: bold;
+      font-family: inherit;
+      text-transform: none;
+      border-bottom: 1px solid var(--md-sys-color-outline);
+      padding-bottom: 0.3em;
     }
   `;
 
@@ -137,13 +158,11 @@ export class ViewMode extends LitElement {
   render() {
     if (!this.content) {
       return html`
-        <div class="view-container">
+        <div class="view-container" @click=${this._handleCreateNew} style="cursor: pointer; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
           <div class="empty-state">
-            <h2>ephemer.al</h2>
-            <p>Your entire website lives in the URL. Create content and share the link!</p>
-            <button class="button" @click=${this._handleCreateNew}>
-              Create New Site
-            </button>
+            <h2>Welcome</h2>
+            <p>Your entire website lives in the URL.</p>
+            <p style="font-size: 14px; opacity: 0.7; margin-top: 24px;">(Click anywhere to start)</p>
           </div>
         </div>
       `;

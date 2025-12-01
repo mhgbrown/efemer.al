@@ -22,12 +22,13 @@ export class ThemeSwitcher extends LitElement {
       width: 48px;
       height: 48px;
       border: 1px solid var(--md-sys-color-primary);
-      background: var(--md-sys-color-surface);
+      background: transparent;
       color: var(--md-sys-color-primary);
       cursor: pointer;
       font-size: 20px;
       font-family: inherit;
       border-radius: 0;
+      transition: all 0.2s;
     }
 
     .button:hover {

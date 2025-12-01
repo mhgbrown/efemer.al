@@ -13,20 +13,8 @@ export class HeaderSection extends LitElement {
       margin-bottom: 24px;
       border-radius: 0;
     }
-    .header h1 {
-      font-size: 32px;
-      margin-bottom: 8px;
-      font-weight: bold;
-      color: var(--md-sys-color-primary);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      text-transform: none;
-      letter-spacing: normal;
-    }
-    .header p {
-      color: var(--md-sys-color-on-surface);
-      margin-bottom: 16px;
-      font-family: inherit;
-      font-size: 16px;
+      margin-bottom: 24px;
+      border-radius: 0;
     }
     .url-container {
       display: flex;
@@ -146,8 +134,6 @@ export class HeaderSection extends LitElement {
   render() {
     return html`
       <div class="header">
-        <h1>ephemer.al</h1>
-        <p>Your entire site lives in the URL. Edit with markdown and share the link!</p>
         <div class="url-info">
           <div class="url-info-header">
             <strong>Current URL:</strong>

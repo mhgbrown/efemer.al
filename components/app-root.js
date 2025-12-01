@@ -4,6 +4,7 @@ import './view-mode.js';
 import './edit-mode.js';
 import './theme-switcher.js';
 import './header-section.js';
+import './nav-header.js';
 
 export class AppRoot extends LitElement {
   static properties = {
@@ -153,6 +154,7 @@ export class AppRoot extends LitElement {
 
   render() {
     return html`
+      ${this.mode === 'edit' || !this.content ? html`<nav-header></nav-header>` : ''}
       ${this.mode === 'edit'
         ? html` <header-section .url=${this.url}></header-section>
             <edit-mode

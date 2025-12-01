@@ -41,37 +41,33 @@ export class EditMode extends LitElement {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 10px 20px;
-      border: 1px solid var(--md-sys-color-outline);
+      padding: 8px 16px;
       background: transparent;
-      color: var(--md-sys-color-on-surface);
+      color: var(--md-sys-color-primary);
+      text-decoration: none;
+      border: 1px solid var(--md-sys-color-primary);
+      font-weight: 600;
       cursor: pointer;
       font-size: 14px;
-      font-weight: 600;
-      transition: all 0.2s;
       font-family: inherit;
       text-transform: uppercase;
       letter-spacing: 1px;
+      border-radius: 0;
+      transition: all 0.2s;
       gap: 8px;
     }
 
     .button:hover {
-      background: var(--md-sys-color-secondary); /* Blue hover */
-      border-color: var(--md-sys-color-secondary);
-      color: var(--md-sys-color-on-secondary);
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
     }
 
     .button-primary {
-      background: var(--md-sys-color-primary);
-      color: var(--md-sys-color-on-primary);
-      border-color: var(--md-sys-color-primary);
+      /* Same style, just specific class for targeting if needed */
     }
 
     .button-primary:hover {
-      background: var(--md-sys-color-secondary); /* Blue hover */
-      color: var(--md-sys-color-on-secondary);
-      border-color: var(--md-sys-color-secondary);
-      box-shadow: 0 0 10px var(--md-sys-color-secondary);
+      /* Same hover style */
     }
 
     .editor-area {
@@ -327,7 +323,6 @@ export class EditMode extends LitElement {
 
     .save-button:hover {
       background: var(--md-sys-color-primary-container);
-      transform: scale(1.05);
       box-shadow: var(--md-sys-elevation-4);
     }
   `;
@@ -359,21 +354,6 @@ export class EditMode extends LitElement {
     const encoded = await encodeContent(this.content);
     this.dispatchEvent(new CustomEvent('navigate', {
       detail: { path: encodeURIComponent(encoded) },
-      bubbles: true,
-      composed: true
-    }));
-  }
-
-  async _handleNewSite() {
-    if (this.content && this.content.trim()) {
-      const confirmed = confirm('Start a new site? Your current content will not be saved unless you copy the URL first.');
-      if (!confirmed) return;
-    }
-
-    const defaultContent = '# Welcome!\n\nStart editing to create your site.';
-    const encoded = await encodeContent(defaultContent);
-    this.dispatchEvent(new CustomEvent('navigate', {
-      detail: { path: `${encodeURIComponent(encoded)}/edit` },
       bubbles: true,
       composed: true
     }));
@@ -566,9 +546,6 @@ export class EditMode extends LitElement {
             ?disabled=${this._uploadingImage}
           >
             ${this._uploadingImage ? '⏳ Uploading...' : '🖼️ Add Image'}
-          </button>
-          <button class="button button-secondary" @click=${this._handleNewSite}>
-            🆕 New Site
           </button>
           <input
             type="file"
