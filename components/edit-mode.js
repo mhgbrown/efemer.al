@@ -86,6 +86,7 @@ export class EditMode extends LitElement {
       background: var(--md-sys-color-surface);
       min-width: 0; /* Prevent flex item overflow */
       flex: 1;
+      overflow-y: auto;
     }
 
     .pane-header {
@@ -244,7 +245,7 @@ export class EditMode extends LitElement {
     .help-text {
       font-size: 12px;
       color: var(--md-sys-color-on-surface-variant);
-      margin-top: 16px;
+      margin-bottom: 16px;
       padding: 12px;
       background: var(--md-sys-color-surface-variant);
       border: 1px solid var(--md-sys-color-outline);
@@ -556,6 +557,12 @@ export class EditMode extends LitElement {
           />
         </div>
 
+        <div class="help-text">
+          💡 <strong>Tip:</strong> Your content is automatically encoded into the URL as you type.
+          Images are automatically compressed and optimized (max 1200px, WebP/JPEG format) to minimize URL length.
+          Share the URL to share your site! Click "Save & View" to see the final result.
+        </div>
+
         ${this._previewMode
         ? html`
               <div class="preview-pane" style="height: 500px;">
@@ -599,12 +606,6 @@ Your content is automatically saved to the URL!"
               </div>
             `
       }
-
-        <div class="help-text">
-          💡 <strong>Tip:</strong> Your content is automatically encoded into the URL as you type.
-          Images are automatically compressed and optimized (max 1200px, WebP/JPEG format) to minimize URL length.
-          Share the URL to share your site! Click "Save & View" to see the final result.
-        </div>
       </div>
       <button class="save-button" @click=${this._handleSave} title="Save & View">
         💾
