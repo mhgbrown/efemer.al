@@ -8,8 +8,8 @@ export class ThemeSwitcher extends LitElement {
   static styles = css`
     .theme-switcher {
       position: fixed;
-      bottom: 30px;
-      right: 30px;
+      bottom: 32px;
+      right: 104px; /* Positioned next to the FAB */
       z-index: 1001;
     }
 
@@ -19,18 +19,18 @@ export class ThemeSwitcher extends LitElement {
       justify-content: center;
       width: 48px;
       height: 48px;
-      border-radius: 50%;
+      border-radius: 16px; /* Squared corners for MD3 */
       border: none;
       cursor: pointer;
-      background: var(--color-background-secondary);
-      color: var(--color-text);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      background: var(--md-sys-color-secondary-container);
+      color: var(--md-sys-color-on-secondary-container);
+      box-shadow: var(--md-sys-elevation-2);
       transition: all 0.2s;
     }
 
     .button:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transform: scale(1.05);
+      box-shadow: var(--md-sys-elevation-3);
     }
 
     .button:active {

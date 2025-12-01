@@ -7,99 +7,119 @@ export class HeaderSection extends LitElement {
 
   static styles = css`
     .header {
-      background: var(--color-background-secondary);
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 4px var(--shadow-color);
+      background: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
+      padding: 24px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      box-shadow: var(--md-sys-elevation-1);
+      transition: box-shadow 0.3s ease;
+    }
+    .header:hover {
+        box-shadow: var(--md-sys-elevation-2);
     }
     .header h1 {
-      font-size: 24px;
-      margin-bottom: 10px;
+      font-size: 28px;
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: var(--md-sys-color-on-surface);
+      font-family: 'Domine', serif;
     }
     .header p {
-      color: var(--color-text-secondary);
+      color: var(--md-sys-color-on-surface-variant);
       font-size: 14px;
+      line-height: 20px;
     }
     .url-info {
-      background: var(--color-background);
-      padding: 15px;
-      border-radius: 4px;
-      margin-top: 15px;
+      background: var(--md-sys-color-surface-variant);
+      color: var(--md-sys-color-on-surface-variant);
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 24px;
       font-size: 12px;
     }
     .url-info-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       flex-wrap: wrap;
       gap: 10px;
     }
     .url-info-header strong {
-      font-size: 13px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--md-sys-color-on-surface-variant);
     }
     .url-stats {
       display: flex;
       gap: 10px;
       align-items: center;
-      font-size: 11px;
-      color: var(--color-text-secondary);
+      font-size: 12px;
+      color: var(--md-sys-color-on-surface-variant);
     }
     .byte-count {
-      font-weight: 600;
+      font-weight: 500;
     }
     .url-warning {
       padding: 4px 8px;
-      border-radius: 3px;
-      font-size: 10px;
-      font-weight: 600;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
       display: none;
     }
     .url-warning.warning-yellow {
       display: inline-block;
-      background: #fff3cd;
-      color: #856404;
-      border: 1px solid #ffeaa7;
+      background: var(--md-sys-color-error-container);
+      color: var(--md-sys-color-on-error-container);
+      border: none;
     }
     .url-warning.warning-red {
       display: inline-block;
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
+      background: var(--md-sys-color-error);
+      color: var(--md-sys-color-on-error);
+      border: none;
     }
     .url-display {
-      background: var(--color-background-secondary);
-      padding: 10px;
-      border-radius: 4px;
-      font-family: monospace;
-      font-size: 11px;
+      background: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
+      padding: 12px;
+      border-radius: 8px;
+      font-family: 'Roboto Mono', monospace; /* Keep monospace for URL */
+      font-size: 12px;
       word-break: break-all;
       overflow: hidden;
       display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
-      line-height: 1.4;
-      max-height: 4.2em;
-      margin-bottom: 10px;
-      border: 1px solid var(--color-border);
-      min-height: 4.2em;
+      line-height: 1.5;
+      max-height: 4.5em;
+      margin-bottom: 16px;
+      border: 1px solid var(--md-sys-color-outline);
+      min-height: 4.5em;
     }
     .copy-button {
-      padding: 8px 16px;
-      background: var(--color-primary);
-      color: white;
+      padding: 10px 24px;
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
       border: none;
-      border-radius: 4px;
+      border-radius: 20px;
       cursor: pointer;
-      font-size: 12px;
-      transition: background 0.2s;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.2s, box-shadow 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
     .copy-button:hover {
-      background: var(--color-primary-hover);
+      background: var(--md-sys-color-primary); /* Darken slightly or add overlay */
+      box-shadow: var(--md-sys-elevation-1);
+      opacity: 0.9;
     }
     .copy-button.copied {
-      background: var(--color-success);
+      background: var(--md-sys-color-tertiary);
+      color: var(--md-sys-color-on-tertiary);
     }
   `;
 

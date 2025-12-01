@@ -14,115 +14,138 @@ export class ViewMode extends LitElement {
     }
 
     .view-container {
-      background: var(--color-background-secondary);
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px var(--shadow-color);
+      background: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: var(--md-sys-elevation-1);
       min-height: 400px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .view-container:hover {
+        box-shadow: var(--md-sys-elevation-2);
     }
 
     .empty-state {
       text-align: center;
-      padding: 60px 20px;
-      color: var(--color-text-secondary);
+      padding: 64px 24px;
+      color: var(--md-sys-color-on-surface-variant);
     }
 
     .empty-state h2 {
-      margin-bottom: 20px;
-      color: var(--color-text);
+      margin-bottom: 16px;
+      color: var(--md-sys-color-on-surface);
+      font-weight: 400;
     }
 
     .empty-state p {
-      margin-bottom: 30px;
+      margin-bottom: 32px;
       font-size: 16px;
+      line-height: 24px;
     }
 
     .button {
-      display: inline-block;
-      padding: 12px 24px;
-      background: var(--color-primary);
-      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 24px;
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
       text-decoration: none;
-      border-radius: 4px;
+      border-radius: 20px;
       font-weight: 500;
-      transition: background 0.2s;
+      transition: background 0.2s, box-shadow 0.2s;
       cursor: pointer;
       border: none;
-      font-size: 16px;
+      font-size: 14px;
     }
 
     .button:hover {
-      background: var(--color-primary-hover);
+      opacity: 0.9;
+      box-shadow: var(--md-sys-elevation-1);
     }
 
     .edit-button {
       position: fixed;
-      bottom: 30px;
-      right: 90px; /* Positioned next to the theme switcher */
-      width: 48px;
-      height: 48px;
+      bottom: 32px;
+      right: 32px;
+      width: 56px;
+      height: 56px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--color-success);
-      color: var(--color-background-secondary);
+      background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
       text-decoration: none;
-      border-radius: 50%;
-      box-shadow: 0 2px 8px var(--shadow-color);
+      border-radius: 16px; /* FABs in MD3 are slightly squared */
+      box-shadow: var(--md-sys-elevation-3);
       transition: all 0.2s;
       cursor: pointer;
       border: none;
       font-size: 24px;
       box-sizing: border-box;
+      z-index: 100;
     }
 
     .edit-button:hover {
-      background: var(--color-success-hover);
-      transform: scale(1.1);
-      box-shadow: 0 4px 12px var(--shadow-color);
+      background: var(--md-sys-color-primary-container); /* Add state layer logic if needed */
+      box-shadow: var(--md-sys-elevation-4); /* Assuming elevation 4 exists or fallback */
+      transform: scale(1.05);
     }
 
     .rendered-content {
-      line-height: 1.8;
-      color: var(--color-text);
+      line-height: 1.6;
+      color: var(--md-sys-color-on-surface);
+      font-family: 'DM Sans', sans-serif;
     }
 
     .rendered-content h1 {
-      font-size: 32px;
-      margin: 24px 0 16px;
-      color: var(--color-text);
-      border-bottom: 2px solid var(--color-border);
+      font-size: 36px;
+      margin: 32px 0 16px;
+      color: var(--md-sys-color-on-surface);
+      border-bottom: 1px solid var(--md-sys-color-outline);
       padding-bottom: 8px;
+      font-weight: 700;
+      font-family: 'Domine', serif;
     }
 
     .rendered-content h2 {
-      font-size: 26px;
-      margin: 20px 0 12px;
-      color: var(--color-text);
+      font-size: 28px;
+      margin: 24px 0 16px;
+      color: var(--md-sys-color-on-surface);
+      font-weight: 600;
+      font-family: 'Domine', serif;
     }
 
     .rendered-content h3 {
-      font-size: 22px;
-      margin: 16px 0 10px;
-      color: var(--color-text);
+      font-size: 24px;
+      margin: 16px 0 12px;
+      color: var(--md-sys-color-on-surface);
+      font-weight: 600;
+      font-family: 'Domine', serif;
     }
 
     .rendered-content p {
-      margin: 12px 0;
+      margin: 16px 0;
+      font-size: 16px;
+      line-height: 24px;
     }
 
     .rendered-content code {
-      background: var(--color-background);
+      background: var(--md-sys-color-surface-variant);
+      color: var(--md-sys-color-on-surface-variant);
       padding: 2px 6px;
-      border-radius: 3px;
-      font-family: 'Monaco', 'Courier New', monospace;
+      border-radius: 4px;
+      font-family: 'Roboto Mono', monospace;
       font-size: 14px;
     }
 
     .rendered-content pre {
-      background: var(--color-background);
+      background: var(--md-sys-color-surface-variant);
+      color: var(--md-sys-color-on-surface-variant);
       padding: 16px;
-      border-radius: 4px;
+      border-radius: 8px;
       overflow-x: auto;
       margin: 16px 0;
     }
@@ -130,28 +153,30 @@ export class ViewMode extends LitElement {
     .rendered-content pre code {
       background: none;
       padding: 0;
+      color: inherit;
     }
 
     .rendered-content ul, .rendered-content ol {
-      margin: 12px 0;
-      padding-left: 30px;
+      margin: 16px 0;
+      padding-left: 32px;
     }
 
     .rendered-content li {
-      margin: 6px 0;
+      margin: 8px 0;
     }
 
     .rendered-content blockquote {
-      border-left: 4px solid var(--color-border);
+      border-left: 4px solid var(--md-sys-color-primary);
       padding-left: 16px;
       margin: 16px 0;
-      color: var(--color-text-secondary);
+      color: var(--md-sys-color-on-surface-variant);
       font-style: italic;
     }
 
     .rendered-content a {
-      color: var(--color-primary);
+      color: var(--md-sys-color-primary);
       text-decoration: none;
+      font-weight: 500;
     }
 
     .rendered-content a:hover {
@@ -166,22 +191,23 @@ export class ViewMode extends LitElement {
 
     .rendered-content th,
     .rendered-content td {
-      border: 1px solid var(--color-border);
-      padding: 10px;
+      border: 1px solid var(--md-sys-color-outline);
+      padding: 12px;
       text-align: left;
     }
 
     .rendered-content th {
-      background: var(--color-background);
-      font-weight: 600;
+      background: var(--md-sys-color-surface-variant);
+      color: var(--md-sys-color-on-surface-variant);
+      font-weight: 500;
     }
 
     .rendered-content img {
       max-width: 100%;
       height: auto;
-      border-radius: 4px;
+      border-radius: 8px;
       margin: 16px 0;
-      box-shadow: 0 2px 8px var(--shadow-color);
+      box-shadow: var(--md-sys-elevation-1);
     }
   `;
 
@@ -200,19 +226,21 @@ export class ViewMode extends LitElement {
   _handleEdit() {
     const currentHash = window.location.hash.slice(1);
     const editPath = currentHash ? `${currentHash}/edit` : 'edit';
-    const appRoot = document.querySelector('app-root');
-    if (appRoot) {
-      appRoot.navigateTo(editPath);
-    }
+    this.dispatchEvent(new CustomEvent('navigate', {
+      detail: { path: editPath },
+      bubbles: true,
+      composed: true
+    }));
   }
 
   async _handleCreateNew() {
     const defaultContent = '# Welcome!\n\nStart editing to create your site.';
     const encoded = await encodeContent(defaultContent);
-    const appRoot = document.querySelector('app-root');
-    if (appRoot) {
-      appRoot.navigateTo(`${encodeURIComponent(encoded)}/edit`);
-    }
+    this.dispatchEvent(new CustomEvent('navigate', {
+      detail: { path: `${encodeURIComponent(encoded)}/edit` },
+      bubbles: true,
+      composed: true
+    }));
   }
 
   render() {

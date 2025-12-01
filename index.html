@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>URL-Based Web App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&family=Domine:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <script>
         // Immediately-invoked function to prevent flash of unstyled content
-        (function() {
+        (function () {
             const storedTheme = localStorage.getItem('theme') || 'system';
             let themeToApply = storedTheme;
 
@@ -21,36 +27,67 @@
     <style>
         :root {
             --shadow-color: rgba(0, 0, 0, 0.1);
+
+            /* Plant Theme - Light */
+            --md-sys-color-primary: #556500;
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-primary-container: #DCE86A;
+            --md-sys-color-on-primary-container: #181E00;
+            --md-sys-color-secondary: #5D6144;
+            --md-sys-color-on-secondary: #FFFFFF;
+            --md-sys-color-secondary-container: #E2E6C1;
+            --md-sys-color-on-secondary-container: #1A1D07;
+            --md-sys-color-tertiary: #386663;
+            --md-sys-color-on-tertiary: #FFFFFF;
+            --md-sys-color-tertiary-container: #BCECE7;
+            --md-sys-color-on-tertiary-container: #00201E;
+            --md-sys-color-error: #BA1A1A;
+            --md-sys-color-on-error: #FFFFFF;
+            --md-sys-color-error-container: #FFDAD6;
+            --md-sys-color-on-error-container: #410002;
+            --md-sys-color-background: #FDFCF4;
+            --md-sys-color-on-background: #1A1C18;
+            --md-sys-color-surface: #FDFCF4;
+            --md-sys-color-on-surface: #1A1C18;
+            --md-sys-color-surface-variant: #E1E4D5;
+            --md-sys-color-on-surface-variant: #44483D;
+            --md-sys-color-outline: #75796C;
+
+            --md-sys-elevation-1: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+            --md-sys-elevation-2: 0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+            --md-sys-elevation-3: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
         }
 
         html[data-theme='dark'] {
-            --color-background: #121212;
-            --color-background-secondary: #1e1e1e;
-            --color-text: #e0e0e0;
-            --color-text-secondary: #b0b0b0;
-            --color-border: #333;
-            --color-primary: #bb86fc;
-            --color-primary-hover: #a76ef4;
-            --color-success: #03dac6;
-            --color-success-hover: #01bfa5;
-            --color-secondary: #373737;
-            --color-secondary-hover: #444;
-            --shadow-color: rgba(255, 255, 255, 0.1);
+            /* Plant Theme - Dark */
+            --md-sys-color-primary: #DCE86A;
+            --md-sys-color-on-primary: #2C3400;
+            --md-sys-color-primary-container: #404C00;
+            --md-sys-color-on-primary-container: #DCE86A;
+            --md-sys-color-secondary: #C5CAAB;
+            --md-sys-color-on-secondary: #2F331A;
+            --md-sys-color-secondary-container: #454930;
+            --md-sys-color-on-secondary-container: #E2E6C1;
+            --md-sys-color-tertiary: #A0D0CC;
+            --md-sys-color-on-tertiary: #003735;
+            --md-sys-color-tertiary-container: #1F4E4B;
+            --md-sys-color-on-tertiary-container: #BCECE7;
+            --md-sys-color-error: #FFB4AB;
+            --md-sys-color-on-error: #690005;
+            --md-sys-color-error-container: #93000A;
+            --md-sys-color-on-error-container: #FFDAD6;
+            --md-sys-color-background: #1A1C18;
+            --md-sys-color-on-background: #E3E3DC;
+            --md-sys-color-surface: #1A1C18;
+            --md-sys-color-on-surface: #E3E3DC;
+            --md-sys-color-surface-variant: #44483D;
+            --md-sys-color-on-surface-variant: #C5C8BA;
+            --md-sys-color-outline: #8F9285;
+            --shadow-color: rgba(0, 0, 0, 0.3);
         }
 
         html[data-theme='light'] {
-            --color-background: #f0f2f5;
-            --color-background-secondary: #ffffff;
-            --color-text: #333;
-            --color-text-secondary: #666;
-            --color-border: #ddd;
-            --color-primary: #007bff;
-            --color-primary-hover: #0056b3;
-            --color-success: #28a745;
-            --color-success-hover: #218838;
-            --color-secondary: #6c757d;
-            --color-secondary-hover: #545b62;
-            --shadow-color: rgba(0, 0, 0, 0.1);
+            /* Fallback to root values */
         }
 
         * {
@@ -60,22 +97,36 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'DM Sans', 'Roboto', sans-serif;
             line-height: 1.6;
-            color: var(--color-text);
-            background: var(--color-background);
+            color: var(--md-sys-color-on-background);
+            background: var(--md-sys-color-background);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Domine', serif;
         }
 
         .container {
-            max-width: 900px;
+            width: 100%;
+            max-width: 1440px;
+            /* Reasonable upper stopping point */
             margin: 0 auto;
-            padding: 20px;
+            padding: 24px;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <app-root></app-root>
     </div>
 </body>
+
 </html>

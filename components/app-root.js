@@ -18,35 +18,12 @@ export class AppRoot extends LitElement {
       display: block;
     }
 
-    :host([theme='dark']) {
-      --color-background: #121212;
-      --color-background-secondary: #1e1e1e;
-      --color-text: #e0e0e0;
-      --color-text-secondary: #b0b0b0;
-      --color-border: #333;
-      --color-primary: #bb86fc;
-      --color-primary-hover: #a76ef4;
-      --color-success: #03dac6;
-      --color-success-hover: #01bfa5;
-      --color-secondary: #373737;
-      --color-secondary-hover: #444;
-      --shadow-color: rgba(255, 255, 255, 0.1);
+    :host {
+      display: block;
+      color: var(--md-sys-color-on-background);
+      background-color: var(--md-sys-color-background);
     }
 
-    :host([theme='light']) {
-      --color-background: #f0f2f5;
-      --color-background-secondary: #ffffff;
-      --color-text: #333;
-      --color-text-secondary: #666;
-      --color-border: #ddd;
-      --color-primary: #007bff;
-      --color-primary-hover: #0056b3;
-      --color-success: #28a745;
-      --color-success-hover: #218838;
-      --color-secondary: #6c757d;
-      --color-secondary-hover: #545b62;
-      --shadow-color: rgba(0, 0, 0, 0.1);
-    }
   `;
 
   constructor() {
@@ -68,6 +45,11 @@ export class AppRoot extends LitElement {
 
     this._mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     this._mediaQuery.addEventListener('change', this._applyTheme);
+
+    // Listen for navigation events from children
+    this.addEventListener('navigate', (e) => {
+      this.navigateTo(e.detail.path);
+    });
   }
 
   disconnectedCallback() {
@@ -95,12 +77,8 @@ export class AppRoot extends LitElement {
     }
     this.setAttribute('theme', themeToApply);
 
-    // Apply background color to the body
-    if (themeToApply === 'dark') {
-      document.body.style.backgroundColor = '#121212';
-    } else {
-      document.body.style.backgroundColor = '#f0f2f5';
-    }
+    // Set the global data-theme attribute so CSS variables update correctly
+    document.documentElement.setAttribute('data-theme', themeToApply);
   }
 
   async _handleRouteChange() {
@@ -135,12 +113,6 @@ export class AppRoot extends LitElement {
     }
 
     // Update warning based on byte count
-    // Since we're using hash fragments (#), server limits don't apply
-    // Fragment-specific browser limits:
-    // - Chrome/Edge: ~2MB (very safe)
-    // - Firefox: ~65K characters (~65KB)
-    // - Safari: Generally handles long fragments well
-    // - IE/Old Edge: 2083 characters total URL limit
     const urlWarning = header.shadowRoot.querySelector('#url-warning');
     if (urlWarning) {
       // Clear existing classes and reset display
@@ -181,10 +153,6 @@ export class AppRoot extends LitElement {
 
   render() {
     return html`
-      <theme-switcher
-        .theme=${this.theme}
-        @theme-change=${this._handleThemeChange}
-      ></theme-switcher>
       ${this.mode === 'edit'
         ? html` <header-section .url=${this.url}></header-section>
             <edit-mode
@@ -192,6 +160,10 @@ export class AppRoot extends LitElement {
               @content-change=${this._handleContentChange}
             ></edit-mode>`
         : html`<view-mode .content=${this.content}></view-mode>`}
+      <theme-switcher
+        .theme=${this.theme}
+        @theme-change=${this._handleThemeChange}
+      ></theme-switcher>
     `;
   }
 }

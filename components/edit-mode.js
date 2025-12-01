@@ -16,63 +16,76 @@ export class EditMode extends LitElement {
     }
 
     .edit-container {
-      background: var(--color-background-secondary);
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px var(--shadow-color);
+      background: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: var(--md-sys-elevation-1);
       min-height: 400px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .edit-container:hover {
+        box-shadow: var(--md-sys-elevation-2);
     }
 
     .toolbar {
       display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      padding-bottom: 15px;
-      border-bottom: 2px solid var(--color-border);
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--md-sys-color-outline);
       flex-wrap: wrap;
     }
 
     .button {
-      padding: 10px 20px;
+      padding: 10px 24px;
       border: none;
-      border-radius: 4px;
+      border-radius: 20px;
       font-size: 14px;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
     .button-primary {
-      background: var(--color-primary);
-      color: white;
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
     }
 
     .button-primary:hover {
-      background: var(--color-primary-hover);
+      opacity: 0.9;
+      box-shadow: var(--md-sys-elevation-1);
     }
 
     .button-secondary {
-      background: var(--color-secondary);
-      color: white;
+      background: var(--md-sys-color-secondary-container);
+      color: var(--md-sys-color-on-secondary-container);
     }
 
     .button-secondary:hover {
-      background: var(--color-secondary-hover);
+      opacity: 0.9;
+      box-shadow: var(--md-sys-elevation-1);
     }
 
     .button-success {
-      background: var(--color-success);
-      color: white;
+      background: var(--md-sys-color-primary-container); /* Using primary container for save action to fit theme */
+      color: var(--md-sys-color-on-primary-container);
     }
 
     .button-success:hover {
-      background: var(--color-success-hover);
+      opacity: 0.9;
+      box-shadow: var(--md-sys-elevation-1);
     }
 
     .editor-area {
       display: flex;
-      gap: 20px;
-      height: 500px;
+      gap: 24px;
+      height: 600px;
     }
 
     .editor-pane {
@@ -82,9 +95,9 @@ export class EditMode extends LitElement {
     }
 
     .pane-label {
-      font-weight: 600;
-      margin-bottom: 10px;
-      color: var(--color-text);
+      font-weight: 500;
+      margin-bottom: 12px;
+      color: var(--md-sys-color-on-surface);
       font-size: 14px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -93,102 +106,116 @@ export class EditMode extends LitElement {
     textarea {
       flex: 1;
       width: 100%;
-      padding: 15px;
-      border: 2px solid var(--color-border);
-      border-radius: 4px;
-      font-family: 'Monaco', 'Courier New', monospace;
+      padding: 16px;
+      border: 1px solid var(--md-sys-color-outline);
+      border-radius: 8px;
+      font-family: 'Roboto Mono', monospace;
       font-size: 14px;
       line-height: 1.6;
       resize: vertical;
       transition: border-color 0.2s;
-      background-color: var(--color-background);
-      color: var(--color-text);
+      background-color: var(--md-sys-color-surface-variant);
+      color: var(--md-sys-color-on-surface-variant);
     }
 
     textarea:focus {
       outline: none;
-      border-color: var(--color-primary);
+      border-color: var(--md-sys-color-primary);
+      border-width: 2px;
+      padding: 15px; /* Adjust for border width change */
     }
 
     .preview-pane {
       flex: 1;
-      border: 2px solid var(--color-border);
-      border-radius: 4px;
-      padding: 15px;
+      border: 1px solid var(--md-sys-color-outline);
+      border-radius: 8px;
+      padding: 16px;
       overflow-y: auto;
-      background: var(--color-background);
+      background: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
     }
 
     .rendered-content {
-      line-height: 1.8;
-      color: var(--color-text);
+      line-height: 1.6;
+      color: var(--md-sys-color-on-surface);
+      font-family: 'DM Sans', sans-serif;
     }
 
     .rendered-content h1 {
-      font-size: 28px;
-      margin: 20px 0 12px;
-      color: var(--color-text);
-      border-bottom: 2px solid var(--color-border);
-      padding-bottom: 6px;
+      font-size: 32px;
+      margin: 24px 0 16px;
+      color: var(--md-sys-color-on-surface);
+      border-bottom: 1px solid var(--md-sys-color-outline);
+      padding-bottom: 8px;
+      font-weight: 700;
+      font-family: 'Domine', serif;
     }
 
     .rendered-content h2 {
-      font-size: 24px;
-      margin: 18px 0 10px;
-      color: var(--color-text);
+      font-size: 26px;
+      margin: 20px 0 12px;
+      color: var(--md-sys-color-on-surface);
+      font-weight: 600;
+      font-family: 'Domine', serif;
     }
 
     .rendered-content h3 {
-      font-size: 20px;
-      margin: 16px 0 8px;
-      color: var(--color-text);
+      font-size: 22px;
+      margin: 16px 0 10px;
+      color: var(--md-sys-color-on-surface);
+      font-weight: 600;
+      font-family: 'Domine', serif;
     }
 
     .rendered-content p {
-      margin: 10px 0;
+      margin: 16px 0;
     }
 
     .rendered-content code {
-      background: var(--color-background);
+      background: var(--md-sys-color-surface-variant);
+      color: var(--md-sys-color-on-surface-variant);
       padding: 2px 6px;
-      border-radius: 3px;
-      font-family: 'Monaco', 'Courier New', monospace;
+      border-radius: 4px;
+      font-family: 'Roboto Mono', monospace;
       font-size: 13px;
     }
 
     .rendered-content pre {
-      background: var(--color-background);
-      padding: 12px;
-      border-radius: 4px;
+      background: var(--md-sys-color-surface-variant);
+      color: var(--md-sys-color-on-surface-variant);
+      padding: 16px;
+      border-radius: 8px;
       overflow-x: auto;
-      margin: 12px 0;
+      margin: 16px 0;
     }
 
     .rendered-content pre code {
       background: none;
       padding: 0;
+      color: inherit;
     }
 
     .rendered-content ul, .rendered-content ol {
-      margin: 10px 0;
-      padding-left: 25px;
+      margin: 16px 0;
+      padding-left: 32px;
     }
 
     .rendered-content li {
-      margin: 4px 0;
+      margin: 8px 0;
     }
 
     .rendered-content blockquote {
-      border-left: 4px solid var(--color-border);
-      padding-left: 12px;
-      margin: 12px 0;
-      color: var(--color-text-secondary);
+      border-left: 4px solid var(--md-sys-color-primary);
+      padding-left: 16px;
+      margin: 16px 0;
+      color: var(--md-sys-color-on-surface-variant);
       font-style: italic;
     }
 
     .rendered-content a {
-      color: var(--color-primary);
+      color: var(--md-sys-color-primary);
       text-decoration: none;
+      font-weight: 500;
     }
 
     .rendered-content a:hover {
@@ -198,37 +225,39 @@ export class EditMode extends LitElement {
     .rendered-content img {
       max-width: 100%;
       height: auto;
-      border-radius: 4px;
-      margin: 12px 0;
-      box-shadow: 0 2px 8px var(--shadow-color);
+      border-radius: 8px;
+      margin: 16px 0;
+      box-shadow: var(--md-sys-elevation-1);
     }
 
     .help-text {
-      margin-top: 15px;
-      padding: 12px;
-      background: var(--color-background);
-      border-radius: 4px;
-      font-size: 13px;
-      color: var(--color-text-secondary);
+      margin-top: 24px;
+      padding: 16px;
+      background: var(--md-sys-color-surface-variant);
+      color: var(--md-sys-color-on-surface-variant);
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 20px;
     }
 
     .url-warning {
-      font-weight: bold;
-      padding: 5px 10px;
+      font-weight: 500;
+      padding: 4px 8px;
       border-radius: 4px;
-      margin-left: 10px;
+      margin-left: 12px;
+      font-size: 12px;
     }
 
     .warning-yellow {
-      background: #fff3cd;
-      color: #856404;
-      border: 1px solid #ffeaa7;
+      background: var(--md-sys-color-error-container);
+      color: var(--md-sys-color-on-error-container);
+      border: none;
     }
 
     .warning-red {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
+      background: var(--md-sys-color-error);
+      color: var(--md-sys-color-on-error);
+      border: none;
       animation: pulse 2s infinite;
     }
 
@@ -249,11 +278,12 @@ export class EditMode extends LitElement {
 
       .editor-pane,
       .preview-pane {
-        height: 300px;
+        height: 400px;
       }
 
       .toolbar {
         flex-direction: column;
+        align-items: stretch;
       }
 
       .button {
@@ -263,29 +293,30 @@ export class EditMode extends LitElement {
 
     .save-button {
       position: fixed;
-      bottom: 30px;
-      right: 90px; /* Positioned next to the theme switcher */
-      width: 48px;
-      height: 48px;
+      bottom: 32px;
+      right: 32px;
+      width: 56px;
+      height: 56px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--color-success);
-      color: var(--color-background-secondary);
+      background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
       text-decoration: none;
-      border-radius: 50%;
-      box-shadow: 0 2px 8px var(--shadow-color);
+      border-radius: 16px;
+      box-shadow: var(--md-sys-elevation-3);
       transition: all 0.2s;
       cursor: pointer;
       border: none;
       font-size: 24px;
       box-sizing: border-box;
+      z-index: 100;
     }
 
     .save-button:hover {
-      background: var(--color-success-hover);
-      transform: scale(1.1);
-      box-shadow: 0 4px 12px var(--shadow-color);
+      background: var(--md-sys-color-primary-container);
+      transform: scale(1.05);
+      box-shadow: var(--md-sys-elevation-4);
     }
   `;
 
@@ -314,10 +345,11 @@ export class EditMode extends LitElement {
 
   async _handleSave() {
     const encoded = await encodeContent(this.content);
-    const appRoot = document.querySelector('app-root');
-    if (appRoot) {
-      appRoot.navigateTo(encodeURIComponent(encoded));
-    }
+    this.dispatchEvent(new CustomEvent('navigate', {
+      detail: { path: encodeURIComponent(encoded) },
+      bubbles: true,
+      composed: true
+    }));
   }
 
   async _handleNewSite() {
@@ -328,10 +360,11 @@ export class EditMode extends LitElement {
 
     const defaultContent = '# Welcome!\n\nStart editing to create your site.';
     const encoded = await encodeContent(defaultContent);
-    const appRoot = document.querySelector('app-root');
-    if (appRoot) {
-      appRoot.navigateTo(`${encodeURIComponent(encoded)}/edit`);
-    }
+    this.dispatchEvent(new CustomEvent('navigate', {
+      detail: { path: `${encodeURIComponent(encoded)}/edit` },
+      bubbles: true,
+      composed: true
+    }));
   }
 
   _togglePreview() {
@@ -535,14 +568,14 @@ export class EditMode extends LitElement {
         </div>
 
         ${this._previewMode
-          ? html`
+        ? html`
               <div class="preview-pane" style="height: 500px;">
                 <div class="rendered-content">
                   ${unsafeHTML(this._getRenderedContent())}
                 </div>
               </div>
             `
-          : html`
+        : html`
               <div class="editor-area">
                 <div class="editor-pane">
                   <div class="pane-label">Markdown Editor</div>
@@ -576,7 +609,7 @@ Your content is automatically saved to the URL!"
                 </div>
               </div>
             `
-        }
+      }
 
         <div class="help-text">
           💡 <strong>Tip:</strong> Your content is automatically encoded into the URL as you type.
