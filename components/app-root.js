@@ -102,39 +102,12 @@ export class AppRoot extends LitElement {
     return url;
   }
 
+  _getByteCount() {
+    return new Blob([this.url]).size;
+  }
+
   _updateURLDisplay() {
-    // Calculate and update byte count (UTF-8) based on shareable URL
-    const byteCount = new Blob([this.url]).size;
-    const header = this.shadowRoot.querySelector('header-section');
-    if (!header) return;
-
-    const urlBytes = header.shadowRoot.querySelector('#url-bytes');
-    if (urlBytes) {
-      urlBytes.textContent = `${byteCount.toLocaleString()} bytes`;
-    }
-
-    // Update warning based on byte count
-    const urlWarning = header.shadowRoot.querySelector('#url-warning');
-    if (urlWarning) {
-      // Clear existing classes and reset display
-      urlWarning.className = 'url-warning';
-      urlWarning.style.display = '';
-
-      if (byteCount >= 65536) {
-        // Red warning - exceeding Firefox limit
-        urlWarning.className = 'url-warning warning-red';
-        urlWarning.textContent = '⚠️ URL TOO LONG';
-        urlWarning.title = 'URL exceeds 64KB - may not work in Firefox and older browsers';
-      } else if (byteCount >= 2083) {
-        // Yellow warning - exceeding IE/legacy browsers
-        urlWarning.className = 'url-warning warning-yellow';
-        urlWarning.textContent = '⚠️ TOO LONG FOR IE/LEGACY BROWSERS';
-        urlWarning.title = 'URL exceeds 2KB - won\'t work in Internet Explorer and older browsers';
-      } else {
-        // No warning
-        urlWarning.style.display = 'none';
-      }
-    }
+    // No-op: handled by reactive properties now
   }
 
   _setupCopyButton() {
@@ -156,7 +129,7 @@ export class AppRoot extends LitElement {
     return html`
       ${this.mode === 'edit' || !this.content ? html`<nav-header></nav-header>` : ''}
       ${this.mode === 'edit'
-        ? html` <header-section .url=${this.url}></header-section>
+        ? html` <header-section .url=${this.url} .byteCount=${this._getByteCount()}></header-section>
             <edit-mode
               .content=${this.content}
               @content-change=${this._handleContentChange}

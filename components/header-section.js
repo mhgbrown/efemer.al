@@ -3,6 +3,7 @@ import { LitElement, html, css } from 'lit';
 export class HeaderSection extends LitElement {
   static properties = {
     url: { type: String },
+    byteCount: { type: Number },
   };
 
   static styles = css`
@@ -56,13 +57,13 @@ export class HeaderSection extends LitElement {
       display: inline-block;
       background: yellow;
       color: black;
-      border: 1px solid black;
+      padding: 2px 8px;
     }
     .url-warning.warning-red {
       display: inline-block;
       background: red;
       color: white;
-      border: 1px solid black;
+      padding: 2px 8px;
     }
     .url-display {
       background: var(--md-sys-color-background);
@@ -131,6 +132,25 @@ export class HeaderSection extends LitElement {
     }
   }
 
+  _renderWarning() {
+    if (!this.byteCount) return '';
+
+    if (this.byteCount >= 65536) {
+      return html`
+        <span class="url-warning warning-red" title="URL exceeds 64KB">
+          ⚠️ URL exceeds 64KB. This is very long and may not work in some browsers or chat apps.
+        </span>
+      `;
+    } else if (this.byteCount >= 2083) {
+      return html`
+        <span class="url-warning warning-yellow" title="URL exceeds 2KB">
+          ⚠️ URL exceeds 2KB. This may not work in legacy browsers like Internet Explorer.
+        </span>
+      `;
+    }
+    return '';
+  }
+
   render() {
     return html`
       <div class="header">
@@ -144,8 +164,8 @@ export class HeaderSection extends LitElement {
               COPY URL
             </button>
             <div class="url-stats">
-              <span class="byte-count" id="url-bytes">0 bytes</span>
-              <span class="url-warning" id="url-warning"></span>
+              <span class="byte-count" id="url-bytes">${this.byteCount ? this.byteCount.toLocaleString() : 0} bytes</span>
+              ${this._renderWarning()}
             </div>
           </div>
         </div>
