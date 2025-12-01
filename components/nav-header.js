@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { encodeContent } from '../url-utils.js';
+import { RecentSitesManager } from '../recent-sites-manager.js';
 
 export class NavHeader extends LitElement {
   static styles = css`
@@ -48,11 +49,24 @@ export class NavHeader extends LitElement {
       background: var(--md-sys-color-primary);
       color: var(--md-sys-color-on-primary);
     }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
   `;
 
   async _handleCreateNew() {
     const defaultContent = '# Welcome!\n\nStart editing to create your site.';
     const encoded = await encodeContent(defaultContent);
+
+    // Save immediately
+    RecentSitesManager.saveSite(
+      `${window.location.origin}/#${encodeURIComponent(encoded)}/edit`,
+      defaultContent
+    );
+
     this.dispatchEvent(new CustomEvent('navigate', {
       detail: { path: `${encodeURIComponent(encoded)}/edit` },
       bubbles: true,
@@ -64,9 +78,11 @@ export class NavHeader extends LitElement {
     return html`
       <nav class="nav">
         <a href="#" class="brand">ephemer.al</a>
-        <button class="create-button" @click=${this._handleCreateNew}>
-          Create New Site
-        </button>
+        <div class="actions">
+          <button class="create-button" @click=${this._handleCreateNew}>
+            Create New Site
+          </button>
+        </div>
       </nav>
     `;
   }

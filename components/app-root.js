@@ -5,6 +5,7 @@ import './edit-mode.js';
 import './theme-switcher.js';
 import './header-section.js';
 import './nav-header.js';
+import './recent-sites-drawer.js';
 
 export class AppRoot extends LitElement {
   static properties = {
@@ -17,14 +18,51 @@ export class AppRoot extends LitElement {
   static styles = css`
     :host {
       display: block;
-    }
-
-    :host {
-      display: block;
       color: var(--md-sys-color-on-background);
       background-color: var(--md-sys-color-background);
     }
 
+    .main-content {
+      flex: 1;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .content-wrapper {
+      display: flex;
+      flex: 1;
+      gap: 24px;
+      min-height: 0; /* Important for nested scrolling */
+    }
+
+    .primary-column {
+      flex: 1;
+      min-width: 0; /* Prevent flex item overflow */
+      display: flex;
+      flex-direction: column;
+    }
+
+    recent-sites-drawer {
+      flex-shrink: 0;
+      height: auto;
+      min-height: 500px;
+    }
+
+    @media (max-width: 1000px) {
+      .content-wrapper {
+        flex-direction: column;
+      }
+
+      recent-sites-drawer {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid var(--md-sys-color-outline);
+      }
+    }
   `;
 
   constructor() {
@@ -127,14 +165,31 @@ export class AppRoot extends LitElement {
 
   render() {
     return html`
-      ${this.mode === 'edit' || !this.content ? html`<nav-header></nav-header>` : ''}
-      ${this.mode === 'edit'
-        ? html` <header-section .url=${this.url} .byteCount=${this._getByteCount()}></header-section>
-            <edit-mode
-              .content=${this.content}
-              @content-change=${this._handleContentChange}
-            ></edit-mode>`
-        : html`<view-mode .content=${this.content}></view-mode>`}
+      <div class="main-content">
+        ${this.mode === 'edit' || (this.mode === 'view' && !this.content)
+        ? html`<nav-header></nav-header>`
+        : ''
+      }
+
+        <div class="content-wrapper">
+          <div class="primary-column">
+            ${this.mode === 'edit'
+        ? html`
+                  <header-section .url=${this.url} .byteCount=${this._getByteCount()}></header-section>
+                  <edit-mode .content=${this.content} @content-change=${this._handleContentChange}></edit-mode>
+                `
+        : html`
+                  <view-mode .content=${this.content}></view-mode>
+                `
+      }
+          </div>
+
+          ${this.mode === 'edit' || (this.mode === 'view' && !this.content)
+        ? html`<recent-sites-drawer></recent-sites-drawer>`
+        : ''
+      }
+        </div>
+      </div>
       <theme-switcher
         .theme=${this.theme}
         @theme-change=${this._handleThemeChange}

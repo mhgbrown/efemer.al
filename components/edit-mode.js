@@ -2,6 +2,7 @@ import { LitElement, html, css } from 'lit';
 import { marked } from 'marked';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { encodeContent, updateURL } from '../url-utils.js';
+import { RecentSitesManager } from '../recent-sites-manager.js';
 
 export class EditMode extends LitElement {
   static properties = {
@@ -18,7 +19,7 @@ export class EditMode extends LitElement {
     .edit-container {
       background: var(--md-sys-color-surface);
       color: var(--md-sys-color-on-surface);
-      padding: 24px;
+      padding: 24px 0;
       box-shadow: none; /* Flat */
       min-height: 400px;
       position: relative;
@@ -338,6 +339,22 @@ export class EditMode extends LitElement {
   _handleInput(e) {
     this.content = e.target.value;
     this._updateURL();
+    this._debouncedSave();
+  }
+
+  _debouncedSave() {
+    if (this._saveTimeout) clearTimeout(this._saveTimeout);
+    this._saveTimeout = setTimeout(() => {
+      this._saveToRecent();
+    }, 1000);
+  }
+
+  async _saveToRecent() {
+    const encoded = await encodeContent(this.content);
+    RecentSitesManager.saveSite(
+      `${window.location.origin}/#${encodeURIComponent(encoded)}`,
+      this.content
+    );
   }
 
   async _updateURL() {
@@ -353,6 +370,13 @@ export class EditMode extends LitElement {
 
   async _handleSave() {
     const encoded = await encodeContent(this.content);
+
+    // Save to recent sites
+    RecentSitesManager.saveSite(
+      `${window.location.origin}/#${encodeURIComponent(encoded)}`,
+      this.content
+    );
+
     this.dispatchEvent(new CustomEvent('navigate', {
       detail: { path: encodeURIComponent(encoded) },
       bubbles: true,

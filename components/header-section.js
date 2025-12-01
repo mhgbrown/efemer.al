@@ -10,7 +10,7 @@ export class HeaderSection extends LitElement {
     .header {
       background: var(--md-sys-color-surface);
       color: var(--md-sys-color-on-surface);
-      padding: 24px;
+      padding: 24px 0;
       margin-bottom: 24px;
       border-radius: 0;
     }

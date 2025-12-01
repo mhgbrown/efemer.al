@@ -16,10 +16,9 @@ export class ViewMode extends LitElement {
     .view-container {
       background: var(--md-sys-color-surface);
       color: var(--md-sys-color-on-surface);
-      padding: 32px;
-      box-shadow: none; /* Flat */
-      min-height: 400px;
-      position: relative;
+      padding: 24px 0;
+      min-height: 100vh;
+      box-sizing: border-box;
     }
 
     /* Decorative elements removed */
@@ -109,6 +108,13 @@ export class ViewMode extends LitElement {
       font-weight: bold;
       font-family: inherit;
       text-transform: none;
+    }
+
+    .rendered-content {
+      line-height: 1.6;
+      color: var(--md-sys-color-on-surface);
+      font-family: inherit;
+      padding: 24px 0;
     }
 
     .rendered-content h2 {
