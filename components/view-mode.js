@@ -17,14 +17,26 @@ export class ViewMode extends LitElement {
       background: var(--md-sys-color-surface);
       color: var(--md-sys-color-on-surface);
       padding: 32px;
-      border-radius: 16px;
-      box-shadow: var(--md-sys-elevation-1);
+      border: 1px solid var(--md-sys-color-outline);
+      box-shadow: none; /* Flat */
       min-height: 400px;
-      transition: box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    /* Decorative elements */
+    .view-container::before {
+      content: 'VIEW_MODE // READ_ONLY';
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: var(--md-sys-color-outline);
+      letter-spacing: 2px;
     }
 
     .view-container:hover {
-        box-shadow: var(--md-sys-elevation-2);
+        border-color: var(--md-sys-color-primary); /* Highlight border instead of shadow */
     }
 
     .empty-state {
@@ -35,117 +47,130 @@ export class ViewMode extends LitElement {
 
     .empty-state h2 {
       margin-bottom: 16px;
-      color: var(--md-sys-color-on-surface);
-      font-weight: 400;
+      color: var(--md-sys-color-primary);
+      font-weight: 600;
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 32px;
+      letter-spacing: 1px;
     }
 
     .empty-state p {
       margin-bottom: 32px;
       font-size: 16px;
       line-height: 24px;
+      font-family: 'Share Tech Mono', monospace;
     }
 
     .button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 10px 24px;
-      background: var(--md-sys-color-primary);
-      color: var(--md-sys-color-on-primary);
+      padding: 12px 24px;
+      background: transparent;
+      color: var(--md-sys-color-primary);
       text-decoration: none;
-      border-radius: 20px;
-      font-weight: 500;
-      transition: background 0.2s, box-shadow 0.2s;
+      border: 1px solid var(--md-sys-color-primary);
+      font-weight: 600;
+      transition: all 0.2s;
       cursor: pointer;
-      border: none;
-      font-size: 14px;
+      font-size: 16px;
+      font-family: 'Chakra Petch', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
     }
 
     .button:hover {
-      opacity: 0.9;
-      box-shadow: var(--md-sys-elevation-1);
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      box-shadow: 0 0 10px var(--md-sys-color-primary);
     }
 
     .edit-button {
       position: fixed;
       bottom: 32px;
       right: 32px;
-      width: 56px;
-      height: 56px;
+      width: 64px;
+      height: 64px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--md-sys-color-primary-container);
-      color: var(--md-sys-color-on-primary-container);
+      background: var(--md-sys-color-secondary); /* Blue accent */
+      color: var(--md-sys-color-on-secondary);
       text-decoration: none;
-      border-radius: 16px; /* FABs in MD3 are slightly squared */
-      box-shadow: var(--md-sys-elevation-3);
+      border: none;
+      box-shadow: none;
       transition: all 0.2s;
       cursor: pointer;
-      border: none;
       font-size: 24px;
       box-sizing: border-box;
       z-index: 100;
+      clip-path: polygon(20% 0, 100% 0, 100% 80%, 80% 100%, 0 100%, 0 20%);
     }
 
     .edit-button:hover {
-      background: var(--md-sys-color-primary-container); /* Add state layer logic if needed */
-      box-shadow: var(--md-sys-elevation-4); /* Assuming elevation 4 exists or fallback */
-      transform: scale(1.05);
+      transform: scale(1.1);
+      box-shadow: 0 0 20px var(--md-sys-color-secondary);
     }
 
     .rendered-content {
       line-height: 1.6;
       color: var(--md-sys-color-on-surface);
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Share Tech Mono', monospace;
     }
 
     .rendered-content h1 {
-      font-size: 36px;
+      font-size: 42px;
       margin: 32px 0 16px;
-      color: var(--md-sys-color-on-surface);
-      border-bottom: 1px solid var(--md-sys-color-outline);
+      color: var(--md-sys-color-primary);
+      border-bottom: 2px solid var(--md-sys-color-secondary); /* Blue accent */
       padding-bottom: 8px;
-      font-weight: 700;
-      font-family: 'Domine', serif;
+      font-weight: 600;
+      font-family: 'Chakra Petch', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .rendered-content h2 {
-      font-size: 28px;
+      font-size: 32px;
       margin: 24px 0 16px;
       color: var(--md-sys-color-on-surface);
-      font-weight: 600;
-      font-family: 'Domine', serif;
+      font-weight: 500;
+      font-family: 'Chakra Petch', sans-serif;
+      text-transform: uppercase;
+      border-left: 4px solid var(--md-sys-color-secondary); /* Blue accent */
+      padding-left: 12px;
     }
 
     .rendered-content h3 {
       font-size: 24px;
       margin: 16px 0 12px;
       color: var(--md-sys-color-on-surface);
-      font-weight: 600;
-      font-family: 'Domine', serif;
+      font-weight: 500;
+      font-family: 'Chakra Petch', sans-serif;
+      text-transform: uppercase;
     }
 
     .rendered-content p {
       margin: 16px 0;
       font-size: 16px;
-      line-height: 24px;
+      line-height: 1.6;
     }
 
     .rendered-content code {
       background: var(--md-sys-color-surface-variant);
-      color: var(--md-sys-color-on-surface-variant);
+      color: var(--md-sys-color-secondary); /* Blue accent */
       padding: 2px 6px;
-      border-radius: 4px;
-      font-family: 'Roboto Mono', monospace;
+      border: 1px solid var(--md-sys-color-outline);
+      font-family: 'Share Tech Mono', monospace;
       font-size: 14px;
     }
 
     .rendered-content pre {
-      background: var(--md-sys-color-surface-variant);
-      color: var(--md-sys-color-on-surface-variant);
+      background: #000000;
+      color: var(--md-sys-color-secondary); /* Blue accent */
       padding: 16px;
-      border-radius: 8px;
+      border: 1px solid var(--md-sys-color-secondary); /* Blue accent */
       overflow-x: auto;
       margin: 16px 0;
     }
@@ -154,6 +179,7 @@ export class ViewMode extends LitElement {
       background: none;
       padding: 0;
       color: inherit;
+      border: none;
     }
 
     .rendered-content ul, .rendered-content ol {
@@ -165,28 +191,37 @@ export class ViewMode extends LitElement {
       margin: 8px 0;
     }
 
+    .rendered-content li::marker {
+      color: var(--md-sys-color-secondary); /* Blue accent */
+    }
+
     .rendered-content blockquote {
-      border-left: 4px solid var(--md-sys-color-primary);
+      border-left: 4px solid var(--md-sys-color-secondary); /* Blue accent */
       padding-left: 16px;
       margin: 16px 0;
       color: var(--md-sys-color-on-surface-variant);
       font-style: italic;
+      background: var(--md-sys-color-surface-variant);
+      padding: 16px;
     }
 
     .rendered-content a {
-      color: var(--md-sys-color-primary);
+      color: var(--md-sys-color-secondary); /* Blue accent */
       text-decoration: none;
       font-weight: 500;
+      border-bottom: 1px dashed var(--md-sys-color-secondary);
     }
 
     .rendered-content a:hover {
-      text-decoration: underline;
+      background: var(--md-sys-color-secondary);
+      color: var(--md-sys-color-on-secondary);
     }
 
     .rendered-content table {
       border-collapse: collapse;
       width: 100%;
       margin: 16px 0;
+      border: 1px solid var(--md-sys-color-outline);
     }
 
     .rendered-content th,
@@ -198,14 +233,17 @@ export class ViewMode extends LitElement {
 
     .rendered-content th {
       background: var(--md-sys-color-surface-variant);
-      color: var(--md-sys-color-on-surface-variant);
+      color: var(--md-sys-color-secondary); /* Blue accent */
       font-weight: 500;
+      font-family: 'Chakra Petch', sans-serif;
+      text-transform: uppercase;
+      font-size: 18px;
     }
 
     .rendered-content img {
       max-width: 100%;
       height: auto;
-      border-radius: 8px;
+      border: 1px solid var(--md-sys-color-outline);
       margin: 16px 0;
       box-shadow: var(--md-sys-elevation-1);
     }

@@ -9,8 +9,10 @@ export class ThemeSwitcher extends LitElement {
     .theme-switcher {
       position: fixed;
       bottom: 32px;
-      right: 104px; /* Positioned next to the FAB */
-      z-index: 1001;
+      right: 112px; /* Positioned next to the FAB */
+      z-index: 100;
+      display: flex;
+      gap: 8px;
     }
 
     .button {
@@ -19,18 +21,19 @@ export class ThemeSwitcher extends LitElement {
       justify-content: center;
       width: 48px;
       height: 48px;
-      border-radius: 16px; /* Squared corners for MD3 */
-      border: none;
+      border: 1px solid var(--md-sys-color-primary);
+      background: #000000;
+      color: var(--md-sys-color-primary);
       cursor: pointer;
-      background: var(--md-sys-color-secondary-container);
-      color: var(--md-sys-color-on-secondary-container);
-      box-shadow: var(--md-sys-elevation-2);
       transition: all 0.2s;
+      font-size: 20px;
+      clip-path: polygon(20% 0, 100% 0, 100% 80%, 80% 100%, 0 100%, 0 20%);
     }
 
     .button:hover {
-      transform: scale(1.05);
-      box-shadow: var(--md-sys-elevation-3);
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      box-shadow: 0 0 15px var(--md-sys-color-primary);
     }
 
     .button:active {

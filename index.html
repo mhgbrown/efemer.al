@@ -8,82 +8,95 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&family=Domine:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Chakra+Petch:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <script>
         // Immediately-invoked function to prevent flash of unstyled content
         (function () {
-            const storedTheme = localStorage.getItem('theme') || 'system';
-            let themeToApply = storedTheme;
+            const theme = localStorage.getItem('theme') || 'system';
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-            if (themeToApply === 'system') {
-                themeToApply = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            if (theme === 'dark' || (theme === 'system' && prefersDark)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
             }
-
-            document.documentElement.setAttribute('data-theme', themeToApply);
         })();
     </script>
     <script type="module" src="./app.js"></script>
     <style>
         :root {
-            --shadow-color: rgba(0, 0, 0, 0.1);
+            --shadow-color: rgba(204, 255, 0, 0.2);
+            /* Neon green glow */
+            --marathon-blue: #00C2FF;
+            /* Electric Blue */
 
-            /* Plant Theme - Light */
-            --md-sys-color-primary: #556500;
-            --md-sys-color-on-primary: #FFFFFF;
-            --md-sys-color-primary-container: #DCE86A;
-            --md-sys-color-on-primary-container: #181E00;
-            --md-sys-color-secondary: #5D6144;
+            /* Marathon Theme - Light (Inverted Cyberpunk) */
+            --md-sys-color-primary: #000000;
+            --md-sys-color-on-primary: #CCFF00;
+            --md-sys-color-primary-container: #CCFF00;
+            --md-sys-color-on-primary-container: #000000;
+            --md-sys-color-secondary: #00C2FF;
+            /* Marathon Blue */
             --md-sys-color-on-secondary: #FFFFFF;
-            --md-sys-color-secondary-container: #E2E6C1;
-            --md-sys-color-on-secondary-container: #1A1D07;
-            --md-sys-color-tertiary: #386663;
+            --md-sys-color-secondary-container: #E0E0E0;
+            --md-sys-color-on-secondary-container: #000000;
+            --md-sys-color-tertiary: #FF0000;
+            /* Red accents */
             --md-sys-color-on-tertiary: #FFFFFF;
-            --md-sys-color-tertiary-container: #BCECE7;
-            --md-sys-color-on-tertiary-container: #00201E;
-            --md-sys-color-error: #BA1A1A;
+            --md-sys-color-tertiary-container: #FFCCCC;
+            --md-sys-color-on-tertiary-container: #330000;
+            --md-sys-color-error: #FF0000;
             --md-sys-color-on-error: #FFFFFF;
             --md-sys-color-error-container: #FFDAD6;
             --md-sys-color-on-error-container: #410002;
-            --md-sys-color-background: #FDFCF4;
-            --md-sys-color-on-background: #1A1C18;
-            --md-sys-color-surface: #FDFCF4;
-            --md-sys-color-on-surface: #1A1C18;
-            --md-sys-color-surface-variant: #E1E4D5;
-            --md-sys-color-on-surface-variant: #44483D;
-            --md-sys-color-outline: #75796C;
+            --md-sys-color-background: #FFFFFF;
+            --md-sys-color-on-background: #000000;
+            --md-sys-color-surface: #F0F0F0;
+            --md-sys-color-on-surface: #000000;
+            --md-sys-color-surface-variant: #E0E0E0;
+            --md-sys-color-on-surface-variant: #000000;
+            --md-sys-color-outline: #000000;
 
-            --md-sys-elevation-1: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
-            --md-sys-elevation-2: 0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
-            --md-sys-elevation-3: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
+            /* Sharp, hard shadows or none */
+            --md-sys-elevation-1: 2px 2px 0px 0px #000000;
+            --md-sys-elevation-2: 4px 4px 0px 0px #000000;
+            --md-sys-elevation-3: 6px 6px 0px 0px #000000;
         }
 
         html[data-theme='dark'] {
-            /* Plant Theme - Dark */
-            --md-sys-color-primary: #DCE86A;
-            --md-sys-color-on-primary: #2C3400;
-            --md-sys-color-primary-container: #404C00;
-            --md-sys-color-on-primary-container: #DCE86A;
-            --md-sys-color-secondary: #C5CAAB;
-            --md-sys-color-on-secondary: #2F331A;
-            --md-sys-color-secondary-container: #454930;
-            --md-sys-color-on-secondary-container: #E2E6C1;
-            --md-sys-color-tertiary: #A0D0CC;
-            --md-sys-color-on-tertiary: #003735;
-            --md-sys-color-tertiary-container: #1F4E4B;
-            --md-sys-color-on-tertiary-container: #BCECE7;
-            --md-sys-color-error: #FFB4AB;
-            --md-sys-color-on-error: #690005;
+            /* Marathon Theme - Dark (True Cyberpunk) */
+            --md-sys-color-primary: #CCFF00;
+            /* Neon Green */
+            --md-sys-color-on-primary: #000000;
+            --md-sys-color-primary-container: #111111;
+            --md-sys-color-on-primary-container: #CCFF00;
+            --md-sys-color-secondary: #00C2FF;
+            /* Marathon Blue */
+            --md-sys-color-on-secondary: #000000;
+            --md-sys-color-secondary-container: #003344;
+            --md-sys-color-on-secondary-container: #00C2FF;
+            --md-sys-color-tertiary: #FF0000;
+            --md-sys-color-on-tertiary: #FFFFFF;
+            --md-sys-color-tertiary-container: #330000;
+            --md-sys-color-on-tertiary-container: #FF0000;
+            --md-sys-color-error: #FF0000;
+            --md-sys-color-on-error: #000000;
             --md-sys-color-error-container: #93000A;
             --md-sys-color-on-error-container: #FFDAD6;
-            --md-sys-color-background: #1A1C18;
-            --md-sys-color-on-background: #E3E3DC;
-            --md-sys-color-surface: #1A1C18;
-            --md-sys-color-on-surface: #E3E3DC;
-            --md-sys-color-surface-variant: #44483D;
-            --md-sys-color-on-surface-variant: #C5C8BA;
-            --md-sys-color-outline: #8F9285;
-            --shadow-color: rgba(0, 0, 0, 0.3);
+            --md-sys-color-background: #050505;
+            /* Deep Black */
+            --md-sys-color-on-background: #FFFFFF;
+            --md-sys-color-surface: #0A0A0A;
+            --md-sys-color-on-surface: #FFFFFF;
+            --md-sys-color-surface-variant: #111111;
+            --md-sys-color-on-surface-variant: #CCFF00;
+            --md-sys-color-outline: #333333;
+
+            --md-sys-elevation-1: 0 0 0 1px #333333;
+            --md-sys-elevation-2: 0 0 0 1px #CCFF00;
+            --md-sys-elevation-3: 0 0 10px rgba(204, 255, 0, 0.3);
+            --shadow-color: rgba(204, 255, 0, 0.1);
         }
 
         html[data-theme='light'] {
@@ -97,11 +110,14 @@
         }
 
         body {
-            font-family: 'DM Sans', 'Roboto', sans-serif;
-            line-height: 1.6;
+            font-family: 'Share Tech Mono', 'Roboto Mono', monospace;
+            line-height: 1.5;
             color: var(--md-sys-color-on-background);
             background: var(--md-sys-color-background);
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.1s ease, color 0.1s ease;
+            text-transform: none;
+            /* Respect casing */
+            letter-spacing: 0.5px;
         }
 
         h1,
@@ -110,13 +126,14 @@
         h4,
         h5,
         h6 {
-            font-family: 'Domine', serif;
+            font-family: 'Chakra Petch', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .container {
             width: 100%;
             max-width: 1440px;
-            /* Reasonable upper stopping point */
             margin: 0 auto;
             padding: 24px;
         }

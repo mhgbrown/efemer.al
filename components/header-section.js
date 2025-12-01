@@ -10,10 +10,11 @@ export class HeaderSection extends LitElement {
       background: var(--md-sys-color-surface);
       color: var(--md-sys-color-on-surface);
       padding: 24px;
-      border-radius: 16px;
+      border: 1px solid var(--md-sys-color-outline);
       margin-bottom: 24px;
       box-shadow: var(--md-sys-elevation-1);
       transition: box-shadow 0.3s ease;
+      border-radius: 0; /* Force sharp corners */
     }
     .header:hover {
         box-shadow: var(--md-sys-elevation-2);
@@ -24,32 +25,39 @@ export class HeaderSection extends LitElement {
       font-weight: 700;
       color: var(--md-sys-color-on-surface);
       font-family: 'Domine', serif;
+      font-size: 48px;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--md-sys-color-primary);
+      font-family: 'Teko', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      line-height: 0.9;
     }
     .header p {
       color: var(--md-sys-color-on-surface-variant);
+      margin-bottom: 16px;
+      font-family: 'Share Tech Mono', monospace;
       font-size: 14px;
-      line-height: 20px;
+      letter-spacing: 1px;
     }
-    .url-info {
+    .url-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
       background: var(--md-sys-color-surface-variant);
-      color: var(--md-sys-color-on-surface-variant);
       padding: 16px;
-      border-radius: 12px;
-      margin-top: 24px;
-      font-size: 12px;
+      border: 1px solid var(--md-sys-color-outline);
     }
-    .url-info-header {
+    .url-label {
+      font-size: 12px;
+      font-weight: 500;
+      font-weight: 600;
+      color: var(--md-sys-color-secondary); /* Blue accent */
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .url-info-header strong {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--md-sys-color-on-surface-variant);
+      text-transform: uppercase;
+      font-family: 'Chakra Petch', sans-serif;
     }
     .url-stats {
       display: flex;
@@ -62,11 +70,15 @@ export class HeaderSection extends LitElement {
       font-weight: 500;
     }
     .url-warning {
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 11px;
+      color: var(--md-sys-color-error);
+      font-size: 12px;
+      margin-top: 0; /* Adjusted from 8px */
+      display: flex;
+      align-items: center;
+      gap: 4px;
       font-weight: 500;
-      display: none;
+      text-transform: uppercase;
+      font-family: 'Chakra Petch', sans-serif;
     }
     .url-warning.warning-yellow {
       display: inline-block;
@@ -81,45 +93,51 @@ export class HeaderSection extends LitElement {
       border: none;
     }
     .url-display {
-      background: var(--md-sys-color-surface);
+      background: var(--md-sys-color-background);
       color: var(--md-sys-color-on-surface);
       padding: 12px;
-      border-radius: 8px;
-      font-family: 'Roboto Mono', monospace; /* Keep monospace for URL */
-      font-size: 12px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 14px;
       word-break: break-all;
       overflow: hidden;
       display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
-      line-height: 1.5;
-      max-height: 4.5em;
+      line-height: 1.4;
+      max-height: 4.2em;
       margin-bottom: 16px;
       border: 1px solid var(--md-sys-color-outline);
-      min-height: 4.5em;
+      min-height: 4.2em;
+      border-radius: 0; /* Ensure sharp corners */
     }
     .copy-button {
-      padding: 10px 24px;
+      padding: 12px 24px;
       background: var(--md-sys-color-primary);
       color: var(--md-sys-color-on-primary);
-      border: none;
-      border-radius: 20px;
+      border: 1px solid var(--md-sys-color-primary); /* Unified button style */
       cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      transition: background 0.2s, box-shadow 0.2s;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: 'Chakra Petch', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.2s;
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      clip-path: none; /* Removed clip-path for hard borders */
+      border-radius: 0; /* Ensure sharp corners */
     }
     .copy-button:hover {
-      background: var(--md-sys-color-primary); /* Darken slightly or add overlay */
-      box-shadow: var(--md-sys-elevation-1);
-      opacity: 0.9;
+      background: var(--md-sys-color-secondary); /* Blue hover */
+      color: var(--md-sys-color-on-secondary);
+      border-color: var(--md-sys-color-secondary);
+      box-shadow: 0 0 15px var(--md-sys-color-secondary);
     }
     .copy-button.copied {
-      background: var(--md-sys-color-tertiary);
-      color: var(--md-sys-color-on-tertiary);
+      background: var(--md-sys-color-secondary); /* Blue for copied state */
+      color: var(--md-sys-color-on-secondary);
+      border: 1px solid var(--md-sys-color-secondary); /* Unified button style */
     }
   `;
 

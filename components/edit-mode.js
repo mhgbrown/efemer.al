@@ -19,88 +19,105 @@ export class EditMode extends LitElement {
       background: var(--md-sys-color-surface);
       color: var(--md-sys-color-on-surface);
       padding: 24px;
-      border-radius: 16px;
-      box-shadow: var(--md-sys-elevation-1);
+      border: 1px solid var(--md-sys-color-outline);
+      box-shadow: none; /* Flat */
       min-height: 400px;
-      transition: box-shadow 0.3s ease;
+      position: relative;
     }
 
-    .edit-container:hover {
-        box-shadow: var(--md-sys-elevation-2);
+    .edit-container::before {
+      content: 'EDIT_MODE // WRITE_ACCESS';
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: var(--md-sys-color-outline);
+      letter-spacing: 2px;
     }
 
     .toolbar {
       display: flex;
       gap: 12px;
       margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--md-sys-color-outline);
       flex-wrap: wrap;
+      border-bottom: 1px solid var(--md-sys-color-outline);
+      padding-bottom: 16px;
     }
 
     .button {
-      padding: 10px 24px;
-      border: none;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      padding: 10px 20px;
+      border: 1px solid var(--md-sys-color-outline);
+      background: transparent;
+      color: var(--md-sys-color-on-surface);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s;
+      font-family: 'Chakra Petch', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
       gap: 8px;
+      clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    }
+
+    .button:hover {
+      background: var(--md-sys-color-secondary); /* Blue hover */
+      border-color: var(--md-sys-color-secondary);
+      color: var(--md-sys-color-on-secondary);
     }
 
     .button-primary {
       background: var(--md-sys-color-primary);
       color: var(--md-sys-color-on-primary);
+      border-color: var(--md-sys-color-primary);
     }
 
     .button-primary:hover {
-      opacity: 0.9;
-      box-shadow: var(--md-sys-elevation-1);
-    }
-
-    .button-secondary {
-      background: var(--md-sys-color-secondary-container);
-      color: var(--md-sys-color-on-secondary-container);
-    }
-
-    .button-secondary:hover {
-      opacity: 0.9;
-      box-shadow: var(--md-sys-elevation-1);
-    }
-
-    .button-success {
-      background: var(--md-sys-color-primary-container); /* Using primary container for save action to fit theme */
-      color: var(--md-sys-color-on-primary-container);
-    }
-
-    .button-success:hover {
-      opacity: 0.9;
-      box-shadow: var(--md-sys-elevation-1);
+      background: var(--md-sys-color-secondary); /* Blue hover */
+      color: var(--md-sys-color-on-secondary);
+      border-color: var(--md-sys-color-secondary);
+      box-shadow: 0 0 10px var(--md-sys-color-secondary);
     }
 
     .editor-area {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 24px;
       height: 600px;
+      min-height: 600px; /* Ensure minimum height */
     }
 
-    .editor-pane {
-      flex: 1;
+    .editor-pane,
+    .preview-pane {
       display: flex;
       flex-direction: column;
+      height: 100%;
+      min-width: 0; /* Prevent flex item overflow */
     }
 
     .pane-label {
-      font-weight: 500;
-      margin-bottom: 12px;
-      color: var(--md-sys-color-on-surface);
       font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--md-sys-color-secondary); /* Blue accent */
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-family: 'Chakra Petch', sans-serif;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pane-label::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--md-sys-color-secondary); /* Blue accent */
     }
 
     textarea {
@@ -108,63 +125,67 @@ export class EditMode extends LitElement {
       width: 100%;
       padding: 16px;
       border: 1px solid var(--md-sys-color-outline);
-      border-radius: 8px;
-      font-family: 'Roboto Mono', monospace;
-      font-size: 14px;
-      line-height: 1.6;
-      resize: vertical;
-      transition: border-color 0.2s;
+      font-family: 'Share Tech Mono', monospace;
       background-color: var(--md-sys-color-surface-variant);
       color: var(--md-sys-color-on-surface-variant);
+      resize: none;
+      font-size: 14px;
+      line-height: 1.5;
+      outline: none;
+      transition: border-color 0.2s;
+      box-sizing: border-box; /* Fix overflow */
+      height: 100%; /* Ensure full height */
     }
 
     textarea:focus {
-      outline: none;
-      border-color: var(--md-sys-color-primary);
-      border-width: 2px;
-      padding: 15px; /* Adjust for border width change */
+      border-color: var(--md-sys-color-secondary); /* Blue accent */
+      box-shadow: 0 0 0 1px var(--md-sys-color-secondary); /* Blue accent */
     }
 
-    .preview-pane {
+    .preview-content {
       flex: 1;
-      border: 1px solid var(--md-sys-color-outline);
-      border-radius: 8px;
       padding: 16px;
+      border: 1px solid var(--md-sys-color-outline);
       overflow-y: auto;
-      background: var(--md-sys-color-surface);
-      color: var(--md-sys-color-on-surface);
+      background: var(--md-sys-color-background);
     }
 
+    /* Reuse rendered content styles from view-mode */
     .rendered-content {
       line-height: 1.6;
       color: var(--md-sys-color-on-surface);
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Share Tech Mono', monospace;
     }
 
     .rendered-content h1 {
       font-size: 32px;
       margin: 24px 0 16px;
-      color: var(--md-sys-color-on-surface);
-      border-bottom: 1px solid var(--md-sys-color-outline);
+      color: var(--md-sys-color-primary);
+      border-bottom: 2px solid var(--md-sys-color-secondary); /* Blue accent */
       padding-bottom: 8px;
-      font-weight: 700;
-      font-family: 'Domine', serif;
+      font-weight: 600;
+      font-family: 'Chakra Petch', sans-serif;
+      text-transform: uppercase;
     }
 
     .rendered-content h2 {
       font-size: 26px;
       margin: 20px 0 12px;
       color: var(--md-sys-color-on-surface);
-      font-weight: 600;
-      font-family: 'Domine', serif;
+      font-weight: 500;
+      font-family: 'Chakra Petch', sans-serif;
+      text-transform: uppercase;
+      border-left: 4px solid var(--md-sys-color-secondary); /* Blue accent */
+      padding-left: 12px;
     }
 
     .rendered-content h3 {
       font-size: 22px;
       margin: 16px 0 10px;
       color: var(--md-sys-color-on-surface);
-      font-weight: 600;
-      font-family: 'Domine', serif;
+      font-weight: 500;
+      font-family: 'Chakra Petch', sans-serif;
+      text-transform: uppercase;
     }
 
     .rendered-content p {
@@ -173,18 +194,17 @@ export class EditMode extends LitElement {
 
     .rendered-content code {
       background: var(--md-sys-color-surface-variant);
-      color: var(--md-sys-color-on-surface-variant);
+      color: var(--md-sys-color-secondary); /* Blue accent */
       padding: 2px 6px;
-      border-radius: 4px;
-      font-family: 'Roboto Mono', monospace;
-      font-size: 13px;
+      border: 1px solid var(--md-sys-color-outline);
+      font-family: 'Share Tech Mono', monospace;
     }
 
     .rendered-content pre {
-      background: var(--md-sys-color-surface-variant);
-      color: var(--md-sys-color-on-surface-variant);
+      background: #000000;
+      color: var(--md-sys-color-secondary); /* Blue accent */
       padding: 16px;
-      border-radius: 8px;
+      border: 1px solid var(--md-sys-color-secondary); /* Blue accent */
       overflow-x: auto;
       margin: 16px 0;
     }
@@ -193,71 +213,57 @@ export class EditMode extends LitElement {
       background: none;
       padding: 0;
       color: inherit;
-    }
-
-    .rendered-content ul, .rendered-content ol {
-      margin: 16px 0;
-      padding-left: 32px;
-    }
-
-    .rendered-content li {
-      margin: 8px 0;
+      border: none;
     }
 
     .rendered-content blockquote {
-      border-left: 4px solid var(--md-sys-color-primary);
+      border-left: 4px solid var(--md-sys-color-secondary); /* Blue accent */
       padding-left: 16px;
       margin: 16px 0;
       color: var(--md-sys-color-on-surface-variant);
       font-style: italic;
+      background: var(--md-sys-color-surface-variant);
+      padding: 16px;
     }
 
     .rendered-content a {
-      color: var(--md-sys-color-primary);
+      color: var(--md-sys-color-secondary); /* Blue accent */
       text-decoration: none;
-      font-weight: 500;
-    }
-
-    .rendered-content a:hover {
-      text-decoration: underline;
+      border-bottom: 1px dashed var(--md-sys-color-secondary); /* Blue accent */
     }
 
     .rendered-content img {
       max-width: 100%;
       height: auto;
-      border-radius: 8px;
-      margin: 16px 0;
-      box-shadow: var(--md-sys-elevation-1);
+      border: 1px solid var(--md-sys-color-outline);
     }
 
     .help-text {
-      margin-top: 24px;
-      padding: 16px;
-      background: var(--md-sys-color-surface-variant);
+      font-size: 12px;
       color: var(--md-sys-color-on-surface-variant);
-      border-radius: 8px;
-      font-size: 14px;
-      line-height: 20px;
+      margin-top: 16px;
+      padding: 12px;
+      background: var(--md-sys-color-surface-variant);
+      border: 1px solid var(--md-sys-color-outline);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
     }
 
     .url-warning {
       font-weight: 500;
       padding: 4px 8px;
       border-radius: 4px;
-      margin-left: 12px;
-      font-size: 12px;
     }
 
     .warning-yellow {
       background: var(--md-sys-color-error-container);
       color: var(--md-sys-color-on-error-container);
-      border: none;
     }
 
     .warning-red {
       background: var(--md-sys-color-error);
       color: var(--md-sys-color-on-error);
-      border: none;
       animation: pulse 2s infinite;
     }
 
