@@ -8,7 +8,8 @@ export class EditMode extends LitElement {
   static properties = {
     content: { type: String },
     _previewMode: { type: Boolean },
-    _uploadingImage: { type: Boolean }
+    _uploadingImage: { type: Boolean },
+    siteId: { type: String }
   };
 
   static styles = css`
@@ -334,6 +335,52 @@ export class EditMode extends LitElement {
     this.content = '';
     this._previewMode = false;
     this._uploadingImage = false;
+    this.siteId = null;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this._initializeSiteId();
+    window.addEventListener('insert-link', this._handleInsertLink.bind(this));
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener('insert-link', this._handleInsertLink.bind(this));
+  }
+
+  _handleInsertLink(e) {
+    const { text } = e.detail;
+    if (!text) return;
+
+    const textarea = this.shadowRoot.querySelector('textarea');
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const currentText = textarea.value;
+
+    const newText = currentText.substring(0, start) + text + currentText.substring(end);
+
+    this.content = newText;
+    textarea.value = newText;
+
+    // Move cursor to end of inserted text
+    const newCursorPos = start + text.length;
+    textarea.setSelectionRange(newCursorPos, newCursorPos);
+    textarea.focus();
+
+    this._updateURL();
+    this._debouncedSave();
+  }
+
+  _initializeSiteId() {
+    // Try to find existing site by URL
+    const currentUrl = window.location.href;
+    const existingSite = RecentSitesManager.findSiteByUrl(currentUrl);
+    if (existingSite) {
+      this.siteId = existingSite.id;
+    }
   }
 
   _handleInput(e) {
@@ -351,10 +398,14 @@ export class EditMode extends LitElement {
 
   async _saveToRecent() {
     const encoded = await encodeContent(this.content);
-    RecentSitesManager.saveSite(
+    const newId = RecentSitesManager.saveSite(
       `${window.location.origin}/#${encodeURIComponent(encoded)}`,
-      this.content
+      this.content,
+      this.siteId
     );
+    if (newId) {
+      this.siteId = newId;
+    }
   }
 
   async _updateURL() {
@@ -372,10 +423,14 @@ export class EditMode extends LitElement {
     const encoded = await encodeContent(this.content);
 
     // Save to recent sites
-    RecentSitesManager.saveSite(
+    const newId = RecentSitesManager.saveSite(
       `${window.location.origin}/#${encodeURIComponent(encoded)}`,
-      this.content
+      this.content,
+      this.siteId
     );
+    if (newId) {
+      this.siteId = newId;
+    }
 
     this.dispatchEvent(new CustomEvent('navigate', {
       detail: { path: encodeURIComponent(encoded) },

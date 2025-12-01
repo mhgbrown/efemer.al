@@ -4,7 +4,8 @@ import { RecentSitesManager } from '../recent-sites-manager.js';
 export class RecentSitesDrawer extends LitElement {
   static properties = {
     isOpen: { type: Boolean },
-    sites: { type: Array }
+    sites: { type: Array },
+    searchQuery: { type: String }
   };
 
   static styles = css`
@@ -22,18 +23,26 @@ export class RecentSitesDrawer extends LitElement {
       padding: 16px;
       border-bottom: 1px solid var(--md-sys-color-outline);
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
+      gap: 12px;
       background: var(--md-sys-color-surface-variant);
     }
 
-    .drawer-header {
-      padding: 16px;
-      border-bottom: 1px solid var(--md-sys-color-outline);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: var(--md-sys-color-surface-variant);
+    .search-input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid var(--md-sys-color-outline);
+      background: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
+      font-family: inherit;
+      font-size: 14px;
+      box-sizing: border-box;
+      border-radius: 0;
+    }
+
+    .search-input:focus {
+      outline: 1px solid var(--md-sys-color-primary);
+      border-color: var(--md-sys-color-primary);
     }
 
     .drawer-title {
@@ -81,21 +90,46 @@ export class RecentSitesDrawer extends LitElement {
       color: var(--md-sys-color-on-surface-variant);
     }
 
-    .delete-site {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      background: none;
-      border: none;
-      color: var(--md-sys-color-error);
-      cursor: pointer;
-      opacity: 0;
-      transition: opacity 0.2s;
-      padding: 4px;
+    .site-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
     }
 
-    .site-item:hover .delete-site {
-      opacity: 1;
+    .action-button {
+      background: transparent;
+      border: 1px solid var(--md-sys-color-outline);
+      color: var(--md-sys-color-primary);
+      cursor: pointer;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 0;
+      font-family: inherit;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .action-button:hover {
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+    }
+
+    .delete-site {
+      background: transparent;
+      border: 1px solid var(--md-sys-color-error);
+      color: var(--md-sys-color-error);
+      cursor: pointer;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 0;
+      font-family: inherit;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .delete-site:hover {
+      background: var(--md-sys-color-error);
+      color: var(--md-sys-color-on-error);
     }
 
     .drawer-footer {
@@ -133,6 +167,7 @@ export class RecentSitesDrawer extends LitElement {
     super();
     this.isOpen = false;
     this.sites = [];
+    this.searchQuery = '';
     this._handleSitesUpdated = this._handleSitesUpdated.bind(this);
   }
 
@@ -155,9 +190,40 @@ export class RecentSitesDrawer extends LitElement {
     return new Date(timestamp).toLocaleString();
   }
 
+  _handleSearch(e) {
+    this.searchQuery = e.target.value.toLowerCase();
+  }
+
+  get _filteredSites() {
+    if (!this.searchQuery) return this.sites;
+    return this.sites.filter(site =>
+      site.title.toLowerCase().includes(this.searchQuery)
+    );
+  }
+
   _navigateToSite(url) {
     window.location.hash = url.split('#')[1] || '';
-    this.dispatchEvent(new CustomEvent('close-drawer'));
+  }
+
+  async _copyUrl(e, url) {
+    e.stopPropagation();
+    try {
+      await navigator.clipboard.writeText(url);
+      // Optional: Show a brief "Copied!" feedback if needed,
+      // but keeping it minimal for now.
+    } catch (err) {
+      console.error('Failed to copy URL:', err);
+    }
+  }
+
+  _insertLink(e, site) {
+    e.stopPropagation();
+    const linkText = `[${site.title}](${site.url})`;
+    window.dispatchEvent(new CustomEvent('insert-link', {
+      detail: { text: linkText },
+      bubbles: true,
+      composed: true
+    }));
   }
 
   _deleteSite(e, timestamp) {
@@ -178,19 +244,32 @@ export class RecentSitesDrawer extends LitElement {
   }
 
   render() {
+    const sites = this._filteredSites;
+
     return html`
       <div class="drawer-header">
         <span class="drawer-title">Recent Sites</span>
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Filter sites..."
+          .value=${this.searchQuery}
+          @input=${this._handleSearch}
+        >
       </div>
 
       <ul class="sites-list">
-        ${this.sites.length === 0
-        ? html`<div class="empty-state">No recent sites found</div>`
-        : this.sites.map(site => html`
+        ${sites.length === 0
+        ? html`<div class="empty-state">No sites found</div>`
+        : sites.map(site => html`
               <li class="site-item" @click=${() => this._navigateToSite(site.url)}>
                 <div class="site-title" title=${site.title}>${site.title}</div>
                 <div class="site-meta">${this._formatDate(site.timestamp)}</div>
-                <button class="delete-site" @click=${(e) => this._deleteSite(e, site.timestamp)} title="Remove from history">🗑️</button>
+                <div class="site-actions">
+                  <button class="action-button" @click=${(e) => this._copyUrl(e, site.url)}>Copy</button>
+                  <button class="action-button" @click=${(e) => this._insertLink(e, site)}>Insert</button>
+                  <button class="delete-site" @click=${(e) => this._deleteSite(e, site.timestamp)}>Delete</button>
+                </div>
               </li>
             `)
       }

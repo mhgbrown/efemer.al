@@ -12,7 +12,7 @@ export class RecentSitesManager {
     }
   }
 
-  static saveSite(url, content) {
+  static saveSite(url, content, id = null) {
     try {
       const sites = this.getSites();
       const timestamp = Date.now();
@@ -32,30 +32,67 @@ export class RecentSitesManager {
         title = title.substring(0, 50) || 'Untitled Site';
       }
 
-      const newSite = {
-        url,
-        title,
-        timestamp,
-        preview: content ? content.substring(0, 100) : ''
-      };
+      let siteId = id;
+      let existingSiteIndex = -1;
 
-      // Remove duplicates (by URL)
-      const filteredSites = sites.filter(site => site.url !== url);
+      if (siteId) {
+        existingSiteIndex = sites.findIndex(site => site.id === siteId);
+      } else {
+        // Fallback: try to find by URL if no ID provided (legacy support)
+        existingSiteIndex = sites.findIndex(site => site.url === url);
+      }
 
-      // Add new site to top
-      filteredSites.unshift(newSite);
+      if (existingSiteIndex !== -1) {
+        // Update existing site
+        const existingSite = sites[existingSiteIndex];
+        siteId = existingSite.id || crypto.randomUUID(); // Ensure ID exists
+
+        sites[existingSiteIndex] = {
+          ...existingSite,
+          url,
+          title,
+          timestamp,
+          preview: content ? content.substring(0, 100) : '',
+          id: siteId
+        };
+
+        // Move to top
+        const updatedSite = sites.splice(existingSiteIndex, 1)[0];
+        sites.unshift(updatedSite);
+      } else {
+        // Create new site
+        siteId = siteId || crypto.randomUUID();
+        const newSite = {
+          id: siteId,
+          url,
+          title,
+          timestamp,
+          preview: content ? content.substring(0, 100) : ''
+        };
+        sites.unshift(newSite);
+      }
 
       // Limit to MAX_SITES
-      const trimmedSites = filteredSites.slice(0, this.MAX_SITES);
+      const trimmedSites = sites.slice(0, this.MAX_SITES);
 
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(trimmedSites));
 
       // Dispatch event for UI updates
       window.dispatchEvent(new CustomEvent('recent-sites-updated'));
 
-      return newSite;
+      return siteId;
     } catch (e) {
       console.error('Failed to save recent site:', e);
+      return null;
+    }
+  }
+
+  static findSiteByUrl(url) {
+    try {
+      const sites = this.getSites();
+      return sites.find(site => site.url === url);
+    } catch (e) {
+      return null;
     }
   }
 
