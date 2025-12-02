@@ -20,7 +20,7 @@ export class EditMode extends LitElement {
     .edit-container {
       background: var(--md-sys-color-surface);
       color: var(--md-sys-color-on-surface);
-      padding: 24px 0;
+      padding: 24px;
       box-shadow: none; /* Flat */
       min-height: 400px;
       position: relative;

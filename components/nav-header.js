@@ -6,14 +6,14 @@ export class NavHeader extends LitElement {
   static styles = css`
     :host {
       display: block;
-      margin-bottom: 24px;
+      margin-bottom: 0;
     }
 
     .nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 24px 0;
+      padding: 24px;
       border-bottom: 1px solid var(--md-sys-color-outline);
     }
 
@@ -77,11 +77,14 @@ export class NavHeader extends LitElement {
   render() {
     return html`
       <nav class="nav">
-        <a href="#" class="brand">ephemer.al</a>
-        <div class="actions">
+        <div style="display: flex; align-items: center; gap: 24px;">
+          <a href="#" class="brand">ephemer.al</a>
           <button class="create-button" @click=${this._handleCreateNew}>
             Create New Site
           </button>
+        </div>
+        <div class="actions">
+          <!-- Future actions can go here -->
         </div>
       </nav>
     `;

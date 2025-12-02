@@ -25,7 +25,7 @@ export class AppRoot extends LitElement {
     .main-content {
       flex: 1;
       width: 100%;
-      max-width: 1200px;
+      width: 100%;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
@@ -184,7 +184,7 @@ export class AppRoot extends LitElement {
       }
           </div>
 
-          ${this.mode === 'edit' || (this.mode === 'view' && !this.content)
+          ${this.mode === 'edit'
         ? html`<recent-sites-drawer></recent-sites-drawer>`
         : ''
       }
