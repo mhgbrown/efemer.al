@@ -8,5 +8,6 @@
       fill: blue;
     }
   </style>
+  <rect width="64" height="64" fill="white"/>
   <text x="50%" y="55%" text-anchor="middle" dominant-baseline="middle">al</text>
 </svg>
