@@ -17,19 +17,40 @@ export class RecentSitesManager {
       const sites = this.getSites();
       const timestamp = Date.now();
 
-      // Extract title: Priority to first H1, fallback to first non-empty line
+      // Extract title and preview
       let title = 'Untitled Site';
-      if (content) {
-        const lines = content.trim().split('\n');
-        const h1Line = lines.find(line => line.trim().startsWith('# '));
+      let preview = '';
 
-        if (h1Line) {
-          title = h1Line.replace(/^#+\s*/, '').trim();
-        } else if (lines.length > 0) {
-          title = lines[0].replace(/^#+\s*/, '').trim();
+      if (content) {
+        const lines = content.split('\n');
+        let titleLineIndex = -1;
+
+        // Find H1
+        const h1Index = lines.findIndex(line => line.trim().startsWith('# '));
+
+        if (h1Index !== -1) {
+          title = lines[h1Index].replace(/^#+\s*/, '').trim();
+          titleLineIndex = h1Index;
+        } else {
+          // Fallback to first non-empty line
+          const firstNonEmptyIndex = lines.findIndex(line => line.trim().length > 0);
+          if (firstNonEmptyIndex !== -1) {
+            title = lines[firstNonEmptyIndex].replace(/^#+\s*/, '').trim();
+            titleLineIndex = firstNonEmptyIndex;
+          }
         }
 
         title = title.substring(0, 50) || 'Untitled Site';
+
+        // Find preview (next non-empty line after title)
+        if (titleLineIndex !== -1) {
+          for (let i = titleLineIndex + 1; i < lines.length; i++) {
+            if (lines[i].trim().length > 0) {
+              preview = lines[i].trim().substring(0, 100);
+              break;
+            }
+          }
+        }
       }
 
       let siteId = id;
@@ -52,7 +73,7 @@ export class RecentSitesManager {
           url,
           title,
           timestamp,
-          preview: content ? content.substring(0, 100) : '',
+          preview: preview,
           id: siteId
         };
 
@@ -67,7 +88,7 @@ export class RecentSitesManager {
           url,
           title,
           timestamp,
-          preview: content ? content.substring(0, 100) : ''
+          preview: preview
         };
         sites.unshift(newSite);
       }

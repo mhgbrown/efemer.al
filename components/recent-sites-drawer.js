@@ -85,6 +85,16 @@ export class RecentSitesDrawer extends LitElement {
       padding-right: 24px;
     }
 
+    .site-preview {
+      font-size: 13px;
+      color: var(--md-sys-color-on-surface-variant);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      opacity: 0.8;
+    }
+
     .site-meta {
       font-size: 12px;
       color: var(--md-sys-color-on-surface-variant);
@@ -264,6 +274,7 @@ export class RecentSitesDrawer extends LitElement {
         : sites.map(site => html`
               <li class="site-item" @click=${() => this._navigateToSite(site.url)}>
                 <div class="site-title" title=${site.title}>${site.title}</div>
+                ${site.preview ? html`<div class="site-preview">${site.preview}</div>` : ''}
                 <div class="site-meta">${this._formatDate(site.timestamp)}</div>
                 <div class="site-actions">
                   <button class="action-button" @click=${(e) => this._copyUrl(e, site.url)}>Copy</button>
