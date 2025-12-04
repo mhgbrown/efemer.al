@@ -15,318 +15,138 @@ export class EditMode extends LitElement {
   static styles = css`
     :host {
       display: block;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
     }
 
     .edit-container {
       background: var(--md-sys-color-surface);
       color: var(--md-sys-color-on-surface);
-      padding: 24px;
-      box-shadow: none; /* Flat */
-      min-height: 400px;
-      position: relative;
-    }
-
-    .edit-container::before {
-      content: none;
+      padding: 0;
+      box-shadow: none;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
     }
 
     .toolbar {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
+      padding: 12px 24px;
       border-bottom: 1px solid var(--md-sys-color-outline);
-      padding-bottom: 16px;
-    }
-
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 8px 16px;
-      background: transparent;
-      color: var(--md-sys-color-primary);
-      text-decoration: none;
-      border: 1px solid var(--md-sys-color-primary);
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 14px;
-      font-family: inherit;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      border-radius: 0;
-      transition: all 0.2s;
-      gap: 8px;
-    }
-
-    .button:hover {
-      background: var(--md-sys-color-primary);
-      color: var(--md-sys-color-on-primary);
-    }
-
-    .button-primary {
-      /* Same style, just specific class for targeting if needed */
-    }
-
-    .button-primary:hover {
-      /* Same hover style */
+      margin-bottom: 0;
+      background: var(--md-sys-color-surface);
+      flex-shrink: 0;
     }
 
     .editor-area {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
       display: flex;
-      gap: 16px;
-      height: 600px;
-      min-height: 600px; /* Ensure minimum height */
+      flex: 1;
+      min-height: 0; /* Important for nested scrolling */
     }
 
     .editor-pane,
     .preview-pane {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      background: var(--md-sys-color-surface);
-      min-width: 0; /* Prevent flex item overflow */
-      flex: 1;
-      overflow-y: auto;
+      min-width: 0;
+      height: 100%;
+      overflow: hidden;
     }
 
-    .pane-header {
-      padding: 8px 16px;
-      background: var(--md-sys-color-surface-variant);
-      font-weight: bold;
-      font-size: 14px;
-      color: var(--md-sys-color-on-surface);
-      font-family: inherit;
+    .editor-pane {
+      border-right: 1px solid var(--md-sys-color-outline);
     }
 
     .pane-label {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      font-family: inherit;
-      text-transform: none;
-      letter-spacing: normal;
-      color: inherit;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .pane-label::before {
-      content: '';
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      background: var(--md-sys-color-secondary); /* Blue accent */
+      display: none; /* Hide labels for cleaner look */
     }
 
     textarea {
       flex: 1;
       width: 100%;
-      padding: 16px;
+      padding: 24px;
       border: none;
       font-family: monospace;
       background-color: var(--md-sys-color-surface);
       color: var(--md-sys-color-on-surface);
       resize: none;
       font-size: 14px;
-      line-height: 1.5;
+      line-height: 1.6;
       outline: none;
-      transition: border-color 0.2s;
-      box-sizing: border-box; /* Fix overflow */
-      height: 100%; /* Ensure full height */
-    }
-
-    textarea:focus {
-      border-color: var(--md-sys-color-secondary); /* Blue accent */
-      box-shadow: 0 0 0 1px var(--md-sys-color-secondary); /* Blue accent */
+      box-sizing: border-box;
+      height: 100%;
+      overflow-y: auto;
     }
 
     .preview-content {
       flex: 1;
-      padding: 16px;
-      border: 1px solid var(--md-sys-color-outline);
+      padding: 0;
+      border: none;
       overflow-y: auto;
-      background: var(--md-sys-color-background);
+      background: var(--md-sys-color-surface);
     }
 
-    /* Reuse rendered content styles from view-mode */
     .rendered-content {
-      line-height: 1.6;
-      color: var(--md-sys-color-on-surface);
-      font-family: inherit;
       padding: 24px;
-      flex: 1;
+      max-width: 800px;
+      margin: 0 auto;
     }
 
-    .rendered-content h1 {
-      font-size: 2em;
-      margin: 0.67em 0;
-      color: var(--md-sys-color-on-surface);
-      border-bottom: 1px solid var(--md-sys-color-outline);
-      padding-bottom: 0.3em;
-      font-weight: bold;
-      font-family: inherit;
-      text-transform: none;
-    }
-
-    .rendered-content h2 {
-      font-size: 1.5em;
-      margin: 0.75em 0;
-      color: var(--md-sys-color-on-surface);
-      font-weight: bold;
-      font-family: inherit;
-      text-transform: none;
-      border-bottom: 1px solid var(--md-sys-color-outline);
-      padding-bottom: 0.3em;
-    }
-
-    .rendered-content h3 {
-      font-size: 1.17em;
-      margin: 0.83em 0;
-      color: var(--md-sys-color-on-surface);
-      font-weight: bold;
-      font-family: inherit;
-      text-transform: none;
-    }
-
-    .rendered-content p {
-      margin-bottom: 16px;
-    }
-
-    .rendered-content code {
+    .footer-bar {
+      height: 40px;
       background: var(--md-sys-color-surface-variant);
-      color: var(--md-sys-color-secondary); /* Blue accent */
-      padding: 2px 6px;
-      border: 1px solid var(--md-sys-color-outline);
+      border-top: 1px solid var(--md-sys-color-outline);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      font-size: 12px;
+      color: var(--md-sys-color-on-surface-variant);
+      flex-shrink: 0; /* Prevent shrinking */
+      /* Removed fixed positioning */
+    }
+
+    .url-display {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      overflow: hidden;
+      flex: 1;
+      margin-right: 24px;
+    }
+
+    .url-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       font-family: monospace;
     }
 
-    .rendered-content pre {
-      background: #000000;
-      color: var(--md-sys-color-secondary); /* Blue accent */
-      padding: 16px;
-      border: 1px solid var(--md-sys-color-secondary); /* Blue accent */
-      overflow-x: auto;
-      margin: 16px 0;
-    }
-
-    .rendered-content pre code {
-      background: none;
-      padding: 0;
-      color: inherit;
-      border: none;
-    }
-
-    .rendered-content blockquote {
-      border-left: 4px solid var(--md-sys-color-outline);
-      padding-left: 16px;
-      margin: 16px 0;
-      color: var(--md-sys-color-on-surface-variant);
-      font-style: italic;
-      background: var(--md-sys-color-surface-variant);
-      padding: 16px;
-    }
-
-    .rendered-content a {
-      color: blue;
-      text-decoration: underline;
-    }
-
-    :host-context(html[data-theme='dark']) .rendered-content a {
-        color: #4da6ff;
-    }
-
-    .rendered-content img {
-      max-width: 100%;
-      height: auto;
+    .copy-button {
+      background: transparent;
       border: 1px solid var(--md-sys-color-outline);
-    }
-
-    .help-text {
-      font-size: 12px;
-      color: var(--md-sys-color-on-surface-variant);
-      margin-bottom: 16px;
-      padding: 12px;
-      background: var(--md-sys-color-surface-variant);
-      border: 1px solid var(--md-sys-color-outline);
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-    }
-
-    .url-warning {
-      font-weight: 500;
-      padding: 4px 8px;
-    }
-
-    .warning-yellow {
-      background: var(--md-sys-color-error-container);
-      color: var(--md-sys-color-on-error-container);
-    }
-
-    .warning-red {
-      background: var(--md-sys-color-error);
-      color: var(--md-sys-color-on-error);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% {
-        opacity: 1;
-      }
-      50% {
-        opacity: 0.7;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .editor-area {
-        flex-direction: column;
-        height: auto;
-      }
-
-      .editor-pane,
-      .preview-pane {
-        height: 400px;
-      }
-
-      .toolbar {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .button {
-        width: 100%;
-      }
-    }
-
-    .save-button {
-      position: fixed;
-      bottom: 32px;
-      right: 32px;
-      width: 56px;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--md-sys-color-primary-container);
-      color: var(--md-sys-color-on-primary-container);
-      text-decoration: none;
-      box-shadow: var(--md-sys-elevation-3);
-      transition: all 0.2s;
+      color: var(--md-sys-color-primary);
       cursor: pointer;
-      border: 1px solid var(--md-sys-color-outline);
-      font-size: 24px;
-      font-family: inherit;
-      box-sizing: border-box;
-      z-index: 100;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: bold;
+      text-transform: uppercase;
     }
 
-    .save-button:hover {
-      background: var(--md-sys-color-primary-container);
-      box-shadow: var(--md-sys-elevation-4);
+    .copy-button:hover {
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+    }
+
+    .stats {
+      white-space: nowrap;
+    }
+
+    /* Adjust for when drawer is present */
+    :host-context(app-root) .footer-bar {
+      /* This might need adjustment based on drawer width */
     }
   `;
 
@@ -636,15 +456,9 @@ export class EditMode extends LitElement {
           />
         </div>
 
-        <div class="help-text">
-          💡 <strong>Tip:</strong> Your content is automatically encoded into the URL as you type.
-          Images are automatically compressed and optimized (max 1200px, WebP/JPEG format) to minimize URL length.
-          Share the URL to share your site! Click "Save & View" to see the final result.
-        </div>
-
         ${this._previewMode
         ? html`
-              <div class="preview-pane" style="height: 500px;">
+              <div class="preview-pane">
                 <div class="rendered-content">
                   ${unsafeHTML(this._getRenderedContent())}
                 </div>
@@ -686,10 +500,30 @@ Your content is automatically saved to the URL!"
             `
       }
       </div>
-      <button class="save-button" @click=${this._handleSave} title="Save & View">
-        💾
-      </button>
+
+
     `;
+  }
+
+  _getShareableUrl() {
+    let url = window.location.href;
+    if (url.includes('/edit')) {
+      url = url.replace(/\/edit$/, '');
+    }
+    return url;
+  }
+
+  _getByteCount() {
+    return new Blob([this._getShareableUrl()]).size;
+  }
+
+  async _copyUrl() {
+    try {
+      await navigator.clipboard.writeText(this._getShareableUrl());
+      // Could add a toast here
+    } catch (err) {
+      console.error('Failed to copy URL:', err);
+    }
   }
 }
 

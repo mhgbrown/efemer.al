@@ -10,12 +10,10 @@ export class HeaderSection extends LitElement {
     .header {
       background: var(--md-sys-color-surface);
       color: var(--md-sys-color-on-surface);
-      padding: 24px 0;
-      margin-bottom: 24px;
+      padding: 24px;
+      margin: 0;
       border-radius: 0;
-    }
-      margin-bottom: 24px;
-      border-radius: 0;
+      border-top: 1px solid var(--md-sys-color-outline);
     }
     .url-container {
       display: flex;

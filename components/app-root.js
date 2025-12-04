@@ -17,25 +17,28 @@ export class AppRoot extends LitElement {
 
   static styles = css`
     :host {
-      display: block;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
       color: var(--md-sys-color-on-background);
       background-color: var(--md-sys-color-background);
+      overflow: hidden;
     }
 
     .main-content {
       flex: 1;
       width: 100%;
-      width: 100%;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
       position: relative;
+      min-height: 0; /* Important for nested flex scrolling */
     }
 
     .content-wrapper {
       display: flex;
       flex: 1;
-      gap: 24px;
+      gap: 0; /* Remove gap as drawer has border */
       min-height: 0; /* Important for nested scrolling */
     }
 
@@ -167,15 +170,19 @@ export class AppRoot extends LitElement {
     return html`
       <div class="main-content">
         ${this.mode === 'edit' || (this.mode === 'view' && !this.content)
-        ? html`<nav-header></nav-header>`
+        ? html`<nav-header .theme=${this.theme} @theme-change=${this._handleThemeChange}></nav-header>`
         : ''
       }
 
         <div class="content-wrapper">
+          ${this.mode === 'edit'
+        ? html`<recent-sites-drawer></recent-sites-drawer>`
+        : ''
+      }
+
           <div class="primary-column">
             ${this.mode === 'edit'
         ? html`
-                  <header-section .url=${this.url} .byteCount=${this._getByteCount()}></header-section>
                   <edit-mode .content=${this.content} @content-change=${this._handleContentChange}></edit-mode>
                 `
         : html`
@@ -183,17 +190,12 @@ export class AppRoot extends LitElement {
                 `
       }
           </div>
-
-          ${this.mode === 'edit'
-        ? html`<recent-sites-drawer></recent-sites-drawer>`
+        </div>
+        ${this.mode === 'edit'
+        ? html`<header-section .url=${this.url} .byteCount=${this._getByteCount()}></header-section>`
         : ''
       }
-        </div>
       </div>
-      <theme-switcher
-        .theme=${this.theme}
-        @theme-change=${this._handleThemeChange}
-      ></theme-switcher>
     `;
   }
 }

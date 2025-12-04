@@ -1,8 +1,13 @@
 import { LitElement, html, css } from 'lit';
 import { encodeContent } from '../url-utils.js';
 import { RecentSitesManager } from '../recent-sites-manager.js';
+import './theme-switcher.js';
 
 export class NavHeader extends LitElement {
+  static properties = {
+    theme: { type: String }
+  };
+
   static styles = css`
     :host {
       display: block;
@@ -84,7 +89,7 @@ export class NavHeader extends LitElement {
           </button>
         </div>
         <div class="actions">
-          <!-- Future actions can go here -->
+          <theme-switcher .theme=${this.theme}></theme-switcher>
         </div>
       </nav>
     `;

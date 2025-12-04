@@ -7,10 +7,6 @@ export class ThemeSwitcher extends LitElement {
 
   static styles = css`
     .theme-switcher {
-      position: fixed;
-      bottom: 32px;
-      right: 112px;
-      z-index: 100;
       display: flex;
       gap: 8px;
     }

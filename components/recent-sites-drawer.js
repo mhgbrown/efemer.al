@@ -3,7 +3,7 @@ import { RecentSitesManager } from '../recent-sites-manager.js';
 
 export class RecentSitesDrawer extends LitElement {
   static properties = {
-    isOpen: { type: Boolean },
+    collapsed: { type: Boolean, reflect: true },
     sites: { type: Array },
     searchQuery: { type: String }
   };
@@ -13,10 +13,45 @@ export class RecentSitesDrawer extends LitElement {
       display: block;
       width: 250px;
       background: var(--md-sys-color-surface);
-      border-left: 1px solid var(--md-sys-color-outline);
+      border-right: 1px solid var(--md-sys-color-outline);
       display: flex;
       flex-direction: column;
       height: 100%;
+      transition: width 0.2s ease-in-out;
+      position: relative;
+    }
+
+    :host([collapsed]) {
+      width: 48px;
+    }
+
+    :host([collapsed]) .drawer-header,
+    :host([collapsed]) .sites-list,
+    :host([collapsed]) .drawer-footer {
+      display: none;
+    }
+
+    .toggle-button {
+      position: absolute;
+      top: 12px;
+      right: -12px;
+      width: 24px;
+      height: 24px;
+      background: var(--md-sys-color-surface);
+      border: 1px solid var(--md-sys-color-outline);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      font-size: 12px;
+      color: var(--md-sys-color-on-surface);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .toggle-button:hover {
+      background: var(--md-sys-color-surface-variant);
     }
 
     .drawer-header {
@@ -171,11 +206,26 @@ export class RecentSitesDrawer extends LitElement {
       color: var(--md-sys-color-on-surface-variant);
       font-style: italic;
     }
+
+    /* Collapsed state icon */
+    .collapsed-icon {
+      display: none;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--md-sys-color-on-surface-variant);
+    }
+
+    :host([collapsed]) .collapsed-icon {
+      display: flex;
+    }
   `;
 
   constructor() {
     super();
-    this.isOpen = false;
+    this.collapsed = false;
     this.sites = [];
     this.searchQuery = '';
     this._handleSitesUpdated = this._handleSitesUpdated.bind(this);
@@ -219,8 +269,6 @@ export class RecentSitesDrawer extends LitElement {
     e.stopPropagation();
     try {
       await navigator.clipboard.writeText(url);
-      // Optional: Show a brief "Copied!" feedback if needed,
-      // but keeping it minimal for now.
     } catch (err) {
       console.error('Failed to copy URL:', err);
     }
@@ -249,14 +297,22 @@ export class RecentSitesDrawer extends LitElement {
     }
   }
 
-  _close() {
-    this.dispatchEvent(new CustomEvent('close-drawer'));
+  _toggleCollapse() {
+    this.collapsed = !this.collapsed;
   }
 
   render() {
     const sites = this._filteredSites;
 
     return html`
+      <button class="toggle-button" @click=${this._toggleCollapse} title=${this.collapsed ? "Expand" : "Collapse"}>
+        ${this.collapsed ? '›' : '‹'}
+      </button>
+
+      <div class="collapsed-icon" @click=${this._toggleCollapse} title="Expand Recent Sites">
+        🕒
+      </div>
+
       <div class="drawer-header">
         <span class="drawer-title">Recent Sites</span>
         <input
