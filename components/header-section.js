@@ -86,6 +86,7 @@ export class HeaderSection extends LitElement {
       height: 28px;
       display: flex;
       align-items: center;
+      transition: all 0.2s;
     }
     .edit-button:hover {
       background: var(--md-sys-color-primary);

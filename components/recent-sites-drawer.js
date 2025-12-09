@@ -49,7 +49,7 @@ export class RecentSitesDrawer extends LitElement {
       font-size: 12px;
       color: var(--md-sys-color-on-surface);
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      transition: background 0.2s;
+      transition: all 0.2s;
     }
 
     .toggle-button:hover {
@@ -154,6 +154,7 @@ export class RecentSitesDrawer extends LitElement {
       font-family: inherit;
       text-transform: uppercase;
       font-weight: 600;
+      transition: all 0.2s;
     }
 
     .action-button:hover {
@@ -172,6 +173,7 @@ export class RecentSitesDrawer extends LitElement {
       font-family: inherit;
       text-transform: uppercase;
       font-weight: 600;
+      transition: all 0.2s;
     }
 
     .delete-site:hover {
@@ -205,6 +207,7 @@ export class RecentSitesDrawer extends LitElement {
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: all 0.2s;
     }
 
     .clear-button:hover {
