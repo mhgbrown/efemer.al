@@ -191,10 +191,6 @@ export class AppRoot extends LitElement {
       }
           </div>
         </div>
-        ${this.mode === 'edit'
-        ? html`<header-section .url=${this.url} .byteCount=${this._getByteCount()}></header-section>`
-        : ''
-      }
       </div>
     `;
   }

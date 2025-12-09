@@ -3,6 +3,7 @@ import { marked } from 'marked';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { encodeContent, updateURL } from '../url-utils.js';
 import { RecentSitesManager } from '../recent-sites-manager.js';
+import './header-section.js';
 
 export class EditMode extends LitElement {
   static properties = {
@@ -102,62 +103,10 @@ export class EditMode extends LitElement {
       display: none; /* Deprecated in favor of iframe */
     }
 
-    .footer-bar {
-      height: 40px;
-      background: var(--md-sys-color-surface-variant);
-      border-top: 1px solid var(--md-sys-color-outline);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 24px;
-      font-size: 12px;
-      color: var(--md-sys-color-on-surface-variant);
-      flex-shrink: 0; /* Prevent shrinking */
-      /* Removed fixed positioning */
-    }
-
-    .url-display {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      overflow: hidden;
-      flex: 1;
-      margin-right: 24px;
-    }
-
-    .url-text {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-family: monospace;
-    }
-
-    .copy-button {
-      background: transparent;
-      border: 1px solid var(--md-sys-color-outline);
-      color: var(--md-sys-color-primary);
-      cursor: pointer;
-      font-size: 10px;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-
-    .copy-button:hover {
-      background: var(--md-sys-color-primary);
-      color: var(--md-sys-color-on-primary);
-    }
-
-    .stats {
-      white-space: nowrap;
-    }
-
-    /* Adjust for when drawer is present */
-    :host-context(app-root) .footer-bar {
-      /* This might need adjustment based on drawer width */
-    }
+    /* Fixed positioning removed */
   `;
+
+
 
   constructor() {
     super();
@@ -519,7 +468,13 @@ Your content is automatically saved to the URL!"
                   <div class="pane-label">Live Preview</div>
                   <div class="preview-pane">
                      ${this._previewSrc
-            ? html`<iframe class="preview-frame" src=${this._previewSrc} title="Live Preview"></iframe>`
+            ? html`
+                            <header-section
+                              .url=${this._previewSrc}
+                              .byteCount=${new Blob([this._previewSrc]).size}>
+                            </header-section>
+                            <iframe class="preview-frame" src=${this._previewSrc} title="Live Preview"></iframe>
+                          `
             : ''
           }
                   </div>
@@ -533,26 +488,7 @@ Your content is automatically saved to the URL!"
     `;
   }
 
-  _getShareableUrl() {
-    let url = window.location.href;
-    if (url.includes('/edit')) {
-      url = url.replace(/\/edit$/, '');
-    }
-    return url;
-  }
 
-  _getByteCount() {
-    return new Blob([this._getShareableUrl()]).size;
-  }
-
-  async _copyUrl() {
-    try {
-      await navigator.clipboard.writeText(this._getShareableUrl());
-      // Could add a toast here
-    } catch (err) {
-      console.error('Failed to copy URL:', err);
-    }
-  }
 }
 
 customElements.define('edit-mode', EditMode);
