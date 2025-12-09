@@ -186,7 +186,7 @@ export class AppRoot extends LitElement {
                   <edit-mode .content=${this.content} @content-change=${this._handleContentChange}></edit-mode>
                 `
         : html`
-                  <view-mode .content=${this.content}></view-mode>
+                  <view-mode .content=${this.content} .theme=${this.theme}></view-mode>
                 `
       }
           </div>

@@ -8,7 +8,8 @@ import { RecentSitesManager } from '../recent-sites-manager.js';
 export class ViewMode extends LitElement {
   static properties = {
     content: { type: String },
-    sites: { type: Array }
+    sites: { type: Array },
+    theme: { type: String, reflect: true }
   };
 
   static styles = [

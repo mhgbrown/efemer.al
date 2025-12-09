@@ -1,21 +1,6 @@
 import { css } from 'lit';
 
-export const githubMarkdownStyles = css`
-.markdown-body {
-  --base-size-4: 0.25rem;
-  --base-size-8: 0.5rem;
-  --base-size-16: 1rem;
-  --base-size-24: 1.5rem;
-  --base-size-40: 2.5rem;
-  --base-text-weight-normal: 400;
-  --base-text-weight-medium: 500;
-  --base-text-weight-semibold: 600;
-  --fontStack-monospace: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
-  --fgColor-accent: Highlight;
-}
-@media (prefers-color-scheme: dark) {
-  .markdown-body, [data-theme="dark"] {
-    /* dark */
+const darkModeVars = css`
     color-scheme: dark;
     --focus-outlineColor: blue;
     --fgColor-default: white;
@@ -67,11 +52,9 @@ export const githubMarkdownStyles = css`
     --color-prettylights-syntax-markup-ignored-bg: darkblue;
     --color-prettylights-syntax-meta-diff-range: violet;
     --color-prettylights-syntax-sublimelinter-gutter-mark: gray;
-  }
-}
-@media (prefers-color-scheme: light) {
-  .markdown-body, [data-theme="light"] {
-    /* light */
+`;
+
+const lightModeVars = css`
     color-scheme: light;
     --focus-outlineColor: blue;
     --fgColor-default: black;
@@ -123,6 +106,39 @@ export const githubMarkdownStyles = css`
     --color-prettylights-syntax-markup-ignored-bg: blue;
     --color-prettylights-syntax-meta-diff-range: purple;
     --color-prettylights-syntax-sublimelinter-gutter-mark: gray;
+`;
+
+export const githubMarkdownStyles = css`
+.markdown-body {
+  --base-size-4: 0.25rem;
+  --base-size-8: 0.5rem;
+  --base-size-16: 1rem;
+  --base-size-24: 1.5rem;
+  --base-size-40: 2.5rem;
+  --base-text-weight-normal: 400;
+  --base-text-weight-medium: 500;
+  --base-text-weight-semibold: 600;
+  --fontStack-monospace: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+  --fgColor-accent: Highlight;
+}
+
+:host([theme="dark"]) .markdown-body {
+  ${darkModeVars}
+}
+
+:host([theme="light"]) .markdown-body {
+  ${lightModeVars}
+}
+
+@media (prefers-color-scheme: dark) {
+  :host(:not([theme])) .markdown-body {
+    ${darkModeVars}
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :host(:not([theme])) .markdown-body {
+    ${lightModeVars}
   }
 }
 
