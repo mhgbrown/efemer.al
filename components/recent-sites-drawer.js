@@ -3,7 +3,7 @@ import { RecentSitesManager } from '../recent-sites-manager.js';
 
 export class RecentSitesDrawer extends LitElement {
   static properties = {
-    collapsed: { type: Boolean, reflect: true },
+    expanded: { type: Boolean, reflect: true },
     sites: { type: Array },
     searchQuery: { type: String }
   };
@@ -11,7 +11,7 @@ export class RecentSitesDrawer extends LitElement {
   static styles = css`
     :host {
       display: block;
-      width: 250px;
+      width: 48px;
       background: var(--md-sys-color-surface);
       border-right: 1px solid var(--md-sys-color-outline);
       display: flex;
@@ -21,13 +21,47 @@ export class RecentSitesDrawer extends LitElement {
       position: relative;
     }
 
-    :host([collapsed]) {
-      width: 48px;
+    :host([expanded]) {
+      width: 250px;
     }
 
-    :host([collapsed]) .drawer-header,
-    :host([collapsed]) .sites-list,
-    :host([collapsed]) .drawer-footer {
+    /* Elements hidden by default (collapsed state) */
+    .drawer-header,
+    .sites-list,
+    .drawer-footer {
+      display: none;
+    }
+
+    /* Elements visible by default (collapsed state) */
+    .collapsed-icon {
+      display: flex;
+      height: 100%;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      cursor: pointer;
+      color: var(--md-sys-color-on-surface-variant);
+      gap: 0;
+      padding-top: 0;
+      border-bottom: 1px solid transparent;
+      box-sizing: border-box;
+    }
+
+    /* Expanded state overrides */
+    :host([expanded]) .drawer-header {
+      display: flex;
+    }
+
+    :host([expanded]) .sites-list {
+      display: block;
+    }
+
+    :host([expanded]) .drawer-footer {
+      display: flex;
+    }
+
+    :host([expanded]) .collapsed-icon {
       display: none;
     }
 
@@ -59,7 +93,6 @@ export class RecentSitesDrawer extends LitElement {
     .drawer-header {
       padding: 16px;
       border-bottom: 1px solid var(--md-sys-color-outline);
-      display: flex;
       flex-direction: column;
       gap: 12px;
       background: var(--md-sys-color-surface-variant);
@@ -184,7 +217,6 @@ export class RecentSitesDrawer extends LitElement {
     .drawer-footer {
       height: 48px;
       box-sizing: border-box;
-      display: flex;
       align-items: center;
       padding: 0 16px;
       border-top: 1px solid var(--md-sys-color-outline);
@@ -215,29 +247,6 @@ export class RecentSitesDrawer extends LitElement {
       color: var(--md-sys-color-on-error);
     }
 
-    .empty-state {
-      padding: 32px 16px;
-      text-align: center;
-      color: var(--md-sys-color-on-surface-variant);
-      font-style: italic;
-    }
-
-    /* Collapsed state icon */
-    .collapsed-icon {
-      display: none;
-      height: 100%;
-      width: 100%;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      cursor: pointer;
-      color: var(--md-sys-color-on-surface-variant);
-      gap: 0;
-      padding-top: 0;
-      border-bottom: 1px solid transparent;
-      box-sizing: border-box;
-    }
-
     .collapsed-header {
       height: 48px;
       width: 100%;
@@ -251,15 +260,11 @@ export class RecentSitesDrawer extends LitElement {
       font-weight: bold;
       color: var(--md-sys-color-primary);
     }
-
-    :host([collapsed]) .collapsed-icon {
-      display: flex;
-    }
   `;
 
   constructor() {
     super();
-    this.collapsed = true;
+    this.expanded = false; // Default to collapsed
     this.sites = [];
     this.searchQuery = '';
     this._handleSitesUpdated = this._handleSitesUpdated.bind(this);
@@ -341,19 +346,19 @@ export class RecentSitesDrawer extends LitElement {
     }
   }
 
-  _toggleCollapse() {
-    this.collapsed = !this.collapsed;
+  _toggleExpanded() {
+    this.expanded = !this.expanded;
   }
 
   render() {
     const sites = this._filteredSites;
 
     return html`
-      <button class="toggle-button" @click=${this._toggleCollapse} title=${this.collapsed ? "Expand" : "Collapse"}>
-        ${this.collapsed ? '›' : '‹'}
+      <button class="toggle-button" @click=${this._toggleExpanded} title=${this.expanded ? "Collapse" : "Expand"}>
+        ${this.expanded ? '‹' : '›'}
       </button>
 
-      <div class="collapsed-icon" @click=${this._toggleCollapse} title="Expand Recent Sites">
+      <div class="collapsed-icon" @click=${this._toggleExpanded} title="Expand Recent Sites">
         <div class="collapsed-header">
           <span class="collapsed-count">${sites.length}</span>
         </div>
