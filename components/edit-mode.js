@@ -94,7 +94,8 @@ export class EditMode extends LitElement {
     /* Iframe styles */
     iframe.preview-frame {
       width: 100%;
-      height: 100%;
+      flex: 1;
+      min-height: 0;
       border: none;
       background: var(--md-sys-color-background);
       display: block;

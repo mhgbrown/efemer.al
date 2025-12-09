@@ -180,7 +180,7 @@ export class AppRoot extends LitElement {
         : ''
       }
 
-          <div class="primary-column">
+          <div class="primary-column" style="${this.mode === 'view' ? 'overflow-y: auto; display: block;' : 'overflow: hidden;'}">
             ${this.mode === 'edit'
         ? html`
                   <edit-mode .content=${this.content} @content-change=${this._handleContentChange}></edit-mode>
