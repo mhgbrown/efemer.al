@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { marked } from 'marked';
+import { githubMarkdownStyles } from './github-markdown-css.js';
 import { encodeContent, updateURL } from '../url-utils.js';
 import { RecentSitesManager } from '../recent-sites-manager.js';
 
@@ -10,7 +11,9 @@ export class ViewMode extends LitElement {
     sites: { type: Array }
   };
 
-  static styles = css`
+  static styles = [
+    githubMarkdownStyles,
+    css`
     :host {
       display: block;
     }
@@ -171,35 +174,23 @@ export class ViewMode extends LitElement {
       border-radius: 0 !important;
     }
 
-    .rendered-content h1 {
-      font-size: 2em;
-      margin: 0.67em 0;
-      color: var(--md-sys-color-on-surface);
-      border-bottom: 1px solid var(--md-sys-color-outline);
-      padding-bottom: 0.3em;
-      font-weight: bold;
-      font-family: inherit;
-      text-transform: none;
-    }
-
     .rendered-content {
-      line-height: 1.6;
-      color: var(--md-sys-color-on-surface);
+      line-height: initial;
+      color: initial;
       font-family: inherit;
       padding: 24px;
+      box-sizing: border-box;
+      min-width: 200px;
+      max-width: 980px;
+      margin: 0 auto;
     }
 
-    .rendered-content h2 {
-      font-size: 1.5em;
-      margin: 0.75em 0;
-      color: var(--md-sys-color-on-surface);
-      font-weight: bold;
-      font-family: inherit;
-      text-transform: none;
-      border-bottom: 1px solid var(--md-sys-color-outline);
-      padding-bottom: 0.3em;
+    @media (max-width: 767px) {
+      .rendered-content {
+        padding: 15px;
+      }
     }
-  `;
+  `];
 
   constructor() {
     super();
@@ -338,7 +329,7 @@ export class ViewMode extends LitElement {
     // View Mode
     return html`
       <div class="view-container">
-        <div class="rendered-content">
+        <div class="rendered-content markdown-body">
           ${unsafeHTML(this._getRenderedContent())}
         </div>
       </div>
