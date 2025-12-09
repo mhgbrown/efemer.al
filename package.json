@@ -1,8 +1,8 @@
 {
-  "name": "ephemer-al",
+  "name": "efemer-al",
   "private": true,
   "version": "0.0.0",
-  "description": "ephemer.al - Your entire site lives in the URL",
+  "description": "efemer.al - Your entire site lives in the URL",
   "type": "module",
   "scripts": {
     "dev": "vite",

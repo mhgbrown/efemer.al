@@ -1,5 +1,5 @@
 export class RecentSitesManager {
-  static STORAGE_KEY = 'ephemer_al_recent_sites';
+  static STORAGE_KEY = 'efemer_al_recent_sites';
   static MAX_SITES = 50;
 
   static getSites() {

@@ -83,7 +83,7 @@ export class NavHeader extends LitElement {
     return html`
       <nav class="nav">
         <div style="display: flex; align-items: center; gap: 24px;">
-          <a href="#" class="brand">ephemer.al</a>
+          <a href="#" class="brand">efemer.al</a>
           <button class="create-button" @click=${this._handleCreateNew}>
             Create New Site
           </button>

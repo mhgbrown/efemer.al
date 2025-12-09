@@ -307,7 +307,7 @@ export class ViewMode extends LitElement {
             ${this.sites.length === 0
           ? html`
                   <div class="empty-dashboard" @click=${this._handleCreateNew} style="cursor: pointer;">
-                    <h2>Welcome to ephemer.al</h2>
+                    <h2>Welcome to efemer.al</h2>
                     <p>Create your first site to get started.</p>
                   </div>
                 `
