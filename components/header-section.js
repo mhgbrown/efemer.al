@@ -72,7 +72,7 @@ export class HeaderSection extends LitElement {
       word-break: break-all;
       overflow: hidden;
       display: -webkit-box;
-      -webkit-line-clamp: 3;
+      -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
       line-height: 1.4;
       margin-bottom: 16px;
