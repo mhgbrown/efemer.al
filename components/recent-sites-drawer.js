@@ -33,10 +33,11 @@ export class RecentSitesDrawer extends LitElement {
 
     .toggle-button {
       position: absolute;
-      top: 12px;
+      top: 50%;
       right: -12px;
       width: 24px;
       height: 24px;
+      transform: translateY(-50%);
       background: var(--md-sys-color-surface);
       border: 1px solid var(--md-sys-color-outline);
       border-radius: 50%;
@@ -48,6 +49,7 @@ export class RecentSitesDrawer extends LitElement {
       font-size: 12px;
       color: var(--md-sys-color-on-surface);
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: background 0.2s;
     }
 
     .toggle-button:hover {
@@ -178,7 +180,11 @@ export class RecentSitesDrawer extends LitElement {
     }
 
     .drawer-footer {
-      padding: 16px;
+      height: 48px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
       border-top: 1px solid var(--md-sys-color-outline);
       background: var(--md-sys-color-surface);
     }
@@ -211,11 +217,30 @@ export class RecentSitesDrawer extends LitElement {
     .collapsed-icon {
       display: none;
       height: 100%;
+      width: 100%;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      font-size: 24px;
+      justify-content: flex-start;
       cursor: pointer;
       color: var(--md-sys-color-on-surface-variant);
+      gap: 0;
+      padding-top: 0;
+      border-bottom: 1px solid transparent;
+      box-sizing: border-box;
+    }
+
+    .collapsed-header {
+      height: 48px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .collapsed-count {
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--md-sys-color-primary);
     }
 
     :host([collapsed]) .collapsed-icon {
@@ -225,7 +250,7 @@ export class RecentSitesDrawer extends LitElement {
 
   constructor() {
     super();
-    this.collapsed = false;
+    this.collapsed = true;
     this.sites = [];
     this.searchQuery = '';
     this._handleSitesUpdated = this._handleSitesUpdated.bind(this);
@@ -276,7 +301,8 @@ export class RecentSitesDrawer extends LitElement {
 
   _insertLink(e, site) {
     e.stopPropagation();
-    const linkText = `[${site.title}](${site.url})`;
+    const viewUrl = site.url.replace(/\/edit$/, '');
+    const linkText = `[${site.title}](${viewUrl})`;
     window.dispatchEvent(new CustomEvent('insert-link', {
       detail: { text: linkText },
       bubbles: true,
@@ -310,11 +336,13 @@ export class RecentSitesDrawer extends LitElement {
       </button>
 
       <div class="collapsed-icon" @click=${this._toggleCollapse} title="Expand Recent Sites">
-        🕒
+        <div class="collapsed-header">
+          <span class="collapsed-count">${sites.length}</span>
+        </div>
       </div>
 
       <div class="drawer-header">
-        <span class="drawer-title">Recent Sites</span>
+        <span class="drawer-title">Recent Sites (${sites.length})</span>
         <input
           type="text"
           class="search-input"
