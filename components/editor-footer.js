@@ -31,9 +31,9 @@ export class EditorFooter extends LitElement {
       border: 1px solid var(--md-sys-color-outline);
       color: var(--md-sys-color-primary);
       cursor: pointer;
-      font-size: 13px;
+      font-size: 12px;
       padding: 4px 8px;
-      border-radius: 4px;
+      border-radius: 0;
       font-weight: 600;
       text-transform: uppercase;
       font-family: inherit;
@@ -46,15 +46,6 @@ export class EditorFooter extends LitElement {
     button:hover {
       background: var(--md-sys-color-primary);
       color: var(--md-sys-color-on-primary);
-      border-color: var(--md-sys-color-primary);
-    }
-    .button-secondary {
-      color: var(--md-sys-color-on-surface-variant);
-    }
-    .button-secondary:hover {
-      background: var(--md-sys-color-on-surface-variant);
-      color: var(--md-sys-color-surface-variant);
-      border-color: var(--md-sys-color-on-surface-variant);
     }
   `;
 

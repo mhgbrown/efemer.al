@@ -51,9 +51,9 @@ export class HeaderSection extends LitElement {
       border: 1px solid var(--md-sys-color-outline);
       color: var(--md-sys-color-primary);
       cursor: pointer;
-      font-size: 13px;
+      font-size: 12px;
       padding: 4px 8px;
-      border-radius: 4px;
+      border-radius: 0;
       font-weight: 600;
       text-transform: uppercase;
       font-family: inherit;
@@ -75,11 +75,11 @@ export class HeaderSection extends LitElement {
     .edit-button {
       background: transparent;
       border: 1px solid var(--md-sys-color-outline);
-      color: var(--md-sys-color-on-surface-variant);
+      color: var(--md-sys-color-primary);
       cursor: pointer;
-      font-size: 13px;
+      font-size: 12px;
       padding: 4px 8px;
-      border-radius: 4px;
+      border-radius: 0;
       font-weight: 600;
       text-transform: uppercase;
       font-family: inherit;
@@ -88,8 +88,8 @@ export class HeaderSection extends LitElement {
       align-items: center;
     }
     .edit-button:hover {
-      background: var(--md-sys-color-on-surface-variant);
-      color: var(--md-sys-color-surface-variant);
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
     }
   `;
 

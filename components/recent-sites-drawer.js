@@ -191,7 +191,8 @@ export class RecentSitesDrawer extends LitElement {
 
     .clear-button {
       width: 100%;
-      padding: 8px;
+      height: 28px;
+      padding: 0 8px;
       background: transparent;
       color: var(--md-sys-color-error);
       border: 1px solid var(--md-sys-color-error);
@@ -199,6 +200,11 @@ export class RecentSitesDrawer extends LitElement {
       font-weight: 600;
       cursor: pointer;
       font-family: inherit;
+      font-size: 12px;
+      border-radius: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .clear-button:hover {
@@ -287,7 +293,13 @@ export class RecentSitesDrawer extends LitElement {
   }
 
   _navigateToSite(url) {
-    window.location.hash = url.split('#')[1] || '';
+    let hash = url.split('#')[1] || '';
+    // If we are currently in edit mode, ensure we stay in edit mode
+    // unless the target URL specifically handles it differently (though here we just append)
+    if (window.location.hash.endsWith('/edit') && !hash.endsWith('/edit')) {
+      hash += '/edit';
+    }
+    window.location.hash = hash;
   }
 
   async _copyUrl(e, url) {
@@ -301,7 +313,10 @@ export class RecentSitesDrawer extends LitElement {
 
   _insertLink(e, site) {
     e.stopPropagation();
-    const viewUrl = site.url.replace(/\/edit$/, '');
+    let viewUrl = site.url.replace(/\/edit$/, '');
+    // Escape parentheses to prevent breaking markdown link syntax
+    viewUrl = viewUrl.replace(/\(/g, '%28').replace(/\)/g, '%29');
+
     const linkText = `[${site.title}](${viewUrl})`;
     window.dispatchEvent(new CustomEvent('insert-link', {
       detail: { text: linkText },
