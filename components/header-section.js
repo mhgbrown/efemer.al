@@ -3,6 +3,7 @@ import { LitElement, html, css } from 'lit';
 export class HeaderSection extends LitElement {
   static properties = {
     url: { type: String },
+    showEditButton: { type: Boolean },
   };
 
   static styles = css`
@@ -71,6 +72,25 @@ export class HeaderSection extends LitElement {
       color: var(--md-sys-color-on-secondary);
       border-color: var(--md-sys-color-on-secondary);
     }
+    .edit-button {
+      background: transparent;
+      border: 1px solid var(--md-sys-color-outline);
+      color: var(--md-sys-color-on-surface-variant);
+      cursor: pointer;
+      font-size: 13px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-family: inherit;
+      height: 28px;
+      display: flex;
+      align-items: center;
+    }
+    .edit-button:hover {
+      background: var(--md-sys-color-on-surface-variant);
+      color: var(--md-sys-color-surface-variant);
+    }
   `;
 
   _copyUrl() {
@@ -92,6 +112,13 @@ export class HeaderSection extends LitElement {
     }
   }
 
+  _emit(event) {
+    this.dispatchEvent(new CustomEvent(event, {
+      bubbles: true,
+      composed: true
+    }));
+  }
+
   render() {
     return html`
       <div class="header">
@@ -100,6 +127,11 @@ export class HeaderSection extends LitElement {
             ${this.url}
           </div>
           <div class="actions">
+            ${this.showEditButton ? html`
+              <button class="edit-button" @click=${() => this._emit('edit')}>
+                Show Editor
+              </button>
+            ` : ''}
             <button class="copy-button" id="copy-url-btn" @click=${this._copyUrl}>
               COPY URL
             </button>

@@ -5,6 +5,8 @@ import { encodeContent, updateURL } from '../url-utils.js';
 import { RecentSitesManager } from '../recent-sites-manager.js';
 import './header-section.js';
 import './footer-section.js';
+import './markdown-toolbar.js';
+import './editor-footer.js';
 
 export class EditMode extends LitElement {
   static properties = {
@@ -33,13 +35,7 @@ export class EditMode extends LitElement {
       flex-direction: column;
     }
 
-    .toolbar {
-      padding: 12px 24px;
-      border-bottom: 1px solid var(--md-sys-color-outline);
-      margin-bottom: 0;
-      background: var(--md-sys-color-surface);
-      flex-shrink: 0;
-    }
+
 
     .editor-area {
       display: flex;
@@ -181,6 +177,85 @@ export class EditMode extends LitElement {
     const existingSite = RecentSitesManager.findSiteByUrl(currentUrl);
     if (existingSite) {
       this.siteId = existingSite.id;
+    }
+  }
+
+  _handleToolbarAction(e) {
+    const editor = this.shadowRoot.querySelector('textarea');
+    if (!editor) return;
+
+    const action = e.detail.action;
+    const start = editor.selectionStart;
+    const end = editor.selectionEnd;
+    const text = editor.value;
+    const selectedText = text.substring(start, end);
+    let newText = '';
+    let newCursorPos = start;
+
+    switch (action) {
+      case 'bold':
+        newText = text.substring(0, start) + `**${selectedText || 'bold'}**` + text.substring(end);
+        newCursorPos = start + (selectedText ? selectedText.length + 4 : 2);
+        break;
+      case 'italic':
+        newText = text.substring(0, start) + `*${selectedText || 'italic'}*` + text.substring(end);
+        newCursorPos = start + (selectedText ? selectedText.length + 2 : 1);
+        break;
+      case 'strike':
+        newText = text.substring(0, start) + `~~${selectedText || 'strike'}~~` + text.substring(end);
+        newCursorPos = start + (selectedText ? selectedText.length + 4 : 2);
+        break;
+      case 'heading':
+        newText = text.substring(0, start) + `${start === 0 || text[start - 1] === '\n' ? '' : '\n'}# ${selectedText || 'Heading'}` + text.substring(end);
+        newCursorPos = start + (selectedText ? selectedText.length + 4 : 2); // approximate
+        break;
+      case 'code':
+        if (selectedText.includes('\n')) {
+          newText = text.substring(0, start) + `\n\`\`\`\n${selectedText || 'code'}\n\`\`\`\n` + text.substring(end);
+          newCursorPos = start + 5;
+        } else {
+          newText = text.substring(0, start) + `\`${selectedText || 'code'}\`` + text.substring(end);
+          newCursorPos = start + (selectedText ? selectedText.length + 2 : 1);
+        }
+        break;
+      case 'quote':
+        newText = text.substring(0, start) + `${start === 0 || text[start - 1] === '\n' ? '' : '\n'}> ${selectedText || 'quote'}` + text.substring(end);
+        break;
+      case 'list-ul':
+        newText = text.substring(0, start) + `${start === 0 || text[start - 1] === '\n' ? '' : '\n'}- ${selectedText || 'item'}` + text.substring(end);
+        break;
+      case 'list-ol':
+        newText = text.substring(0, start) + `${start === 0 || text[start - 1] === '\n' ? '' : '\n'}1. ${selectedText || 'item'}` + text.substring(end);
+        break;
+      case 'checklist':
+        newText = text.substring(0, start) + `${start === 0 || text[start - 1] === '\n' ? '' : '\n'}- [ ] ${selectedText || 'task'}` + text.substring(end);
+        break;
+      case 'link':
+        newText = text.substring(0, start) + `[${selectedText || 'text'}](url)` + text.substring(end);
+        break;
+      case 'image':
+        this._triggerImageUpload();
+        return;
+      case 'table':
+        newText = text.substring(0, start) + `\n| col | col |\n|---|---|\n| val | val |\n` + text.substring(end);
+        break;
+      case 'hr':
+        newText = text.substring(0, start) + `\n---\n` + text.substring(end);
+        break;
+      case 'comment':
+        newText = text.substring(0, start) + `<!-- ${selectedText || 'comment'} -->` + text.substring(end);
+        break;
+    }
+
+    if (newText) {
+      this.content = newText;
+      // We need to defer the cursor update and event dispatch to ensure Lit has updated the DOM
+      setTimeout(() => {
+        editor.value = newText;
+        editor.focus();
+        editor.setSelectionRange(newCursorPos, newCursorPos);
+        this._handleInput({ target: editor });
+      }, 0);
     }
   }
 
@@ -410,64 +485,49 @@ export class EditMode extends LitElement {
   render() {
     return html`
       <div class="edit-container">
-        <div class="toolbar">
-          <button class="button button-success" @click=${this._handleSave}>
-            💾 Save & View
-          </button>
-          <button class="button button-secondary" @click=${this._togglePreview}>
-            ${this._previewMode ? '✏️ Show Editor' : '👁️ Preview Only'}
-          </button>
-          <button
-            class="button button-primary"
-            @click=${this._triggerImageUpload}
-            ?disabled=${this._uploadingImage}
-          >
-            ${this._uploadingImage ? '⏳ Uploading...' : '🖼️ Add Image'}
-          </button>
-          <input
-            type="file"
-            id="image-upload"
-            accept="image/*"
-            @change=${this._handleImageUpload}
-            style="display: none;"
-          />
-        </div>
-
-        ${this._previewMode
+         ${this._previewMode
         ? html`
               <div class="preview-pane">
+                  <header-section
+                    .url=${this._previewSrc}
+                    .showEditButton=${true}
+                    @edit=${this._togglePreview}>
+                  </header-section>
                  ${this._previewSrc
             ? html`<iframe class="preview-frame" src=${this._previewSrc} title="Preview"></iframe>`
             : ''
           }
+                   <footer-section
+                      .byteCount=${new Blob([this._previewSrc]).size}>
+                   </footer-section>
               </div>
             `
         : html`
               <div class="editor-area">
                 <div class="editor-pane">
-                  <div class="pane-label">Markdown Editor</div>
+                  <markdown-toolbar @action=${this._handleToolbarAction}></markdown-toolbar>
                   <textarea
                     .value=${this.content}
                     @input=${this._handleInput}
-                    placeholder="# Start typing your markdown here...
-
-## This is a heading
-
-Write your content using markdown syntax.
-
-- Bullet points
-- **Bold text**
-- *Italic text*
-- [Links](https://example.com)
-- \`code\`
-
-Your content is automatically saved to the URL!"
-                    spellcheck="true"
+                    placeholder="Enter markdown content..."
+                    spellcheck="false"
                   ></textarea>
+                  <editor-footer
+                    .previewMode=${this._previewMode}
+                    @save=${this._handleSave}
+                    @toggle-preview=${this._togglePreview}>
+                  </editor-footer>
+                   <input
+                    type="file"
+                    id="image-upload"
+                    accept="image/*"
+                    @change=${this._handleImageUpload}
+                    style="display: none;"
+                  />
                 </div>
 
                 <div class="editor-pane">
-                  <div class="pane-label">Live Preview</div>
+                  <!-- No Label needed here as we have the bars -->
                   <div class="preview-pane">
                      ${this._previewSrc
             ? html`
@@ -487,8 +547,6 @@ Your content is automatically saved to the URL!"
             `
       }
       </div>
-
-
     `;
   }
 
