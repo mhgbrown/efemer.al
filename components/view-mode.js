@@ -342,9 +342,10 @@ export class ViewMode extends LitElement {
           ${unsafeHTML(this._getRenderedContent())}
         </div>
       </div>
+      ${window.self === window.top ? html`
       <button class="edit-button" @click=${this._handleEdit} title="Edit">
         ✏️
-      </button>
+      </button>` : ''}
     `;
   }
 }

@@ -9,7 +9,8 @@ export class EditMode extends LitElement {
     content: { type: String },
     _previewMode: { type: Boolean },
     _uploadingImage: { type: Boolean },
-    siteId: { type: String }
+    siteId: { type: String },
+    _previewSrc: { type: String, state: true }
   };
 
   static styles = css`
@@ -85,12 +86,20 @@ export class EditMode extends LitElement {
       border: none;
       overflow-y: auto;
       background: var(--md-sys-color-surface);
+      position: relative;
+    }
+
+    /* Iframe styles */
+    iframe.preview-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: var(--md-sys-color-background);
+      display: block;
     }
 
     .rendered-content {
-      padding: 24px;
-      max-width: 800px;
-      margin: 0 auto;
+      display: none; /* Deprecated in favor of iframe */
     }
 
     .footer-bar {
@@ -156,6 +165,27 @@ export class EditMode extends LitElement {
     this._previewMode = false;
     this._uploadingImage = false;
     this.siteId = null;
+    this._previewSrc = '';
+  }
+
+  willUpdate(changedProperties) {
+    if (changedProperties.has('content')) {
+      this._updatePreviewSrc();
+    }
+  }
+
+  async _updatePreviewSrc() {
+    // Only update if content changed significantly or not set
+    // Note: We use the same encoding logic as the URL update to ensure consistency
+    const encoded = await encodeContent(this.content);
+    // Construct the full URL for the iframe (pointing to root/view mode with current hash)
+    // We strictly use the hash without /edit to force View Mode
+    const newSrc = `${window.location.origin}/#${encodeURIComponent(encoded)}`;
+
+    // Update state only if changed to avoid unnecessary re-renders
+    if (this._previewSrc !== newSrc) {
+      this._previewSrc = newSrc;
+    }
   }
 
   connectedCallback() {
@@ -423,12 +453,8 @@ export class EditMode extends LitElement {
     });
   }
 
-  _getRenderedContent() {
-    if (!this.content) {
-      return '<p style="color: #999; font-style: italic;">Start typing markdown to see preview...</p>';
-    }
-    return marked.parse(this.content);
-  }
+  // _getRenderedContent removed as it is no longer used
+
 
   render() {
     return html`
@@ -459,9 +485,10 @@ export class EditMode extends LitElement {
         ${this._previewMode
         ? html`
               <div class="preview-pane">
-                <div class="rendered-content">
-                  ${unsafeHTML(this._getRenderedContent())}
-                </div>
+                 ${this._previewSrc
+            ? html`<iframe class="preview-frame" src=${this._previewSrc} title="Preview"></iframe>`
+            : ''
+          }
               </div>
             `
         : html`
@@ -491,9 +518,10 @@ Your content is automatically saved to the URL!"
                 <div class="editor-pane">
                   <div class="pane-label">Live Preview</div>
                   <div class="preview-pane">
-                    <div class="rendered-content">
-                      ${unsafeHTML(this._getRenderedContent())}
-                    </div>
+                     ${this._previewSrc
+            ? html`<iframe class="preview-frame" src=${this._previewSrc} title="Live Preview"></iframe>`
+            : ''
+          }
                   </div>
                 </div>
               </div>
