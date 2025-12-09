@@ -4,6 +4,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { encodeContent, updateURL } from '../url-utils.js';
 import { RecentSitesManager } from '../recent-sites-manager.js';
 import './header-section.js';
+import './footer-section.js';
 
 export class EditMode extends LitElement {
   static properties = {
@@ -470,10 +471,12 @@ Your content is automatically saved to the URL!"
                      ${this._previewSrc
             ? html`
                             <header-section
-                              .url=${this._previewSrc}
-                              .byteCount=${new Blob([this._previewSrc]).size}>
+                              .url=${this._previewSrc}>
                             </header-section>
                             <iframe class="preview-frame" src=${this._previewSrc} title="Live Preview"></iframe>
+                            <footer-section
+                              .byteCount=${new Blob([this._previewSrc]).size}>
+                            </footer-section>
                           `
             : ''
           }
