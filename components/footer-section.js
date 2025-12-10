@@ -3,6 +3,7 @@ import { LitElement, html, css } from 'lit';
 export class FooterSection extends LitElement {
   static properties = {
     byteCount: { type: Number },
+    contentByteCount: { type: Number },
   };
 
   static styles = css`
@@ -23,6 +24,11 @@ export class FooterSection extends LitElement {
       box-sizing: border-box;
       font-size: 13px;
     }
+    .footer-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
     .warning-container {
       display: flex;
       align-items: center;
@@ -32,7 +38,7 @@ export class FooterSection extends LitElement {
       white-space: nowrap;
       text-overflow: ellipsis;
     }
-    .byte-count {
+    .stat-item {
       font-family: monospace;
       font-weight: 600;
       opacity: 0.8;
@@ -71,11 +77,25 @@ export class FooterSection extends LitElement {
     return html`<span></span>`;
   }
 
+  _getCompressionRatio() {
+    if (!this.byteCount || !this.contentByteCount) return null;
+    return (this.contentByteCount / this.byteCount).toFixed(2);
+  }
+
   render() {
+    const ratio = this._getCompressionRatio();
+
     return html`
       <div class="footer">
-        <div class="byte-count">
-          ${this.byteCount ? this.byteCount.toLocaleString() : 0} bytes
+        <div class="footer-section">
+          <div class="stat-item" title="URL Size">
+            ${this.byteCount ? this.byteCount.toLocaleString() : 0} bytes
+          </div>
+          ${ratio ? html`
+            <div class="stat-item" title="Content Size / URL Size">
+              Ratio: ${ratio}x
+            </div>
+          ` : ''}
         </div>
         <div class="warning-container">
           ${this._renderWarning()}

@@ -498,7 +498,8 @@ export class EditMode extends LitElement {
             : ''
           }
                    <footer-section
-                      .byteCount=${new Blob([this._previewSrc]).size}>
+                      .byteCount=${new Blob([this._previewSrc]).size}
+                      .contentByteCount=${new Blob([this.content]).size}>
                    </footer-section>
               </div>
             `
@@ -536,7 +537,8 @@ export class EditMode extends LitElement {
                             </header-section>
                             <iframe class="preview-frame" src=${this._previewSrc} title="Live Preview"></iframe>
                             <footer-section
-                              .byteCount=${new Blob([this._previewSrc]).size}>
+                              .byteCount=${new Blob([this._previewSrc]).size}
+                              .contentByteCount=${this.content ? new Blob([this.content]).size : 0}>
                             </footer-section>
                           `
             : ''
