@@ -62,6 +62,18 @@ export class RecentSitesDrawer extends LitElement {
       display: flex;
     }
 
+    .drawer-footer {
+      background: var(--md-sys-color-surface-variant);
+      color: var(--md-sys-color-on-surface-variant);
+      border-top: 1px solid var(--md-sys-color-outline);
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      height: 48px;
+      box-sizing: border-box;
+      gap: 16px;
+    }
+
     :host([expanded]) .collapsed-icon {
       display: none;
     }
@@ -191,6 +203,12 @@ export class RecentSitesDrawer extends LitElement {
       font-size: 16px;
       font-weight: bold;
       color: var(--md-sys-color-primary);
+    }
+
+    .empty-state {
+      padding: 16px;
+      text-align: center;
+      color: var(--md-sys-color-on-surface-variant);
     }
   `;
 
@@ -328,7 +346,7 @@ export class RecentSitesDrawer extends LitElement {
       ${this.sites.length > 0
         ? html`
             <div class="drawer-footer">
-              <app-button variant="danger" style="width: 100%;" @click=${this._clearAll}>Clear History</app-button>
+              <app-button variant="danger" size="small" @click=${this._clearAll}>Clear History</app-button>
             </div>
           `
         : ''

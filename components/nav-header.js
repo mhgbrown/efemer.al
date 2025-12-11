@@ -47,7 +47,7 @@ export class NavHeader extends LitElement {
 
     // Save immediately
     RecentSitesManager.saveSite(
-      `${window.location.origin}/#${encodeURIComponent(encoded)}/edit`,
+      `${window.location.origin}/#${encodeURIComponent(encoded)}`,
       defaultContent
     );
 

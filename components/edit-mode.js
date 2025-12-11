@@ -113,11 +113,20 @@ export class EditMode extends LitElement {
     this._uploadingImage = false;
     this.siteId = null;
     this._previewSrc = '';
+    this._isInternalChange = false;
   }
 
   willUpdate(changedProperties) {
     if (changedProperties.has('content')) {
       this._updatePreviewSrc();
+
+      // If content changed but NOT internally (i.e. via navigation or parent prop change),
+      // we need to re-initialize the site ID to match the new URL/content.
+      if (!this._isInternalChange) {
+        this._initializeSiteId();
+      }
+      // Reset flag for next update
+      this._isInternalChange = false;
     }
   }
 
@@ -167,16 +176,28 @@ export class EditMode extends LitElement {
     textarea.setSelectionRange(newCursorPos, newCursorPos);
     textarea.focus();
 
+    this._isInternalChange = true;
     this._updateURL();
     this._debouncedSave();
   }
 
   _initializeSiteId() {
     // Try to find existing site by URL
-    const currentUrl = window.location.href;
+    // Remove /edit suffix if present to ensure canonical URL lookup
+    const currentUrl = window.location.href.replace(/\/edit$/, '');
     const existingSite = RecentSitesManager.findSiteByUrl(currentUrl);
     if (existingSite) {
       this.siteId = existingSite.id;
+    } else if (this.content) {
+      // Auto-save if content exists but site is not in recent history
+      // This handles shared links or direct navigation to new content
+      const newId = RecentSitesManager.saveSite(
+        currentUrl,
+        this.content
+      );
+      if (newId) {
+        this.siteId = newId;
+      }
     }
   }
 
@@ -248,6 +269,7 @@ export class EditMode extends LitElement {
     }
 
     if (newText) {
+      this._isInternalChange = true;
       this.content = newText;
       // We need to defer the cursor update and event dispatch to ensure Lit has updated the DOM
       setTimeout(() => {
@@ -260,6 +282,7 @@ export class EditMode extends LitElement {
   }
 
   _handleInput(e) {
+    this._isInternalChange = true;
     this.content = e.target.value;
     this._updateURL();
     this._debouncedSave();
@@ -362,6 +385,7 @@ export class EditMode extends LitElement {
 
         // Add newlines around the image for better formatting
         const newContent = textBefore + '\n\n' + imageMarkdown + '\n\n' + textAfter;
+        this._isInternalChange = true;
         this.content = newContent;
 
         // Update URL and trigger re-render
@@ -374,6 +398,7 @@ export class EditMode extends LitElement {
         textarea.setSelectionRange(newPosition, newPosition);
       } else {
         // If no textarea (shouldn't happen), just append
+        this._isInternalChange = true;
         this.content += '\n\n' + imageMarkdown + '\n\n';
         this._updateURL();
       }
