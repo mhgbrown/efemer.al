@@ -131,13 +131,15 @@ export const githubMarkdownStyles = css`
 }
 
 @media (prefers-color-scheme: dark) {
-  :host(:not([theme])) .markdown-body {
+  :host(:not([theme])) .markdown-body,
+  :host([theme="system"]) .markdown-body {
     ${darkModeVars}
   }
 }
 
 @media (prefers-color-scheme: light) {
-  :host(:not([theme])) .markdown-body {
+  :host(:not([theme])) .markdown-body,
+  :host([theme="system"]) .markdown-body {
     ${lightModeVars}
   }
 }
