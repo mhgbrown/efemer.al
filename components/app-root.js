@@ -1,12 +1,12 @@
 import { LitElement, html, css } from 'lit';
 import { parsePath, getCurrentPath, updateURL } from '../url-utils.js';
-import './view-mode.js';
-import './edit-mode.js';
+import '../views/view-mode.js';
+import '../views/edit-mode.js';
 import './theme-switcher.js';
 import './header-section.js';
 import './nav-header.js';
 import './recent-sites-drawer.js';
-import './about-page.js';
+import '../views/about-page.js';
 
 export class AppRoot extends LitElement {
   static properties = {

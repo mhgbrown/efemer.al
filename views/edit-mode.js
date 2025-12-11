@@ -3,10 +3,10 @@ import { marked } from 'marked';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { encodeContent, updateURL } from '../url-utils.js';
 import { RecentSitesManager } from '../recent-sites-manager.js';
-import './header-section.js';
-import './footer-section.js';
-import './markdown-toolbar.js';
-import './editor-footer.js';
+import '../components/header-section.js';
+import '../components/footer-section.js';
+import '../components/markdown-toolbar.js';
+import '../components/editor-footer.js';
 
 export class EditMode extends LitElement {
   static properties = {

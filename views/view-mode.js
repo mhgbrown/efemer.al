@@ -1,9 +1,9 @@
 import { LitElement, html, css } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { marked } from 'marked';
-import { githubMarkdownStyles } from './github-markdown-css.js';
+import { githubMarkdownStyles } from '../components/github-markdown-css.js';
 import { encodeContent, updateURL } from '../url-utils.js';
-import './button.js';
+import '../components/button.js';
 import { RecentSitesManager } from '../recent-sites-manager.js';
 
 export class ViewMode extends LitElement {
