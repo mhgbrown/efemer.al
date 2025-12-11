@@ -6,6 +6,7 @@ import './theme-switcher.js';
 import './header-section.js';
 import './nav-header.js';
 import './recent-sites-drawer.js';
+import './about-page.js';
 
 export class AppRoot extends LitElement {
   static properties = {
@@ -169,7 +170,7 @@ export class AppRoot extends LitElement {
   render() {
     return html`
       <div class="main-content">
-        ${this.mode === 'edit' || (this.mode === 'view' && !this.content)
+        ${this.mode === 'edit' || (this.mode === 'view' && !this.content) || this.mode === 'about'
         ? html`<nav-header .theme=${this.theme} @theme-change=${this._handleThemeChange}></nav-header>`
         : ''
       }
@@ -180,12 +181,14 @@ export class AppRoot extends LitElement {
         : ''
       }
 
-          <div class="primary-column" style="${this.mode === 'view' ? 'overflow-y: auto; display: block;' : 'overflow: hidden;'}">
+          <div class="primary-column" style="${this.mode === 'view' || this.mode === 'about' ? 'overflow-y: auto; display: block;' : 'overflow: hidden;'}">
             ${this.mode === 'edit'
         ? html`
                   <edit-mode .content=${this.content} @content-change=${this._handleContentChange}></edit-mode>
                 `
-        : html`
+        : this.mode === 'about'
+          ? html`<about-page></about-page>`
+          : html`
                   <view-mode .content=${this.content} .theme=${this.theme}></view-mode>
                 `
       }

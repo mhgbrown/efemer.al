@@ -73,7 +73,6 @@ export class ThemeSwitcher extends LitElement {
           class="button"
           @click=${this._toggleTheme}
           title=${this._getTooltip()}
-          style="width: 48px; height: 48px; padding: 0; font-size: 20px;"
         >
           <span class="icon">${this._getIcon()}</span>
         </app-button>

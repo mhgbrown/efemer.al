@@ -128,6 +128,11 @@ export async function parsePath(hash) {
     };
   }
 
+  // Check for about page
+  if (hash === 'about') {
+    return { mode: 'about', content: '' };
+  }
+
   return {
     mode: 'view',
     content: await decodeContent(decodeURIComponent(hash))

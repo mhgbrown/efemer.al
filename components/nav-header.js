@@ -66,6 +66,9 @@ export class NavHeader extends LitElement {
           <app-button variant="secondary" @click=${this._handleCreateNew}>
             Create New Site
           </app-button>
+          <app-button variant="secondary" @click=${() => window.location.hash = 'about'}>
+            About
+          </app-button>
         </div>
         <div class="actions">
           <theme-switcher .theme=${this.theme}></theme-switcher>
