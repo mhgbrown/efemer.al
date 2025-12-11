@@ -252,7 +252,7 @@ export class ViewMode extends LitElement {
           <div class="dashboard-container">
             <div class="dashboard-header">
               <h2 class="dashboard-title">Recent Sites</h2>
-              <span style="color: var(--md-sys-color-on-surface-variant); font-size: 14px;">${this.sites.length}</span>
+              <span style="color: var(--md-sys-color-primary); font-size: 20px; font-weight: bold;">${this.sites.length}</span>
             </div>
 
             ${this.sites.length === 0

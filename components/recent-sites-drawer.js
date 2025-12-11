@@ -77,6 +77,18 @@ export class RecentSitesDrawer extends LitElement {
       width: 100%;
     }
 
+    .vertical-label {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+      color: var(--md-sys-color-on-surface);
+      font-weight: 500;
+      font-size: 14px;
+      margin-top: 8px;
+      white-space: nowrap;
+      letter-spacing: 0.5px;
+    }
+
     :host([expanded]) .collapsed-icon {
        display: none;
     }
@@ -300,6 +312,10 @@ export class RecentSitesDrawer extends LitElement {
         width: auto;
       }
 
+      .vertical-label {
+        display: none;
+      }
+
       .collapsed-header::before {
         content: "Recent Sites";
         margin-right: 8px;
@@ -426,6 +442,7 @@ export class RecentSitesDrawer extends LitElement {
           <div class="collapsed-header">
             <span class="collapsed-count">${sites.length}</span>
           </div>
+          <div class="vertical-label">Recent Sites</div>
         </div>
 
         <div class="drawer-header">
