@@ -52,7 +52,7 @@ export class AppRoot extends LitElement {
 
     recent-sites-drawer {
       flex-shrink: 0;
-      height: auto;
+      /* height: auto;  <-- REMOVED to allow component to control height */
       min-height: 500px;
     }
 
@@ -65,6 +65,7 @@ export class AppRoot extends LitElement {
         width: 100%;
         border-left: none;
         border-top: 1px solid var(--md-sys-color-outline);
+        min-height: auto; /* Allow complete collapse or compact height */
       }
     }
   `;
@@ -184,7 +185,11 @@ export class AppRoot extends LitElement {
           <div class="primary-column" style="${this.mode === 'view' || this.mode === 'about' ? 'overflow-y: auto; display: block;' : 'overflow: hidden;'}">
             ${this.mode === 'edit'
         ? html`
-                  <edit-mode .content=${this.content} @content-change=${this._handleContentChange}></edit-mode>
+                  <edit-mode
+                    .content=${this.content}
+                    .theme=${this.theme}
+                    @content-change=${this._handleContentChange}
+                  ></edit-mode>
                 `
         : this.mode === 'about'
           ? html`<about-page></about-page>`

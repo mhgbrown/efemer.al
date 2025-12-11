@@ -110,13 +110,10 @@ export class ViewMode extends LitElement {
     .card-actions {
       display: flex;
       gap: 8px;
-      opacity: 0; /* Hidden by default, shown on hover */
-      transition: opacity 0.2s;
+      opacity: 1; /* Always visible */
     }
 
-    .site-card:hover .card-actions {
-      opacity: 1;
-    }
+    /* Hover effect removed as buttons are always visible now */
 
     .empty-dashboard {
       text-align: center;

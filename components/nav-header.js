@@ -6,7 +6,8 @@ import './button.js';
 
 export class NavHeader extends LitElement {
   static properties = {
-    theme: { type: String }
+    theme: { type: String },
+    isMobile: { type: Boolean, state: true }
   };
 
   static styles = css`
@@ -39,7 +40,52 @@ export class NavHeader extends LitElement {
       align-items: center;
       gap: 16px;
     }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+      }
+
+      .brand {
+        font-size: 20px;
+      }
+
+      .nav-left {
+        gap: 8px;
+      }
+
+      .actions {
+        gap: 8px;
+      }
+    }
   `;
+
+  constructor() {
+    super();
+    this.isMobile = false;
+    this._handleResize = this._handleResize.bind(this);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    window.addEventListener('resize', this._handleResize);
+    this._handleResize();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener('resize', this._handleResize);
+  }
+
+  _handleResize() {
+    this.isMobile = window.innerWidth <= 768;
+  }
 
   async _handleCreateNew() {
     const defaultContent = '# Welcome!\n\nStart editing to create your site.';
@@ -61,17 +107,28 @@ export class NavHeader extends LitElement {
   render() {
     return html`
       <nav class="nav">
-        <div style="display: flex; align-items: center; gap: 24px;">
+        <div class="nav-left">
           <a href="#" class="brand">efemer.al</a>
-          <app-button variant="secondary" @click=${this._handleCreateNew}>
-            Create New Site
+          <app-button
+            variant="secondary"
+            size=${this.isMobile ? 'small' : 'medium'}
+            @click=${this._handleCreateNew}
+          >
+            ${this.isMobile ? 'Create' : 'Create New Site'}
           </app-button>
-          <app-button variant="secondary" @click=${() => window.location.hash = 'about'}>
+          <app-button
+            variant="secondary"
+            size=${this.isMobile ? 'small' : 'medium'}
+            @click=${() => window.location.hash = 'about'}
+          >
             About
           </app-button>
         </div>
         <div class="actions">
-          <theme-switcher .theme=${this.theme}></theme-switcher>
+          <theme-switcher
+            .theme=${this.theme}
+            size=${this.isMobile ? 'small' : 'medium'}
+          ></theme-switcher>
         </div>
       </nav>
     `;

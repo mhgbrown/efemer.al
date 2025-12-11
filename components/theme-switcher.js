@@ -3,7 +3,8 @@ import './button.js';
 
 export class ThemeSwitcher extends LitElement {
   static properties = {
-    theme: { type: String }
+    theme: { type: String },
+    size: { type: String }
   };
 
   static styles = css`
@@ -19,11 +20,17 @@ export class ThemeSwitcher extends LitElement {
     .icon {
       font-size: 24px;
     }
+
+    /* Adjust icon size for small button */
+    app-button[size="small"] .icon {
+      font-size: 16px;
+    }
   `;
 
   constructor() {
     super();
     this.theme = 'system';
+    this.size = 'medium';
   }
 
   _getIcon() {
@@ -70,11 +77,12 @@ export class ThemeSwitcher extends LitElement {
       <div class="theme-switcher">
         <app-button
           variant="secondary"
+          size=${this.size}
           class="button"
           @click=${this._toggleTheme}
           title=${this._getTooltip()}
         >
-          <span class="icon">${this._getIcon()}</span>
+          <span class="icon" style="${this.size === 'small' ? 'font-size: 14px;' : ''}">${this._getIcon()}</span>
         </app-button>
       </div>
     `;

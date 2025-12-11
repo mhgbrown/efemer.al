@@ -11,6 +11,7 @@ import './editor-footer.js';
 export class EditMode extends LitElement {
   static properties = {
     content: { type: String },
+    theme: { type: String },
     _previewMode: { type: Boolean },
     _uploadingImage: { type: Boolean },
     siteId: { type: String },
@@ -102,6 +103,22 @@ export class EditMode extends LitElement {
     }
 
     /* Fixed positioning removed */
+
+    @media (max-width: 768px) {
+      .editor-area {
+        flex-direction: column;
+      }
+
+      .editor-area .preview-pane {
+        display: flex; /* Show the preview pane */
+        border-top: 1px solid var(--md-sys-color-outline); /* Add separator */
+      }
+
+      .editor-pane {
+        border-right: none;
+        border-bottom: none; /* Separator handled by preview pane top border */
+      }
+    }
   `;
 
 
@@ -109,6 +126,7 @@ export class EditMode extends LitElement {
   constructor() {
     super();
     this.content = '';
+    this.theme = '';
     this._previewMode = false;
     this._uploadingImage = false;
     this.siteId = null;
@@ -128,6 +146,25 @@ export class EditMode extends LitElement {
       // Reset flag for next update
       this._isInternalChange = false;
     }
+
+    if (changedProperties.has('theme')) {
+      // Force reload of preview to pick up new theme from local storage/system
+      // We do this by briefly clearing the src or appending a timestamp?
+      // Actually, just re-assigning it logic might be enough if we modify it?
+      // Let's force a reload by retrieving the iframe and calling reload()
+      this._reloadPreview();
+    }
+  }
+
+  _reloadPreview() {
+    const iframes = this.shadowRoot.querySelectorAll('iframe.preview-frame');
+    iframes.forEach(iframe => {
+      // Reloading the iframe will cause it to re-evaluate the local storage theme
+      // We use the same src, just force reload
+      if (iframe.contentWindow) {
+        iframe.contentWindow.location.reload();
+      }
+    });
   }
 
   async _updatePreviewSrc() {

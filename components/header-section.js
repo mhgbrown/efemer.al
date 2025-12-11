@@ -47,6 +47,19 @@ export class HeaderSection extends LitElement {
       gap: 12px;
       flex-shrink: 0;
     }
+
+    @media (max-width: 600px) {
+      .main-bar {
+        padding: 8px;
+        gap: 8px;
+      }
+      .url-display {
+        font-size: 11px;
+      }
+      .actions {
+        gap: 8px;
+      }
+    }
     /* Old button styles removed */
   `;
 
