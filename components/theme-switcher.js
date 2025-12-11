@@ -33,14 +33,14 @@ export class ThemeSwitcher extends LitElement {
     this.size = 'medium';
   }
 
-  _getIcon() {
+  _getLabel() {
     switch (this.theme) {
       case 'light':
-        return '☀️';
+        return 'Light';
       case 'dark':
-        return '🌙';
+        return 'Dark';
       default:
-        return '💻';
+        return 'Auto';
     }
   }
 
@@ -82,7 +82,7 @@ export class ThemeSwitcher extends LitElement {
           @click=${this._toggleTheme}
           title=${this._getTooltip()}
         >
-          <span class="icon" style="${this.size === 'small' ? 'font-size: 14px;' : ''}">${this._getIcon()}</span>
+          <span>${this._getLabel()}</span>
         </app-button>
       </div>
     `;
