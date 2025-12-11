@@ -18,14 +18,15 @@ export class HeaderSection extends LitElement {
       border-bottom: 1px solid var(--md-sys-color-outline);
       display: flex;
       flex-direction: column;
+      height: 48px;
+      box-sizing: border-box;
     }
     .main-bar {
       display: flex;
       align-items: center;
       padding: 8px 16px;
       gap: 16px;
-      height: 48px;
-      box-sizing: border-box;
+      flex: 1;
     }
     .url-display {
       flex: 1;
