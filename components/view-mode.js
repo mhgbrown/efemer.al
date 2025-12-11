@@ -10,7 +10,12 @@ export class ViewMode extends LitElement {
   static properties = {
     content: { type: String },
     sites: { type: Array },
-    theme: { type: String, reflect: true }
+    theme: { type: String, reflect: true },
+    /**
+     * Whether to allow execution of <script> tags in the rendered content.
+     * Defaults to false for security.
+     */
+    allowScripts: { type: Boolean }
   };
 
   static styles = [
@@ -156,6 +161,7 @@ export class ViewMode extends LitElement {
     super();
     this.content = '';
     this.sites = [];
+    this.allowScripts = false;
     this._handleSitesUpdated = this._handleSitesUpdated.bind(this);
   }
 
@@ -298,6 +304,29 @@ export class ViewMode extends LitElement {
         <span style="font-size: 24px;">✏️</span>
       </app-button>` : ''}
     `;
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has('content') || changedProperties.has('sites') || changedProperties.has('allowScripts')) {
+      this._executeScripts();
+    }
+  }
+
+  _executeScripts() {
+    if (!this.allowScripts) return;
+
+    const container = this.shadowRoot.querySelector('.rendered-content');
+    if (!container) return;
+
+    const scripts = container.querySelectorAll('script');
+    scripts.forEach(oldScript => {
+      const newScript = document.createElement('script');
+      Array.from(oldScript.attributes).forEach(attr => {
+        newScript.setAttribute(attr.name, attr.value);
+      });
+      newScript.textContent = oldScript.textContent;
+      oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
   }
 }
 
