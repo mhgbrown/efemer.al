@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import './button.js';
 
 export class HeaderSection extends LitElement {
   static properties = {
@@ -46,52 +47,7 @@ export class HeaderSection extends LitElement {
       gap: 12px;
       flex-shrink: 0;
     }
-    .copy-button {
-      background: transparent;
-      border: 1px solid var(--md-sys-color-outline);
-      color: var(--md-sys-color-primary);
-      cursor: pointer;
-      font-size: 12px;
-      padding: 4px 8px;
-      border-radius: 0;
-      font-weight: 600;
-      text-transform: uppercase;
-      font-family: inherit;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: all 0.2s;
-    }
-    .copy-button:hover {
-      background: var(--md-sys-color-primary);
-      color: var(--md-sys-color-on-primary);
-      border-color: var(--md-sys-color-primary);
-    }
-    .copy-button.copied {
-      background: var(--md-sys-color-secondary);
-      color: var(--md-sys-color-on-secondary);
-      border-color: var(--md-sys-color-on-secondary);
-    }
-    .edit-button {
-      background: transparent;
-      border: 1px solid var(--md-sys-color-outline);
-      color: var(--md-sys-color-primary);
-      cursor: pointer;
-      font-size: 12px;
-      padding: 4px 8px;
-      border-radius: 0;
-      font-weight: 600;
-      text-transform: uppercase;
-      font-family: inherit;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      transition: all 0.2s;
-    }
-    .edit-button:hover {
-      background: var(--md-sys-color-primary);
-      color: var(--md-sys-color-on-primary);
-    }
+    /* Old button styles removed */
   `;
 
   _copyUrl() {
@@ -100,12 +56,19 @@ export class HeaderSection extends LitElement {
 
     try {
       navigator.clipboard.writeText(this.url);
-      const originalText = copyBtn.innerText;
       copyBtn.innerText = 'COPIED';
-      copyBtn.classList.add('copied');
+      // We can directly style or use variants if we supported a "success" variant,
+      // but for now we'll rely on text update or inline style change if needed,
+      // or we can add a transient class to app-button if it supports it.
+      // Assuming app-button just passes through content.
+
+      // Let's toggle variant temporarily if possible or just text
+      const oldVariant = copyBtn.getAttribute('variant');
+      // copyBtn.setAttribute('variant', 'primary'); // Optional: visual feedback
+
       setTimeout(() => {
         copyBtn.innerText = 'COPY URL';
-        copyBtn.classList.remove('copied');
+        // copyBtn.setAttribute('variant', oldVariant);
       }, 2000);
     } catch (err) {
       console.error('Failed to copy URL:', err);
@@ -129,13 +92,13 @@ export class HeaderSection extends LitElement {
           </div>
           <div class="actions">
             ${this.showEditButton ? html`
-              <button class="edit-button" @click=${() => this._emit('edit')}>
+              <app-button variant="secondary" size="small" @click=${() => this._emit('edit')}>
                 Show Editor
-              </button>
+              </app-button>
             ` : ''}
-            <button class="copy-button" id="copy-url-btn" @click=${this._copyUrl}>
+            <app-button id="copy-url-btn" variant="secondary" size="small" @click=${this._copyUrl}>
               COPY URL
-            </button>
+            </app-button>
           </div>
         </div>
       </div>

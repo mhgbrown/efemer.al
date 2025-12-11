@@ -3,6 +3,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { marked } from 'marked';
 import { githubMarkdownStyles } from './github-markdown-css.js';
 import { encodeContent, updateURL } from '../url-utils.js';
+import './button.js';
 import { RecentSitesManager } from '../recent-sites-manager.js';
 
 export class ViewMode extends LitElement {
@@ -117,31 +118,6 @@ export class ViewMode extends LitElement {
       opacity: 1;
     }
 
-    .action-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 6px 12px;
-      background: transparent;
-      color: var(--md-sys-color-primary);
-      text-decoration: none;
-      border: 1px solid var(--md-sys-color-primary);
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 12px;
-      font-family: inherit;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border-radius: 0;
-      transition: all 0.2s;
-      opacity: 1;
-    }
-
-    .action-btn:hover {
-      background: var(--md-sys-color-primary);
-      color: var(--md-sys-color-on-primary);
-    }
-
     .empty-dashboard {
       text-align: center;
       padding: 64px 24px;
@@ -154,25 +130,11 @@ export class ViewMode extends LitElement {
       font-size: 24px;
     }
 
-    .edit-button {
+    .edit-fab {
       position: fixed;
       bottom: 32px;
       right: 32px;
-      width: 64px;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--md-sys-color-primary);
-      color: var(--md-sys-color-on-primary);
-      text-decoration: none;
-      border: 1px solid var(--md-sys-color-outline);
-      cursor: pointer;
-      font-size: 24px;
-      font-family: inherit;
-      box-sizing: border-box;
       z-index: 100;
-      border-radius: 0 !important;
     }
 
     .rendered-content {
@@ -312,9 +274,9 @@ export class ViewMode extends LitElement {
                         <div class="card-footer">
                           <span>${this._formatDate(site.timestamp)}</span>
                           <div class="card-actions">
-                            <button class="action-btn" title="View" @click=${(e) => this._navigateToView(e, site.url)}>View</button>
-                            <button class="action-btn" title="Copy URL" @click=${(e) => this._copyUrl(e, site.url)}>Copy</button>
-                            <button class="action-btn" title="Delete" @click=${(e) => this._deleteSite(e, site.timestamp)} style="color: var(--md-sys-color-error); border-color: var(--md-sys-color-error);">Delete</button>
+                            <app-button variant="secondary" size="small" @click=${(e) => this._navigateToView(e, site.url)}>View</app-button>
+                            <app-button variant="secondary" size="small" @click=${(e) => this._copyUrl(e, site.url)}>Copy</app-button>
+                            <app-button variant="danger" size="small" @click=${(e) => this._deleteSite(e, site.timestamp)}>Delete</app-button>
                           </div>
                         </div>
                       </div>
@@ -335,9 +297,9 @@ export class ViewMode extends LitElement {
         </div>
       </div>
       ${window.self === window.top ? html`
-      <button class="edit-button" @click=${this._handleEdit} title="Edit">
-        ✏️
-      </button>` : ''}
+      <app-button class="edit-fab" size="fab" variant="primary" @click=${this._handleEdit} title="Edit">
+        <span style="font-size: 24px;">✏️</span>
+      </app-button>` : ''}
     `;
   }
 }

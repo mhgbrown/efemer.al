@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import './button.js';
 
 export class EditorFooter extends LitElement {
   static properties = {
@@ -26,27 +27,7 @@ export class EditorFooter extends LitElement {
       align-items: center;
       gap: 12px;
     }
-    button {
-      background: transparent;
-      border: 1px solid var(--md-sys-color-outline);
-      color: var(--md-sys-color-primary);
-      cursor: pointer;
-      font-size: 12px;
-      padding: 4px 8px;
-      border-radius: 0;
-      font-weight: 600;
-      text-transform: uppercase;
-      font-family: inherit;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      height: 28px;
-      transition: all 0.2s;
-    }
-    button:hover {
-      background: var(--md-sys-color-primary);
-      color: var(--md-sys-color-on-primary);
-    }
+    /* Old button styles removed */
   `;
 
   _emit(event) {
@@ -59,12 +40,12 @@ export class EditorFooter extends LitElement {
   render() {
     return html`
       <div class="footer">
-        <button class="button-success" @click=${() => this._emit('save')}>
+        <app-button variant="primary" size="small" @click=${() => this._emit('save')}>
           Save & View
-        </button>
-        <button class="button-secondary" @click=${() => this._emit('toggle-preview')}>
+        </app-button>
+        <app-button variant="secondary" size="small" @click=${() => this._emit('toggle-preview')}>
           ${this.previewMode ? 'Show Editor' : 'Preview Only'}
-        </button>
+        </app-button>
       </div>
     `;
   }

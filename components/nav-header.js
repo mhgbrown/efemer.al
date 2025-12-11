@@ -2,6 +2,7 @@ import { LitElement, html, css } from 'lit';
 import { encodeContent } from '../url-utils.js';
 import { RecentSitesManager } from '../recent-sites-manager.js';
 import './theme-switcher.js';
+import './button.js';
 
 export class NavHeader extends LitElement {
   static properties = {
@@ -31,29 +32,7 @@ export class NavHeader extends LitElement {
       font-style: italic;
     }
 
-    .create-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 8px 16px;
-      background: transparent;
-      color: var(--md-sys-color-primary);
-      text-decoration: none;
-      border: 1px solid var(--md-sys-color-primary);
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 14px;
-      font-family: inherit;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      border-radius: 0;
-      transition: all 0.2s;
-    }
-
-    .create-button:hover {
-      background: var(--md-sys-color-primary);
-      color: var(--md-sys-color-on-primary);
-    }
+    /* .create-button styles removed */
 
     .actions {
       display: flex;
@@ -84,9 +63,9 @@ export class NavHeader extends LitElement {
       <nav class="nav">
         <div style="display: flex; align-items: center; gap: 24px;">
           <a href="#" class="brand">efemer.al</a>
-          <button class="create-button" @click=${this._handleCreateNew}>
+          <app-button variant="secondary" @click=${this._handleCreateNew}>
             Create New Site
-          </button>
+          </app-button>
         </div>
         <div class="actions">
           <theme-switcher .theme=${this.theme}></theme-switcher>

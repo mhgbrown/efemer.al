@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import './button.js';
 
 export class ThemeSwitcher extends LitElement {
   static properties = {
@@ -11,25 +12,8 @@ export class ThemeSwitcher extends LitElement {
       gap: 8px;
     }
 
-    .button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 48px;
-      height: 48px;
-      border: 1px solid var(--md-sys-color-primary);
-      background: transparent;
-      color: var(--md-sys-color-primary);
-      cursor: pointer;
-      font-size: 20px;
-      font-family: inherit;
-      border-radius: 0;
-      transition: all 0.2s;
-    }
-
     .button:hover {
-      background: var(--md-sys-color-primary);
-      color: var(--md-sys-color-on-primary);
+      /* background behavior handled by app-button variant */
     }
 
     .icon {
@@ -84,13 +68,15 @@ export class ThemeSwitcher extends LitElement {
   render() {
     return html`
       <div class="theme-switcher">
-        <button
+        <app-button
+          variant="secondary"
           class="button"
           @click=${this._toggleTheme}
           title=${this._getTooltip()}
+          style="width: 48px; height: 48px; padding: 0; font-size: 20px;"
         >
           <span class="icon">${this._getIcon()}</span>
-        </button>
+        </app-button>
       </div>
     `;
   }

@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { RecentSitesManager } from '../recent-sites-manager.js';
+import './button.js';
 
 export class RecentSitesDrawer extends LitElement {
   static properties = {
@@ -176,76 +177,7 @@ export class RecentSitesDrawer extends LitElement {
       margin-top: 8px;
     }
 
-    .action-button {
-      background: transparent;
-      border: 1px solid var(--md-sys-color-outline);
-      color: var(--md-sys-color-primary);
-      cursor: pointer;
-      font-size: 12px;
-      padding: 4px 8px;
-      border-radius: 0;
-      font-family: inherit;
-      text-transform: uppercase;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-
-    .action-button:hover {
-      background: var(--md-sys-color-primary);
-      color: var(--md-sys-color-on-primary);
-    }
-
-    .delete-site {
-      background: transparent;
-      border: 1px solid var(--md-sys-color-error);
-      color: var(--md-sys-color-error);
-      cursor: pointer;
-      font-size: 12px;
-      padding: 4px 8px;
-      border-radius: 0;
-      font-family: inherit;
-      text-transform: uppercase;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-
-    .delete-site:hover {
-      background: var(--md-sys-color-error);
-      color: var(--md-sys-color-on-error);
-    }
-
-    .drawer-footer {
-      height: 48px;
-      box-sizing: border-box;
-      align-items: center;
-      padding: 0 16px;
-      border-top: 1px solid var(--md-sys-color-outline);
-      background: var(--md-sys-color-surface);
-    }
-
-    .clear-button {
-      width: 100%;
-      height: 28px;
-      padding: 0 8px;
-      background: transparent;
-      color: var(--md-sys-color-error);
-      border: 1px solid var(--md-sys-color-error);
-      text-transform: uppercase;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 12px;
-      border-radius: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
-
-    .clear-button:hover {
-      background: var(--md-sys-color-error);
-      color: var(--md-sys-color-on-error);
-    }
+    /* Old button styles removed */
 
     .collapsed-header {
       height: 48px;
@@ -383,11 +315,11 @@ export class RecentSitesDrawer extends LitElement {
                 <div class="site-title" title=${site.title}>${site.title}</div>
                 ${site.preview ? html`<div class="site-preview">${site.preview}</div>` : ''}
                 <div class="site-meta">${this._formatDate(site.timestamp)}</div>
-                <div class="site-actions">
-                  <button class="action-button" @click=${(e) => this._copyUrl(e, site.url)}>Copy</button>
-                  <button class="action-button" @click=${(e) => this._insertLink(e, site)}>Insert</button>
-                  <button class="delete-site" @click=${(e) => this._deleteSite(e, site.timestamp)}>Delete</button>
-                </div>
+                  <div class="site-actions">
+                    <app-button variant="secondary" size="small" @click=${(e) => this._copyUrl(e, site.url)}>Copy</app-button>
+                    <app-button variant="secondary" size="small" @click=${(e) => this._insertLink(e, site)}>Insert</app-button>
+                    <app-button variant="danger" size="small" @click=${(e) => this._deleteSite(e, site.timestamp)}>Delete</app-button>
+                  </div>
               </li>
             `)
       }
@@ -396,7 +328,7 @@ export class RecentSitesDrawer extends LitElement {
       ${this.sites.length > 0
         ? html`
             <div class="drawer-footer">
-              <button class="clear-button" @click=${this._clearAll}>Clear History</button>
+              <app-button variant="danger" style="width: 100%;" @click=${this._clearAll}>Clear History</app-button>
             </div>
           `
         : ''
