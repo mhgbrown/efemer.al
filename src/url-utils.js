@@ -144,18 +144,21 @@ export async function parsePath(hash) {
  * Includes a random color style and a unique timestamp-based header
  */
 export function generateDefaultContent() {
-  // Generate a random color
-  const colors = [
-    '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEEAD',
-    '#D4A5A5', '#9B59B6', '#3498DB', '#E67E22', '#2ECC71'
-  ];
-  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+  const now = Date.now();
 
-  // Generate a hex timestamp for uniqueness (shorter than full timestamp)
-  const timestampHex = Date.now().toString(16).toUpperCase();
+  // Generate a short ID: 3 random chars + last 3 chars of timestamp
+  // Max 6 chars, with random start as requested
+  const timeHex = now.toString(16);
+  const randomPart = Math.floor(Math.random() * 0x1000).toString(16).padStart(3, '0');
+  const timestampHex = (randomPart + timeHex.slice(-3)).toUpperCase();
+
+  // Generate a color based on the timestamp
+  // Use the timestamp to determine the hue (0-360)
+  const hue = now % 360;
+  const timestampColor = `hsl(${hue}, 70%, 45%)`;
 
   return `<style>
-h1 { color: ${randomColor}; }
+h1 { color: ${timestampColor}; }
 </style>
 
 # Site ${timestampHex}
