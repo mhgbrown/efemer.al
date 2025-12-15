@@ -1,8 +1,7 @@
 {
   "name": "efemer-al",
-  "private": true,
   "version": "0.0.0",
-  "description": "efemer.al - Your entire site lives in the URL",
+  "description": "efemer.al - Most of your site lives in the URL",
   "type": "module",
   "scripts": {
     "dev": "vite",
