@@ -23,20 +23,20 @@ export class StatusBar extends LitElement {
       height: 48px; /* Standard bar height */
       box-sizing: border-box;
       font-size: 13px;
+      overflow-x: auto;
     }
     .footer-section {
       display: flex;
       align-items: center;
       gap: 16px;
+      flex-shrink: 0;
     }
     .warning-container {
       display: flex;
       align-items: center;
       gap: 8px;
-      flex: 1;
-      overflow: hidden;
       white-space: nowrap;
-      text-overflow: ellipsis;
+      flex-shrink: 0;
     }
     .stat-item {
       font-family: monospace;
