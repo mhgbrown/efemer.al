@@ -88,7 +88,8 @@ export class NavHeader extends LitElement {
   }
 
   async _handleCreateNew() {
-    const defaultContent = '# Welcome!\n\nStart editing to create your site.';
+    const { generateDefaultContent } = await import('../url-utils.js');
+    const defaultContent = generateDefaultContent();
     const encoded = await encodeContent(defaultContent);
 
     // Save immediately
