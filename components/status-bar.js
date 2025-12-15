@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 
-export class FooterSection extends LitElement {
+export class StatusBar extends LitElement {
   static properties = {
     byteCount: { type: Number },
     contentByteCount: { type: Number },
@@ -105,4 +105,4 @@ export class FooterSection extends LitElement {
   }
 }
 
-customElements.define('footer-section', FooterSection);
+customElements.define('status-bar', StatusBar);

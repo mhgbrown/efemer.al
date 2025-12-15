@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import './button.js';
+import './app-button.js';
 
 export class EditorFooter extends LitElement {
   static properties = {

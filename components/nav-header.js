@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit';
 import { encodeContent } from '../url-utils.js';
 import { RecentSitesManager } from '../recent-sites-manager.js';
 import './theme-switcher.js';
-import './button.js';
+import './app-button.js';
 
 export class NavHeader extends LitElement {
   static properties = {

@@ -3,8 +3,8 @@ import { marked } from 'marked';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { encodeContent, updateURL } from '../url-utils.js';
 import { RecentSitesManager } from '../recent-sites-manager.js';
-import '../components/header-section.js';
-import '../components/footer-section.js';
+import '../components/url-bar.js';
+import '../components/status-bar.js';
 import '../components/markdown-toolbar.js';
 import '../components/editor-footer.js';
 
@@ -550,19 +550,19 @@ export class EditMode extends LitElement {
          ${this._previewMode
         ? html`
               <div class="preview-pane">
-                  <header-section
+                  <url-bar
                     .url=${this._previewSrc}
                     .showEditButton=${true}
                     @edit=${this._togglePreview}>
-                  </header-section>
+                  </url-bar>
                  ${this._previewSrc
             ? html`<iframe class="preview-frame" src=${this._previewSrc} title="Preview"></iframe>`
             : ''
           }
-                   <footer-section
+                   <status-bar
                       .byteCount=${new Blob([this._previewSrc]).size}
                       .contentByteCount=${new Blob([this.content]).size}>
-                   </footer-section>
+                   </status-bar>
               </div>
             `
         : html`
@@ -594,14 +594,14 @@ export class EditMode extends LitElement {
                   <div class="preview-pane">
                      ${this._previewSrc
             ? html`
-                            <header-section
+                            <url-bar
                               .url=${this._previewSrc}>
-                            </header-section>
+                            </url-bar>
                             <iframe class="preview-frame" src=${this._previewSrc} title="Live Preview"></iframe>
-                            <footer-section
+                            <status-bar
                               .byteCount=${new Blob([this._previewSrc]).size}
                               .contentByteCount=${this.content ? new Blob([this.content]).size : 0}>
-                            </footer-section>
+                            </status-bar>
                           `
             : ''
           }

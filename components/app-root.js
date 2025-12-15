@@ -3,7 +3,7 @@ import { parsePath, getCurrentPath, updateURL } from '../url-utils.js';
 import '../views/view-mode.js';
 import '../views/edit-mode.js';
 import './theme-switcher.js';
-import './header-section.js';
+import './url-bar.js';
 import './nav-header.js';
 import './recent-sites-drawer.js';
 import '../views/about-page.js';

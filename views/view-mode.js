@@ -3,7 +3,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { marked } from 'marked';
 import { githubMarkdownStyles } from '../components/github-markdown-css.js';
 import { encodeContent, updateURL } from '../url-utils.js';
-import '../components/button.js';
+import '../components/app-button.js';
 import { RecentSitesManager } from '../recent-sites-manager.js';
 
 export class ViewMode extends LitElement {

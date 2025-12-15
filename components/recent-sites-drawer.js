@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { RecentSitesManager } from '../recent-sites-manager.js';
-import './button.js';
+import './app-button.js';
 
 export class RecentSitesDrawer extends LitElement {
   static properties = {

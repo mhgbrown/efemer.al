@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit';
-import './button.js';
+import './app-button.js';
 
-export class HeaderSection extends LitElement {
+export class UrlBar extends LitElement {
   static properties = {
     url: { type: String },
     showEditButton: { type: Boolean },
@@ -120,4 +120,4 @@ export class HeaderSection extends LitElement {
   }
 }
 
-customElements.define('header-section', HeaderSection);
+customElements.define('url-bar', UrlBar);
