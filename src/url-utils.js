@@ -160,5 +160,16 @@ h1 { color: ${randomColor}; }
 
 # Site ${timestampHex}
 
-Start editing to create your site.`;
+Start editing to create your site.
+
+## Features
+- **Markdown** support
+- _Live_ preview
+- Custom [styles](https://developer.mozilla.org/en-US/docs/Web/CSS)
+
+> "Simplicity is the ultimate sophistication."
+
+\`\`\`javascript
+console.log('Hello World');
+\`\`\``;
 }
