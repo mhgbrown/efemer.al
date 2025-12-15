@@ -42,7 +42,7 @@ export class AboutPage extends LitElement {
         Instead of a traditional database, all your data is encoded directly into the link itself.
       </p>
       <p>
-        To make this practical, we're experimenting with <span class="highlight">compression techniques</span>
+        To make this "practical", we're experimenting with <span class="highlight">compression techniques</span>
         to drastically reduce the size of the URL. This ensures that the generated links remain acceptable
         to more browsers and platforms, while allowing you to fit more content into your ephemeral sites.
       </p>
