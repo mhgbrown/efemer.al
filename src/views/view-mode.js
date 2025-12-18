@@ -193,6 +193,7 @@ export class ViewMode extends LitElement {
     this._setMeta('twitter:title', title);
     this._setMeta('twitter:description', description);
     // og:image defaults to og-image.png, twitter:image defaults to twitter-image.png
+    this._updateJsonLd(title, description);
   }
 
   _resetMetaTags() {
@@ -203,6 +204,37 @@ export class ViewMode extends LitElement {
     this._setMeta('og:description', 'The minimalist, ephemeral web builder. Create, share, and explore ephemeral sites.');
     this._setMeta('twitter:title', 'efemer.al');
     this._setMeta('twitter:description', 'The minimalist, ephemeral web builder. Create, share, and explore ephemeral sites.');
+    this._updateJsonLd(null, null);
+  }
+
+  _updateJsonLd(title, description) {
+    let script = document.getElementById('dynamic-json-ld');
+
+    // If clearing (no title)
+    if (!title) {
+      if (script) {
+        script.remove();
+      }
+      return;
+    }
+
+    // Create if missing
+    if (!script) {
+      script = document.createElement('script');
+      script.id = 'dynamic-json-ld';
+      script.type = 'application/ld+json';
+      document.head.appendChild(script);
+    }
+
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": title,
+      "description": description,
+      "url": window.location.href
+    };
+
+    script.textContent = JSON.stringify(schema, null, 2);
   }
 
   _setMeta(name, content) {
@@ -364,7 +396,11 @@ export class ViewMode extends LitElement {
     }
 
     if (changedProperties.has('content')) {
-      this._updateMetaTags();
+      if (this.content) {
+        this._updateMetaTags();
+      } else {
+        this._resetMetaTags();
+      }
     }
   }
 
