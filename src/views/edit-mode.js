@@ -402,12 +402,23 @@ export class EditMode extends LitElement {
     this.requestUpdate();
 
     try {
-      console.log('Starting image compression for:', file.name, file.size, 'bytes');
+      console.log('Starting image upload for:', file.name, file.size, 'bytes');
 
-      // Compress and convert image to optimized base64
-      const base64 = await this._compressImage(file);
+      let base64;
+      if (file.type === 'image/gif') {
+        console.log('GIF detected, bypassing compression to preserve animation');
+        base64 = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      } else {
+        // Compress and convert image to optimized base64
+        base64 = await this._compressImage(file);
+      }
 
-      console.log('Image compressed, base64 length:', base64.length);
+      console.log('Image processed, base64 length:', base64.length);
 
       // Create markdown image syntax with data URI
       const imageMarkdown = `![${file.name}](${base64})`;
