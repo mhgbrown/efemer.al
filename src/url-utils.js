@@ -176,3 +176,51 @@ Start editing to create your site.
 console.log('Hello World');
 \`\`\``;
 }
+
+/**
+ * Extracts title and description from markdown content
+ * @param {string} content
+ * @returns {{title: string, description: string}}
+ */
+export function extractMetadata(content) {
+  if (!content) return { title: 'Untitled Site', description: '' };
+
+  const lines = content.split('\n');
+  let title = 'Untitled Site';
+  let description = '';
+  let titleFound = false;
+
+  // Find Title (H1 or first non-empty line)
+  const h1Index = lines.findIndex(line => line.trim().startsWith('# '));
+  let titleLineIndex = -1;
+
+  if (h1Index !== -1) {
+    title = lines[h1Index].replace(/^#+\s*/, '').trim();
+    titleLineIndex = h1Index;
+    titleFound = true;
+  } else {
+    const firstNonEmptyIndex = lines.findIndex(line => line.trim().length > 0);
+    if (firstNonEmptyIndex !== -1) {
+      title = lines[firstNonEmptyIndex].replace(/^#+\s*/, '').trim();
+      titleLineIndex = firstNonEmptyIndex;
+      titleFound = true;
+    }
+  }
+
+  // Find Description (next non-empty line after title)
+  if (titleFound) {
+    for (let i = titleLineIndex + 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line.length > 0 && !line.startsWith('#') && !line.startsWith('```') && !line.startsWith('<style')) {
+        description = line;
+        break;
+      }
+    }
+  }
+
+  // Fallbacks and cleanup
+  title = title.substring(0, 50) || 'Untitled Site';
+  description = description.substring(0, 160); // Standard meta description length
+
+  return { title, description };
+}

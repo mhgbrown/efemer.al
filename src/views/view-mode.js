@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { marked } from 'marked';
 import { githubMarkdownStyles } from '../components/github-markdown-css.js';
-import { encodeContent, updateURL } from '../url-utils.js';
+import { encodeContent, updateURL, extractMetadata } from '../url-utils.js';
 import '../components/app-button.js';
 import { RecentSitesManager } from '../recent-sites-manager.js';
 
@@ -169,11 +169,62 @@ export class ViewMode extends LitElement {
     super.connectedCallback();
     this.sites = RecentSitesManager.getSites();
     window.addEventListener('recent-sites-updated', this._handleSitesUpdated);
+    this._updateMetaTags();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener('recent-sites-updated', this._handleSitesUpdated);
+    this._resetMetaTags();
+  }
+
+  _updateMetaTags() {
+    if (!this.content) return; // In dashboard mode, we might want defaults, which are already there
+
+    const { title, description } = extractMetadata(this.content);
+
+    // Update Title
+    document.title = `${title} | efemer.al`;
+
+    // Update Meta Tags
+    this._setMeta('description', description);
+    this._setMeta('og:title', title);
+    this._setMeta('og:description', description);
+    this._setMeta('twitter:title', title);
+    this._setMeta('twitter:description', description);
+    // og:image defaults to og-image.png, twitter:image defaults to twitter-image.png
+  }
+
+  _resetMetaTags() {
+    // Revert to defaults hardcoded here (matching index.html)
+    document.title = 'efemer.al';
+    this._setMeta('description', 'The minimalist, ephemeral web builder. Create, share, and explore ephemeral sites.');
+    this._setMeta('og:title', 'efemer.al');
+    this._setMeta('og:description', 'The minimalist, ephemeral web builder. Create, share, and explore ephemeral sites.');
+    this._setMeta('twitter:title', 'efemer.al');
+    this._setMeta('twitter:description', 'The minimalist, ephemeral web builder. Create, share, and explore ephemeral sites.');
+  }
+
+  _setMeta(name, content) {
+    // Handle both name and property (for OG tags)
+    let element = document.querySelector(`meta[name="${name}"]`);
+    if (!element) {
+      element = document.querySelector(`meta[property="${name}"]`);
+    }
+
+    if (element) {
+      element.setAttribute('content', content);
+    } else {
+      // Create if missing (though they should exist from index.html)
+      const meta = document.createElement('meta');
+      if (name.startsWith('og:') || name.startsWith('twitter:')) {
+        meta.setAttribute('property', name);
+      } else {
+        meta.setAttribute('name', name);
+      }
+      meta.setAttribute('content', content);
+      document.head.appendChild(meta);
+    }
   }
 
   _handleSitesUpdated() {
@@ -310,6 +361,10 @@ export class ViewMode extends LitElement {
   updated(changedProperties) {
     if (changedProperties.has('content') || changedProperties.has('sites') || changedProperties.has('allowScripts')) {
       this._executeScripts();
+    }
+
+    if (changedProperties.has('content')) {
+      this._updateMetaTags();
     }
   }
 

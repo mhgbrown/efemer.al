@@ -1,3 +1,5 @@
+import { extractMetadata } from './url-utils.js';
+
 export class RecentSitesManager {
   static STORAGE_KEY = 'efemer_al_recent_sites';
   static MAX_SITES = 50;
@@ -17,41 +19,7 @@ export class RecentSitesManager {
       const sites = this.getSites();
       const timestamp = Date.now();
 
-      // Extract title and preview
-      let title = 'Untitled Site';
-      let preview = '';
-
-      if (content) {
-        const lines = content.split('\n');
-        let titleLineIndex = -1;
-
-        // Find H1
-        const h1Index = lines.findIndex(line => line.trim().startsWith('# '));
-
-        if (h1Index !== -1) {
-          title = lines[h1Index].replace(/^#+\s*/, '').trim();
-          titleLineIndex = h1Index;
-        } else {
-          // Fallback to first non-empty line
-          const firstNonEmptyIndex = lines.findIndex(line => line.trim().length > 0);
-          if (firstNonEmptyIndex !== -1) {
-            title = lines[firstNonEmptyIndex].replace(/^#+\s*/, '').trim();
-            titleLineIndex = firstNonEmptyIndex;
-          }
-        }
-
-        title = title.substring(0, 50) || 'Untitled Site';
-
-        // Find preview (next non-empty line after title)
-        if (titleLineIndex !== -1) {
-          for (let i = titleLineIndex + 1; i < lines.length; i++) {
-            if (lines[i].trim().length > 0) {
-              preview = lines[i].trim().substring(0, 100);
-              break;
-            }
-          }
-        }
-      }
+      const { title, description: preview } = extractMetadata(content);
 
       let siteId = id;
       let existingSiteIndex = -1;
