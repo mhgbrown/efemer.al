@@ -194,7 +194,7 @@ export class AppRoot extends LitElement {
         : this.mode === 'about'
           ? html`<about-page></about-page>`
           : html`
-                  <view-mode .content=${this.content} .theme=${this.theme}></view-mode>
+                  <view-mode .content=${this.content} .theme=${this.theme} .allowScripts=${true}></view-mode>
                 `
       }
           </div>

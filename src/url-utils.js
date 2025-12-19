@@ -161,6 +161,17 @@ export function generateDefaultContent() {
 h1 { color: ${timestampColor}; }
 </style>
 
+<script>
+  window.addEventListener('load', () => {
+    const app = document.querySelector('app-root');
+    const viewMode = app.shadowRoot.querySelector('view-mode')
+    const h1 = viewMode.shadowRoot.querySelector('h1')
+    if (h1) {
+      h1.textContent += ' (Scripted!)';
+    }
+  });
+</script>
+
 # Site ${timestampHex}
 
 Start editing to create your site.
