@@ -170,11 +170,15 @@ export class ViewMode extends LitElement {
     super.connectedCallback();
     this.sites = RecentSitesManager.getSites();
     window.addEventListener('recent-sites-updated', this._handleSitesUpdated);
+    document.viewRoot = this.shadowRoot;
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener('recent-sites-updated', this._handleSitesUpdated);
+    if (document.viewRoot === this.shadowRoot) {
+      document.viewRoot = null;
+    }
   }
 
 

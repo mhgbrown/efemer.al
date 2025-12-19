@@ -163,9 +163,8 @@ h1 { color: ${timestampColor}; }
 
 <script>
   window.addEventListener('load', () => {
-    const app = document.querySelector('app-root');
-    const viewMode = app.shadowRoot.querySelector('view-mode')
-    const h1 = viewMode.shadowRoot.querySelector('h1')
+    // We can access the shadow root of the view mode content directly!
+    const h1 = document.viewRoot.querySelector('h1')
     if (h1) {
       h1.textContent += ' (Scripted!)';
     }
