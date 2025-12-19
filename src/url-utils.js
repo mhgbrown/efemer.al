@@ -157,21 +157,7 @@ export function generateDefaultContent() {
   const hue = now % 360;
   const timestampColor = `hsl(${hue}, 70%, 45%)`;
 
-  return `<style>
-h1 { color: ${timestampColor}; }
-</style>
-
-<script>
-  window.addEventListener('load', () => {
-    // We can access the shadow root of the view mode content directly!
-    const h1 = document.viewRoot.querySelector('h1')
-    if (h1) {
-      h1.textContent += ' (Scripted!)';
-    }
-  });
-</script>
-
-# Site ${timestampHex}
+  return `# Site ${timestampHex}
 
 Start editing to create your site.
 
@@ -184,7 +170,34 @@ Start editing to create your site.
 
 \`\`\`javascript
 console.log('Hello World');
-\`\`\``;
+\`\`\`
+
+<style>
+h1 { color: ${timestampColor}; }
+</style>
+
+<script>
+  (() => {
+    /*
+     * This script runs when the page loads AND when the URL fragment changes.
+     * It uses the \`document.viewRoot\` shortcut that exposes the root element
+     * of the current content.
+     */
+    const run = () => {
+      const h1 = document.viewRoot?.querySelector('h1');
+      if (h1 && !h1.textContent.includes('(Scripted!)')) {
+        h1.textContent += ' (Scripted!)';
+      }
+    };
+
+    // Run immediately in case the page is already loaded
+    run();
+
+    // Also run when the URL hash changes
+    window.addEventListener('hashchange', run);
+  })();
+</script>
+`;
 }
 
 /**
