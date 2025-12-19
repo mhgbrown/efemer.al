@@ -6,6 +6,16 @@
 
 Instead of a traditional database, all your data is encoded directly into the link itself. This means no backend storage is required to share your thoughts, notes, or lists.
 
+## Philosophy
+
+We live in an era of opaque, maximalist URLs. Links from major platforms are often bloated with tracking metadata, rendering them indecipherable. Concurrently, modern browsers like Safari and Arc are increasingly obfuscating these details, reducing the address bar to a mere origin indicator.
+
+`efemer.al` pursues this abstraction to its logical conclusion. If the link is destined to be an opaque data carrier, why limit it to metadata? Why not encode the *entire* content within the URL?
+
+**“Unstoppable” Content**
+
+This architecture inherently challenges censorship. By eliminating the central database, the user becomes the host. When the content exists solely within the link, traditional takedown mechanisms fail. To censor the content is to break the mechanism of linking itself.
+
 ## Features
 
 -   **Serverless Data Storage**: content is compressed and stored within the URL hash.

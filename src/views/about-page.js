@@ -46,6 +46,19 @@ export class AboutPage extends LitElement {
         to drastically reduce the size of the URL. This ensures that the generated links remain acceptable
         to more browsers and platforms, while allowing you to fit more content into your ephemeral sites.
       </p>
+
+      <h2>Philosophy</h2>
+      <p>
+        We live in an era of <span class="highlight">opaque, maximalist URLs</span>. Links are often bloated with tracking metadata,
+        while modern browsers increasingly hide this complexity behind a simple origin.
+      </p>
+      <p>
+        <code>efemer.al</code> embraces this. If the link is already an indecipherable data carrier, why not use it to store <span class="highlight">everything</span>?
+      </p>
+      <p>
+        This architecture also explores the boundaries of <span class="highlight">censorship resistance</span>.
+        When content exists solely within the link, traditional takedowns fail. The user is the host.
+      </p>
     `;
   }
 }
